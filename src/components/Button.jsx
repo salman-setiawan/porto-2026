@@ -25,7 +25,7 @@ const Button = ({ label, width = '', type, active = false, onClick, url, icon, c
       {...props}
     >
       {icon && <span className="flex items-center">{icon}</span>}
-      {label}
+      <span className={icon ? 'mt-0.5' : ''}>{label}</span>
     </button>
   )
 

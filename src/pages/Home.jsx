@@ -1,7 +1,7 @@
 import React from 'react'
 import HeroDescription from '../components/hero-section/Description'
 import ProjectCarousel from '../components/project-section/ProjectCarousel'
-import SeamlessSlider from '../components/SeamlessSlider'
+import SeamlessSlider from '../components/showcase-section/SeamlessSlider'
 
 const Home = () => {
   return (

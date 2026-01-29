@@ -8,11 +8,7 @@ import React, { useMemo } from 'react';
  * @param {string} className - Additional CSS classes for positioning and size
  * @param {string} animation - CSS animation style string
  */
-const HalftoneGlow = ({
-  color = "rgba(59, 130, 246, 0.5)",
-  className = "",
-  animation = "pulse-glow 4s infinite"
-}) => {
+const HalftoneGlow = ({ color, className, animation }) => {
 
   const svgBackground = useMemo(() => {
     // Parse the color to extract RGB values
@@ -22,7 +18,7 @@ const HalftoneGlow = ({
     const b = rgbaMatch ? rgbaMatch[3] : 246;
 
     // Define opacities for random distribution
-    const opacities = [1, 0.7, 0.4, 0.2];
+    const opacities = [1, 0.8, 0.5, 0.3];
     const cellSize = 6;
     const gridSize = 7; // 7x7 grid = 49 dots
 
@@ -51,12 +47,12 @@ const HalftoneGlow = ({
       backgroundImage: `url("data:image/svg+xml,${encodedSvg}")`,
       backgroundRepeat: 'repeat',
       // Radial mask: solid in the middle, transparent at the edges
-      maskImage: 'radial-gradient(circle, black 20%, transparent 80%)',
-      WebkitMaskImage: 'radial-gradient(circle, black 20%, transparent 80%)',
+      maskImage: 'radial-gradient(circle, black 10%, transparent 60%)',
+      WebkitMaskImage: 'radial-gradient(circle, black 10%, transparent 60%)',
       maskRepeat: 'no-repeat',
       WebkitMaskRepeat: 'no-repeat',
-      maskPosition: 'center',
-      WebkitMaskPosition: 'center',
+      maskPosition: 'center calc(50% + 20px)',
+      WebkitMaskPosition: 'center calc(50% + 20px)',
       // GPU Acceleration
       willChange: 'opacity',
       transform: 'translateZ(0)',

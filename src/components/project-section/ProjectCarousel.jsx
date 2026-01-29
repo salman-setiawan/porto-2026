@@ -28,7 +28,7 @@ const ProjectCarousel = () => {
 
   return (
     <div className="w-full relative lg:max-w-[1080px] mx-auto group py-8">
-      <div className="min-h-[600px] flex flex-col items-center">
+      <div className="flex flex-col items-center">
         <div className={`transition-opacity duration-500 ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           <p className="text-white/60 font-medium text-center">Project {currentIndex + 1}</p>
         </div>
