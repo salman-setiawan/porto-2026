@@ -2,7 +2,7 @@ import React from 'react'
 
 const Savings = () => {
   return (
-    <div className="bg-neutral-900/60 backdrop-blur-sm border border-white/8 p-2.5 rounded-md shadow-xl shadow-black/30 flex items-center gap-3">
+    <div className="bg-neutral-900/50 backdrop-blur-sm border border-white/8 p-2.5 rounded-md shadow-xl shadow-black/30 flex items-center gap-3">
       <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
         <span className="material-symbols-outlined text-green-400" style={{ fontSize: '20px' }}>savings</span>
       </div>

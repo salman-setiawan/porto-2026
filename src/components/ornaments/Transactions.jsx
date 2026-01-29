@@ -2,7 +2,7 @@ import React from 'react'
 
 const Transactions = () => {
   return (
-    <div className="bg-neutral-900/60 backdrop-blur-sm border border-white/8 p-2.5 rounded-md shadow-xl shadow-black/30 flex items-center gap-3">
+    <div className="bg-neutral-900/20 backdrop-blur-sm border border-white/8 p-2.5 rounded-md shadow-xl shadow-black/30 flex items-center gap-3">
       <div className="flex flex-col">
         <span className="text-[9px] text-neutral-400 uppercase tracking-wider">Monthly Budget</span>
         <div className="flex gap-1.5 items-center">
