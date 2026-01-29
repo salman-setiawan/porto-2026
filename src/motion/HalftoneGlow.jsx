@@ -1,53 +1,54 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 
 /**
- * HalftoneGlow Component
- * Creates a glow effect with a halftone dot pattern and a radial gradient that is transparent in the center.
+ * HalftoneGlow Component (Optimized)
+ * Creates a glow effect with a halftone dot pattern using a single SVG background.
  * 
  * @param {string} color - The color of the halftone dots (rgba recommended)
  * @param {string} className - Additional CSS classes for positioning and size
- * @param {string} animation - Tailwind animation class or inline animation style
+ * @param {string} animation - CSS animation style string
  */
 const HalftoneGlow = ({
   color = "rgba(59, 130, 246, 0.5)",
   className = "",
   animation = "pulse-glow 4s infinite"
 }) => {
-  const [isMobile, setIsMobile] = useState(false);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  const svgBackground = useMemo(() => {
+    // Parse the color to extract RGB values
+    const rgbaMatch = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+    const r = rgbaMatch ? rgbaMatch[1] : 59;
+    const g = rgbaMatch ? rgbaMatch[2] : 130;
+    const b = rgbaMatch ? rgbaMatch[3] : 246;
 
-  const halftoneStyle = useMemo(() => {
-    // Generate Random Halftone Pattern similar to HalftoneEffect.jsx
+    // Define opacities for random distribution
     const opacities = [1, 0.7, 0.4, 0.2];
     const cellSize = 6;
-    // Use smaller grid on mobile for better performance (9 vs 36 gradients)
-    const gridSize = isMobile ? 5 : 7;
-    const images = [];
-    const positions = [];
+    const gridSize = 7; // 7x7 grid = 49 dots
 
-    // Extract RGBA components to apply random opacities
-    // Assuming color is in format rgba(r, g, b, a) or similar
-    const colorBase = color.replace(/[\d.]+\)$/g, ''); // "rgba(r, g, b, "
-
+    // Generate dots with random opacities using golden ratio for quasi-random distribution
+    const PHI = 1.618033988749895; // Golden ratio
+    let circles = '';
+    let index = 0;
     for (let x = 0; x < gridSize; x++) {
       for (let y = 0; y < gridSize; y++) {
-        const opacity = opacities[Math.floor(Math.random() * opacities.length)];
-        const dotOpacity = opacity; // Scale down slightly
-        images.push(`radial-gradient(${colorBase}${dotOpacity}) 1.5px, transparent 0)`);
-        positions.push(`${x * cellSize}px ${y * cellSize}px`);
+        // Use golden ratio sequence for truly random-looking pattern
+        const randomValue = (index * PHI) % 1; // Fractional part creates quasi-random sequence
+        const opacityIndex = Math.floor(randomValue * opacities.length);
+        const opacity = opacities[opacityIndex];
+        const cx = x * cellSize + cellSize / 2;
+        const cy = y * cellSize + cellSize / 2;
+        circles += `<circle cx="${cx}" cy="${cy}" r="1.5" fill="rgba(${r},${g},${b},${opacity})"/>`;
+        index++;
       }
     }
 
+    const svgSize = cellSize * gridSize;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgSize}" height="${svgSize}">${circles}</svg>`;
+    const encodedSvg = encodeURIComponent(svg);
+
     return {
-      backgroundImage: images.join(','),
-      backgroundPosition: positions.join(','),
-      backgroundSize: `${cellSize * gridSize}px ${cellSize * gridSize}px`,
+      backgroundImage: `url("data:image/svg+xml,${encodedSvg}")`,
       backgroundRepeat: 'repeat',
       // Radial mask: solid in the middle, transparent at the edges
       maskImage: 'radial-gradient(circle, black 20%, transparent 80%)',
@@ -57,19 +58,17 @@ const HalftoneGlow = ({
       maskPosition: 'center',
       WebkitMaskPosition: 'center',
       // GPU Acceleration
-      willChange: 'opacity, mask-size',
+      willChange: 'opacity',
       transform: 'translateZ(0)',
-      backfaceVisibility: 'hidden',
-      WebkitBackfaceVisibility: 'hidden',
       contain: 'strict',
     };
-  }, [color, isMobile]);
+  }, [color]);
 
   return (
     <div
       className={`absolute pointer-events-none z-0 ${className}`}
       style={{
-        ...halftoneStyle,
+        ...svgBackground,
         animation: animation
       }}
     />
