@@ -27,7 +27,7 @@ const HalftoneGlow = ({
     const opacities = [1, 0.7, 0.4, 0.2];
     const cellSize = 6;
     // Use smaller grid on mobile for better performance (9 vs 36 gradients)
-    const gridSize = isMobile ? 3 : 6;
+    const gridSize = isMobile ? 5 : 7;
     const images = [];
     const positions = [];
 
