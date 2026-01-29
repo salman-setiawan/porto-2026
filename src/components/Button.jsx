@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-const Button = ({ label, width = '', type, active = false, onClick, url, className = '', ...props }) => {
+const Button = ({ label, width = '', type, active = false, onClick, url, icon, className = '', ...props }) => {
 
   const baseStyle = type === 'base'
     ? 'px-3 py-1.5 rounded-md text-[13px] font-medium shadow-lg shadow-black/10 cursor-pointer bg-blue-700 hover:bg-blue-800'
@@ -21,16 +21,22 @@ const Button = ({ label, width = '', type, active = false, onClick, url, classNa
   const content = (
     <button
       onClick={onClick}
-      className={`${baseStyle} ${navStyle} ${socialStyle} ${stateStyle} ${width} ${className}`}
+      className={`${baseStyle} ${navStyle} ${socialStyle} ${stateStyle} ${width} ${className} flex items-center gap-2`}
       {...props}
     >
+      {icon && <span className="flex items-center">{icon}</span>}
       {label}
     </button>
   )
 
   if (url) {
+    const isExternal = url.startsWith('http')
     return (
-      <Link to={url}>
+      <Link
+        to={url}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
+      >
         {content}
       </Link>
     )

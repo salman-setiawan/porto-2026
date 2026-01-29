@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 
 /**
  * HalftoneGlow Component
@@ -13,11 +13,21 @@ const HalftoneGlow = ({
   className = "",
   animation = "pulse-glow 4s infinite"
 }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const halftoneStyle = useMemo(() => {
     // Generate Random Halftone Pattern similar to HalftoneEffect.jsx
     const opacities = [1, 0.7, 0.4, 0.2];
     const cellSize = 6;
-    const gridSize = 6; // Small grid that repeats
+    // Use smaller grid on mobile for better performance (9 vs 36 gradients)
+    const gridSize = isMobile ? 3 : 6;
     const images = [];
     const positions = [];
 
@@ -46,8 +56,14 @@ const HalftoneGlow = ({
       WebkitMaskRepeat: 'no-repeat',
       maskPosition: 'center',
       WebkitMaskPosition: 'center',
+      // GPU Acceleration
+      willChange: 'opacity, mask-size',
+      transform: 'translateZ(0)',
+      backfaceVisibility: 'hidden',
+      WebkitBackfaceVisibility: 'hidden',
+      contain: 'strict',
     };
-  }, [color]);
+  }, [color, isMobile]);
 
   return (
     <div
