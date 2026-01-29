@@ -16,7 +16,7 @@ const HeroDescription = () => {
     <div className="flex flex-col gap-4 text-center items-center">
       <div className="space-y-2">
         <h2 className='text-xl font-bold'>{DataHome.heroSection.title}</h2>
-        <p className='text-white/70'>{DataHome.heroSection.desc.en}</p>
+        <p className='text-white/70 text-[14px]'>{DataHome.heroSection.desc.en}</p>
       </div>
       <div className="flex gap-2.5">
         <Button

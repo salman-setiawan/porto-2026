@@ -12,7 +12,7 @@ const ProjectDescription = ({ project }) => {
       </div>
       <div className="space-y-2 pl-0.5">
         <h2 className='text-2xl font-bold'>{project.title.en}</h2>
-        <p className='text-white/70'>{project.desc.en}</p>
+        <p className='text-white/70 text-[14px]'>{project.desc.en}</p>
       </div>
       <div className="flex gap-2.5 pt-4">
         {project.cta.map((cta, index) => (

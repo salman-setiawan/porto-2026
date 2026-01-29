@@ -26,7 +26,7 @@ const SeamlessSlider = () => {
       </style>
 
       {/* Container to mask overflow */}
-      <div className="flex w-full overflow-hidden relative group h-[300px] md:h-[400px]">
+      <div className="flex w-full overflow-hidden relative group h-[200px] md:h-[400px]">
 
         {/* Gradients for smooth edges - Sides */}
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0c0c0c] to-transparent z-10 pointer-events-none"></div>
@@ -34,11 +34,11 @@ const SeamlessSlider = () => {
 
         {/* Sliding Track - Duplicate content for seamless loop */}
         <div
-          className="flex w-max animate-[slide_40s_linear_infinite]"
+          className="flex w-max animate-[slide_8s_linear_infinite] lg:animate-[slide_30s_linear_infinite]"
         >
           {/* First Set (Doubled shots to ensure width > viewport) */}
           {[...shots, ...shots].map((shot, index) => (
-            <div key={`original-${index}`} className="relative h-[300px] md:h-[400px] w-fit flex-shrink-0 mr-6 rounded-xl overflow-hidden border border-white/10 transition-colors">
+            <div key={`original-${index}`} className="relative h-[200px] md:h-[400px] w-fit flex-shrink-0 mr-3 md:mr-6 rounded-xl overflow-hidden border border-white/10 transition-colors">
               <img
                 src={shot}
                 alt={`Design exploration ${index + 1}`}
@@ -49,7 +49,7 @@ const SeamlessSlider = () => {
 
           {/* Duplicate Set (Doubled shots) */}
           {[...shots, ...shots].map((shot, index) => (
-            <div key={`duplicate-${index}`} className="relative h-[300px] md:h-[400px] w-fit flex-shrink-0 mr-6 rounded-xl overflow-hidden border border-white/10 transition-colors">
+            <div key={`duplicate-${index}`} className="relative h-[200px] md:h-[400px] w-fit flex-shrink-0 mr-3 md:mr-6 rounded-xl overflow-hidden border border-white/10 transition-colors">
               <img
                 src={shot}
                 alt={`Design exploration ${index + 1}`}
