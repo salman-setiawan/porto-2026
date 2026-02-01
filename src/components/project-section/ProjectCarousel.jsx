@@ -40,36 +40,11 @@ const ProjectCarousel = () => {
         </div>
       </div>
 
-      {/* Navigation Controls - Desktop Left/Right */}
-      <div className="absolute top-1/2 -translate-y-1/2 -left-10 z-30 hidden 2xl:block">
+      {/* Navigation & Indicators */}
+      <div className="flex items-center justify-between gap-4 px-4 xl:px-0 py-2 xl:py-4 max-w-[640px] mx-auto">
         <button
           onClick={prevSlide}
-          className="p-2 rounded-full border-2 border-white/10 hover:bg-white/10 transition-colors text-white -ml-16 2xl:-ml-24"
-          aria-label="Previous Project"
-        >
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="m15 18-6-6 6-6" />
-          </svg>
-        </button>
-      </div>
-
-      <div className="absolute top-1/2 -translate-y-1/2 -right-16 z-30 hidden 2xl:block">
-        <button
-          onClick={nextSlide}
-          className="p-2 rounded-full border-2 border-white/10 hover:bg-white/10 transition-colors text-white -mr-16 2xl:-mr-24"
-          aria-label="Next Project"
-        >
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="m9 18 6-6-6-6" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Navigation & Indicators - Mobile (Buttons at sides, indicators center) */}
-      <div className="flex items-center justify-between 2xl:justify-center gap-4 p-4">
-        <button
-          onClick={prevSlide}
-          className="p-2 rounded-full border-2 border-white/10 hover:bg-white/10 transition-colors text-white 2xl:hidden"
+          className="p-2 rounded-full border-2 border-white/10 hover:bg-white/10 transition-colors text-white cursor-pointer"
           aria-label="Previous Project"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -91,7 +66,7 @@ const ProjectCarousel = () => {
 
         <button
           onClick={nextSlide}
-          className="p-2 rounded-full border-2 border-white/10 hover:bg-white/10 transition-colors text-white 2xl:hidden"
+          className="p-2 rounded-full border-2 border-white/10 hover:bg-white/10 transition-colors text-white cursor-pointer"
           aria-label="Next Project"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

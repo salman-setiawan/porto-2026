@@ -71,7 +71,7 @@ const SeamlessSlider = () => {
 
   return (
     <div className="w-full py-16 bg-[#0c0c0c] relative overflow-hidden">
-      <div className="max-w-[1080px] mx-auto px-4 mb-8 text-center">
+      <div className="max-w-[1080px] mx-auto p-4 text-center">
         <h3 className="text-xl font-bold text-white mb-2">Other Exploration</h3>
         <p className="text-white/60 text-sm">A collection of my other design explorations and shots.</p>
       </div>
@@ -89,7 +89,7 @@ const SeamlessSlider = () => {
         `}
       </style>
 
-      <div className="max-w-[1080px] mx-auto relative px-4 flex justify-center h-[540px] lg:h-[640px]">
+      <div className="max-w-[1080px] mx-auto relative px-4 flex justify-center h-[420px]">
         {/* Mobile & Tablet: 2 columns, each image/column width 440px */}
         <div className="flex lg:hidden gap-2 w-fit mx-auto overflow-visible">
           <Column shots={columns2[0]} direction="up" duration={30} className="h-full w-[440px]" />
@@ -104,13 +104,15 @@ const SeamlessSlider = () => {
         </div>
 
         {/* Top Overlay Gradient */}
-        <div className="absolute inset-x-0 top-0 h-[240px] bg-gradient-to-b from-[#0c0c0c] via-[#0c0c0c]/60 to-transparent z-[100] pointer-events-none"></div>
+        <div className="absolute inset-x-0 top-0 h-[200px] bg-gradient-to-b from-[#0c0c0c] via-[#0c0c0c]/40 to-transparent z-[100] pointer-events-none"></div>
+        <div className="absolute inset-x-0 top-0 h-[200px] bg-gradient-to-b from-[#0c0c0c] via-[#0c0c0c]/40 to-transparent z-[100] pointer-events-none"></div>
 
         {/* Bottom Overlay Gradient & CTA Button */}
-        <div className="absolute inset-x-0 bottom-0 h-[320px] bg-gradient-to-t from-[3%] from-[#0c0c0c] via-[#0c0c0c]/60 to-transparent z-[100] flex items-end justify-center pb-2 pointer-events-none">
+        <div className="absolute inset-x-0 bottom-0 h-[320px] bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/40 to-transparent z-[100] flex items-end justify-center pb-10 pointer-events-none"></div>
+        <div className="absolute inset-x-0 bottom-0 h-[320px] bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/40 to-transparent z-[100] flex items-end justify-center pb-10 pointer-events-none">
           <div className="pointer-events-auto">
             <Button
-              label="See More"
+              label="Click to See More"
               type="base"
               url="https://dribbble.com/eisenflux"
             />

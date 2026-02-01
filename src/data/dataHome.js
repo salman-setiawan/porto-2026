@@ -39,7 +39,7 @@ export const DataHome = {
             icon: 'savings',
             label: 'Monthly Savings',
             value: '+$1,250.00',
-            position: 'absolute top-12 left-4 z-30',
+            position: 'absolute top-12 left-8 z-30',
             animation: 'float-slow 6s ease-in-out infinite'
           },
           {
@@ -47,7 +47,7 @@ export const DataHome = {
             icon: 'payments',
             label: 'Today Spending',
             value: '-$450.00',
-            position: 'absolute top-36 right-4 z-30',
+            position: 'absolute top-36 right-6 z-30',
             animation: 'float-slow 5s ease-in-out infinite 0.5s'
           },
           {
@@ -55,7 +55,7 @@ export const DataHome = {
             icon: 'account_balance_wallet',
             label: 'Monthly Budget',
             value: 'Safe',
-            position: 'absolute bottom-16 left-10 md:bottom-28 z-30',
+            position: 'absolute bottom-16 left-11 md:bottom-28 z-30',
             animation: 'float-slow 8s ease-in-out infinite 1s'
           }
         ]
@@ -79,8 +79,8 @@ export const DataHome = {
         { en: 'View Website', id: 'Kunjungi Website', link: 'https://duitra.id' },
       ],
       media: {
-        mobile: "/project-1/heroimg_mobile.webp",
-        desktop: "/project-1/heroimg_desktop.webp"
+        mobile: "/project-2/project_pemedas.png",
+        desktop: "/project-2/project_pemedas.png"
       }
     },
     {

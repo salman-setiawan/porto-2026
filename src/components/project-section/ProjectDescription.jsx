@@ -4,7 +4,7 @@ import Chip from '../Chip'
 
 const ProjectDescription = ({ project }) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 lg:max-w-[500px]">
       <div className="flex gap-2">
         {project.tag.map((tag, index) => (
           <Chip key={index} label={tag.en} />

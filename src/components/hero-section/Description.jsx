@@ -16,7 +16,23 @@ const HeroDescription = () => {
     <div className="flex flex-col gap-4 text-center items-center">
       <div className="space-y-2">
         <h2 className='text-xl font-bold'>{DataHome.heroSection.title}</h2>
-        <p className='text-white/70 text-[14px]'>{DataHome.heroSection.desc.en}</p>
+        <p className='text-white/70 text-[14px]'>
+          {DataHome.heroSection.desc.en.split('Aevenic Studio').map((part, index, array) => (
+            <React.Fragment key={index}>
+              {part}
+              {index < array.length - 1 && (
+                <a
+                  href="https://aevenic.netlify.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white underline font-semibold hover:text-blue-300 transition-colors"
+                >
+                  Aevenic Studio
+                </a>
+              )}
+            </React.Fragment>
+          ))}
+        </p>
       </div>
       <div className="flex gap-2.5">
         <Button
