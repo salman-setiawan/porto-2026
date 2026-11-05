@@ -72,12 +72,12 @@ const HeroDescription = () => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex gap-4 items-center w-full">
-        <div className="w-21 h-21 shrink-0 overflow-hidden border-[3px] border-blue-500/80 rounded-lg hover:scale-105 hover:rotate-[-8deg]">
+        <div className="w-22 h-22 md:w-20 md:h-20 shrink-0 overflow-hidden border-[3px] border-blue-500/80 rounded-lg hover:scale-105 hover:rotate-[-8deg]">
           <img src={DataHome.heroSection.avatar} className="scale-110 object-cover" alt="avatar" />
         </div>
         <div className='space-y-0.5'>
           <h2 className='text-xl font-bold'>{DataHome.heroSection.title}</h2>
-          <div className="overflow-hidden flex flex-wrap gap-1 items-center text-white/70 text-[14px]">
+          <div className="overflow-hidden flex flex-wrap gap-x-1 items-center text-white/70 text-[14px] max-w-[280px] md:max-w-full">
             <p>i'm</p>
             <p className={`transition-all transform ${getFadeClasses()}`}>
               {renderPosition(positions[currentPositionIndex])}
