@@ -70,8 +70,8 @@ const SeamlessSlider = () => {
   const columns2 = splitIntoColumns(allShots, 2)
 
   return (
-    <div className="w-full py-16 bg-[#141414] overflow-hidden">
-      <div className="px-4 lg:px-8 relative z-[110] top-12 pointer-events-none">
+    <div className="w-full pb-16 bg-[#141414] overflow-hidden">
+      <div className="relative z-[110] top-12 pointer-events-none px-4 md:px-8">
         <h3 className="text-white text-[80px] font-crimson h-[100px] italic tracking-tighter">Playground</h3>
         <p className="text-white/60 text-sm mt-2">A collection of my other design explorations and shots.</p>
       </div>
@@ -89,15 +89,15 @@ const SeamlessSlider = () => {
         `}
       </style>
 
-      <div className="max-w-[1080px] mx-auto relative flex justify-center h-[420px]">
+      <div className="max-w-[860px] px-0 md:px-8 mx-auto relative flex justify-center h-[420px]">
         {/* Mobile & Tablet: 2 columns */}
-        <div className="flex lg:hidden gap-2 w-fit mx-auto overflow-visible">
+        <div className="flex md:hidden gap-2 w-fit mx-auto overflow-visible">
           <Column shots={columns2[0]} direction="up" duration={30} className="h-full w-[440px]" />
           <Column shots={columns2[1]} direction="down" duration={30} className="h-full w-[440px]" />
         </div>
 
         {/* Desktop: 3 columns */}
-        <div className="hidden lg:flex gap-2">
+        <div className="hidden md:flex gap-2">
           <Column shots={columns3[0]} direction="up" duration={30} className="h-full" />
           <Column shots={columns3[1]} direction="down" duration={35} className="h-full" />
           <Column shots={columns3[2]} direction="up" duration={30} className="h-full" />

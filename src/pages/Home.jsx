@@ -10,7 +10,7 @@ const Home = () => {
         <HeroDescription />
         <TabSection />
       </div>
-      <div className="max-w-[860px] md:mx-auto">
+      <div className="md:mx-auto">
         <SeamlessSlider />
       </div>
     </div>
