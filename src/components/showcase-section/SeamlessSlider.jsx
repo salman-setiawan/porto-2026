@@ -71,7 +71,7 @@ const SeamlessSlider = () => {
 
   return (
     <div className="w-full py-16 bg-[#141414] overflow-hidden">
-      <div className="px-6 lg:px-8 relative z-[110] top-12 pointer-events-none">
+      <div className="px-4 lg:px-8 relative z-[110] top-12 pointer-events-none">
         <h3 className="text-white text-[80px] font-crimson h-[100px] italic tracking-tighter">Playground</h3>
         <p className="text-white/60 text-sm mt-2">A collection of my other design explorations and shots.</p>
       </div>
