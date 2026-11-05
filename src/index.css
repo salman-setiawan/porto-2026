@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
+.font-crimson {
+  font-family: "Crimson Text", serif;
+}
+
 :root {
   color-scheme: light dark;
-  background-color: #0c0c0c;
+  background-color: #141414;
   font-family: "Momo Trust Sans", sans-serif;
 
   font-synthesis: none;

@@ -1,26 +1,18 @@
 import React from 'react'
 import HeroDescription from '../components/hero-section/Description'
-import ProjectCarousel from '../components/project-section/ProjectCarousel'
+import TabSection from '../components/TabSection'
 import SeamlessSlider from '../components/showcase-section/SeamlessSlider'
 
 const Home = () => {
   return (
-    <div className='flex flex-col w-full overflow-x-hidden'>
-
-      {/* Hero Section */}
-      <div className="flex flex-col md:flex-row justify-between mx-auto items-center w-full max-w-[360px] lg:max-w-[480px] py-16 relative">
+    <div className='flex flex-col w-full overflow-x-hidden relative min-h-screen'>
+      <div className="items-center mx-auto px-6 md:px-8 py-8 max-w-[860px] bg-[#141414] space-y-8">
         <HeroDescription />
+        <TabSection />
       </div>
-
-      {/* Projects Carousel */}
-      <div className="w-full">
-        <ProjectCarousel />
+      <div className="max-w-[860px] md:mx-auto">
+        <SeamlessSlider />
       </div>
-
-      {/* Seamless Slider */}
-      <SeamlessSlider />
-
-      {/* Contacts */}
     </div>
   )
 }

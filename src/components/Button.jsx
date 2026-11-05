@@ -1,6 +1,51 @@
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { playMechanicalSound, playCrispClick } from '../utils/sound'
 
-const Button = ({ label, width = '', type, active = false, onClick, url, icon, className = '', ...props }) => {
+let globalButtonCounter = 0
+
+const Button = ({
+  label,
+  width = '',
+  type,
+  active = false,
+  onClick,
+  onMouseEnter,
+  url,
+  icon,
+  className = '',
+  octave,
+  volume,
+  sound = true,
+  ...props
+}) => {
+  // Jika octave tidak diberikan secara manual, otomatis beri oktaf berurutan (1 s/d 6)
+  // sehingga setiap tombol di halaman memiliki nada / oktaf yang berbeda-beda
+  const defaultOctaveRef = useRef(null)
+  if (defaultOctaveRef.current === null) {
+    defaultOctaveRef.current = (globalButtonCounter % 6) + 1
+    globalButtonCounter += 1
+  }
+
+  const assignedOctave = octave ?? defaultOctaveRef.current
+
+  const handleMouseEnter = (e) => {
+    if (sound) {
+      playMechanicalSound(assignedOctave, volume)
+    }
+    if (onMouseEnter) {
+      onMouseEnter(e)
+    }
+  }
+
+  const handleClick = (e) => {
+    if (sound) {
+      playCrispClick()
+    }
+    if (onClick) {
+      onClick(e)
+    }
+  }
 
   const baseStyle = type === 'base'
     ? 'px-3 py-1.5 rounded-md text-[13px] font-medium shadow-lg shadow-black/10 cursor-pointer bg-blue-700 hover:bg-blue-800'
@@ -20,7 +65,8 @@ const Button = ({ label, width = '', type, active = false, onClick, url, icon, c
 
   const content = (
     <button
-      onClick={onClick}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
       className={`${baseStyle} ${navStyle} ${socialStyle} ${stateStyle} ${width} ${className} flex items-center gap-2`}
       {...props}
     >

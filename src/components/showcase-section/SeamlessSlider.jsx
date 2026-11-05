@@ -70,10 +70,10 @@ const SeamlessSlider = () => {
   const columns2 = splitIntoColumns(allShots, 2)
 
   return (
-    <div className="w-full py-16 bg-[#0c0c0c] relative overflow-hidden">
-      <div className="max-w-[1080px] mx-auto p-4 text-center">
-        <h3 className="text-xl font-bold text-white mb-2">Other Exploration</h3>
-        <p className="text-white/60 text-sm">A collection of my other design explorations and shots.</p>
+    <div className="w-full py-16 bg-[#141414] overflow-hidden">
+      <div className="px-6 lg:px-8 relative z-[110] top-12 pointer-events-none">
+        <h3 className="text-white text-[80px] font-crimson h-[100px] italic tracking-tighter">Playground</h3>
+        <p className="text-white/60 text-sm mt-2">A collection of my other design explorations and shots.</p>
       </div>
 
       <style>
@@ -89,8 +89,8 @@ const SeamlessSlider = () => {
         `}
       </style>
 
-      <div className="max-w-[1080px] mx-auto relative px-4 flex justify-center h-[420px]">
-        {/* Mobile & Tablet: 2 columns, each image/column width 440px */}
+      <div className="max-w-[1080px] mx-auto relative flex justify-center h-[420px]">
+        {/* Mobile & Tablet: 2 columns */}
         <div className="flex lg:hidden gap-2 w-fit mx-auto overflow-visible">
           <Column shots={columns2[0]} direction="up" duration={30} className="h-full w-[440px]" />
           <Column shots={columns2[1]} direction="down" duration={30} className="h-full w-[440px]" />
@@ -104,12 +104,10 @@ const SeamlessSlider = () => {
         </div>
 
         {/* Top Overlay Gradient */}
-        <div className="absolute inset-x-0 top-0 h-[200px] bg-gradient-to-b from-[#0c0c0c] via-[#0c0c0c]/40 to-transparent z-[100] pointer-events-none"></div>
-        <div className="absolute inset-x-0 top-0 h-[200px] bg-gradient-to-b from-[#0c0c0c] via-[#0c0c0c]/40 to-transparent z-[100] pointer-events-none"></div>
+        <div className="absolute inset-x-0 top-0 h-[200px] bg-gradient-to-b from-[#141414] via-[#141414]/40 to-transparent z-[100] pointer-events-none"></div>
 
         {/* Bottom Overlay Gradient & CTA Button */}
-        <div className="absolute inset-x-0 bottom-0 h-[320px] bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/40 to-transparent z-[100] flex items-end justify-center pb-10 pointer-events-none"></div>
-        <div className="absolute inset-x-0 bottom-0 h-[320px] bg-gradient-to-t from-[#0c0c0c] via-[#0c0c0c]/40 to-transparent z-[100] flex items-end justify-center pb-10 pointer-events-none">
+        <div className="absolute inset-x-0 bottom-0 h-[320px] bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent z-[100] flex items-end justify-center pb-10 pointer-events-none">
           <div className="pointer-events-auto">
             <Button
               label="Click to See More"
