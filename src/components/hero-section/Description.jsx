@@ -79,7 +79,7 @@ const HeroDescription = () => {
         </div>
         <div className='space-y-0.5'>
           <h2 className='text-xl font-bold'>{DataHome.heroSection.title}</h2>
-          <div className="overflow-hidden flex flex-wrap gap-x-1 items-center text-white/70 text-[14px] max-w-[280px] md:max-w-full">
+          <div className="overflow-hidden flex flex-wrap gap-x-1 items-center text-white/70 text-[14px] max-w-[200px] md:max-w-full">
             <p>i'm</p>
             <p className={`transition-all transform ${getFadeClasses()}`}>
               {renderPosition(positions[currentPositionIndex])}

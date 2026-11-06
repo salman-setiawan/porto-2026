@@ -78,7 +78,7 @@ export const DataHome = {
       media: '/project-1/heroimg_desktop.webp',
     },
     {
-      id: 2,
+      id: 3,
       title: {
         en: "Aevenic",
         id: "Aevenic",

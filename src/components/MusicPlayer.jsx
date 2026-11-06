@@ -57,42 +57,27 @@ const MusicPlayer = () => {
         setIsPlaying(true)
         setIsMuted(false)
       }).catch(() => {
-        // Browser memblokir audio bersuara tanpa gesture.
-        // Solusi: Start audio berjalan langsung dengan fade volume dari 0 ke target
-        // tanpa mengubah state tombol menjadi 'Muted' (status tetap aktif/unmuted).
-        audio.volume = 0
-        audio.play().then(() => {
-          setIsPlaying(true)
-          setIsMuted(false)
+        // Pada perangkat mobile (iOS Safari & Chrome Android), OS menerapkan kebijakan mutlak:
+        // Audio DILARANG berputar sebelum pengguna menyentuh layar pertama kali (User Gesture).
+        // Kita pasang trigger capture pada sentuhan pertama (touch/tap/scroll) agar lagu langsung bersuara:
+        const unlockMobile = () => {
+          audio.muted = false
+          audio.volume = DEFAULT_BG_VOLUME
+          audio.play().then(() => {
+            setIsPlaying(true)
+            setIsMuted(false)
+          }).catch(() => { })
 
-          // Begitu kursor digerakkan/diklik/discroll, kembalikan volume normal seketika
-          const restoreVolume = () => {
-            audio.volume = DEFAULT_BG_VOLUME
-              ;['mousemove', 'click', 'scroll', 'touchstart', 'keydown'].forEach((evt) =>
-                window.removeEventListener(evt, restoreVolume)
-              )
-          }
+            ;['touchstart', 'touchend', 'pointerdown', 'click', 'scroll'].forEach((evt) => {
+              document.removeEventListener(evt, unlockMobile, true)
+              window.removeEventListener(evt, unlockMobile, true)
+            })
+        }
 
-            ;['mousemove', 'click', 'scroll', 'touchstart', 'keydown'].forEach((evt) =>
-              window.addEventListener(evt, restoreVolume, { once: true, passive: true })
-            )
-        }).catch(() => {
-          const forcePlay = () => {
-            audio.volume = DEFAULT_BG_VOLUME
-            audio.play().then(() => {
-              setIsPlaying(true)
-              setIsMuted(false)
-            }).catch(() => { })
-
-              ;['mousemove', 'click', 'scroll', 'touchstart', 'keydown'].forEach((evt) =>
-                window.removeEventListener(evt, forcePlay)
-              )
-          }
-
-            ;['mousemove', 'click', 'scroll', 'touchstart', 'keydown'].forEach((evt) =>
-              window.addEventListener(evt, forcePlay, { once: true, passive: true })
-            )
-        })
+          ;['touchstart', 'touchend', 'pointerdown', 'click', 'scroll'].forEach((evt) => {
+            document.addEventListener(evt, unlockMobile, { once: true, passive: true, capture: true })
+            window.addEventListener(evt, unlockMobile, { once: true, passive: true, capture: true })
+          })
       })
     }
 
@@ -187,10 +172,8 @@ const MusicPlayer = () => {
       {/* ── Floating Bar Mini Player Panel (Desktop selalu ada, Mobile Slide in/out dari kanan) ── */}
       <div
         className={`
-          rounded-lg
-          bg-[#181818]/90 border border-white/10 backdrop-blur-xl
-          shadow-[0_8px_32px_rgba(0,0,0,0.65)]
-          transition-all duration-300 ease-out
+          rounded-lg bg-[#181818]/90 border border-white/10 backdrop-blur-xl
+          shadow-[0_8px_32px_rgba(0,0,0,0.65)] transition-all duration-300 ease-out
           ${
           /* Di desktop selalu tampil normal */
           'md:opacity-100 md:translate-x-0 md:pointer-events-auto ' +
@@ -202,13 +185,13 @@ const MusicPlayer = () => {
         `}
       >
         <div className="flex items-center gap-3 pl-3 pr-1.5 py-1.5">
-          {/* Info Lagu & Progress Slider */}
+          {/* Info Lagu */}
           <div className="flex flex-col gap-1 w-44 md:w-48">
-            <div className="flex items-end justify-between text-[11px] leading-tight">
-              <span className="text-white/90 truncate">
+            <div className="flex items-center justify-between text-[12px]">
+              <span className="font-medium text-white/90 truncate">
                 just chillin - enfx
               </span>
-              <span className="text-[10px] text-white/40">
+              <span className="text-white/40">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
             </div>
@@ -256,10 +239,11 @@ const MusicPlayer = () => {
             ✕
           </button>
         </div>
+
         {/* Interactive Progress Bar */}
         <div
           onClick={handleSeek}
-          className="w-full h-1.5 bg-white/10 cursor-pointer relative overflow-hidden group/bar"
+          className="w-full h-1 bg-white/10 cursor-pointer relative overflow-hidden group/bar"
         >
           <div
             className={`h-full transition-all duration-100 ${isMuted
