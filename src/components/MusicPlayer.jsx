@@ -48,54 +48,51 @@ const MusicPlayer = () => {
     audio.addEventListener('play', handlePlayState)
     audio.addEventListener('pause', handlePauseState)
 
-    // Mulai musik saat user melakukan scroll (diperlakukan sebagai interaksi manual/user gesture)
+    // Mulai musik saat user melakukan gesture interaksi pertama
     let hasTriggered = false
 
-      const triggerPlayOnScroll = () => {
-        if (hasTriggered) return
-        hasTriggered = true
+    const triggerPlayOnInteraction = () => {
+      if (hasTriggered) return
+      hasTriggered = true
 
-          audio.muted = false
-          audio.volume = DEFAULT_BG_VOLUME
+      audio.muted = false
+      audio.volume = DEFAULT_BG_VOLUME
 
-          const playPromise = audio.play()
-          if (playPromise !== undefined) {
-            playPromise
-              .then(() => {
-                setIsPlaying(true)
-                setIsMuted(false)
-              })
-              .catch((err) => {
-                console.warn('Scroll play error:', err)
-              })
-          }
+      const playPromise = audio.play()
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true)
+            setIsMuted(false)
+          })
+          .catch((err) => {
+            console.warn('Playback blocked by browser policy:', err)
+          })
+      }
 
-          cleanupListeners()
-        }
+      cleanupListeners()
+    }
 
-        // Tangkap gesture scroll nyata dari user: wheel (mouse/trackpad), touchmove (hp), dan event scroll
-        const cleanupListeners = () => {
-          window.removeEventListener('wheel', triggerPlayOnScroll)
-          window.removeEventListener('touchmove', triggerPlayOnScroll)
-          window.removeEventListener('scroll', triggerPlayOnScroll)
-          document.removeEventListener('wheel', triggerPlayOnScroll)
-          document.removeEventListener('touchmove', triggerPlayOnScroll)
-        }
+    const cleanupListeners = () => {
+      ;['pointerdown', 'touchstart', 'click', 'keydown', 'wheel'].forEach((evt) => {
+        window.removeEventListener(evt, triggerPlayOnInteraction, true)
+        document.removeEventListener(evt, triggerPlayOnInteraction, true)
+      })
+    }
 
-        window.addEventListener('wheel', triggerPlayOnScroll, { passive: true, once: true })
-        window.addEventListener('touchmove', triggerPlayOnScroll, { passive: true, once: true })
-        window.addEventListener('scroll', triggerPlayOnScroll, { passive: true, once: true })
-        document.addEventListener('wheel', triggerPlayOnScroll, { passive: true, once: true })
-        document.addEventListener('touchmove', triggerPlayOnScroll, { passive: true, once: true })
+    ;['pointerdown', 'touchstart', 'click', 'keydown', 'wheel'].forEach((evt) => {
+      window.addEventListener(evt, triggerPlayOnInteraction, { once: true, passive: true, capture: true })
+      document.addEventListener(evt, triggerPlayOnInteraction, { once: true, passive: true, capture: true })
+    })
 
-        return () => {
-          audio.removeEventListener('timeupdate', updateTime)
-          audio.removeEventListener('loadedmetadata', setAudioDuration)
-          audio.removeEventListener('ended', handleEnded)
-          audio.removeEventListener('play', handlePlayState)
-          audio.removeEventListener('pause', handlePauseState)
-          cleanupListeners()
-        }
+    return () => {
+      audio.removeEventListener('timeupdate', updateTime)
+      audio.removeEventListener('loadedmetadata', setAudioDuration)
+      audio.removeEventListener('ended', handleEnded)
+      audio.removeEventListener('play', handlePlayState)
+      audio.removeEventListener('pause', handlePauseState)
+      cleanupListeners()
+    }
       }, [])
 
   // Efek toggle mute
