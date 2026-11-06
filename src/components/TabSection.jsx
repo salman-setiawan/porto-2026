@@ -96,25 +96,24 @@ const TabSection = () => {
 
       {/* ── Floating bar: slide in/out dari atas + fade in/out tipis ── */}
       <div
-        className={`fixed top-5 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ease-out ${
-          isFloating
-            ? 'opacity-100 translate-y-0 pointer-events-auto'
-            : 'opacity-0 -translate-y-8 pointer-events-none'
-        }`}
+        className={`fixed top-5 left-1/2 -translate-x-1/2 w-full max-w-[800px] px-6 z-50 transition-all duration-300 ease-out ${isFloating
+          ? 'opacity-100 translate-y-0 pointer-events-auto'
+          : 'opacity-0 -translate-y-8 pointer-events-none'
+          }`}
       >
         <div
           style={{
             display: 'flex',
-            width: '760px',
+            width: '100%',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '12px',
             padding: '8px 8px 8px 12px',
-            background: 'rgba(22,22,22,0.85)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
+            background: 'rgba(22,22,22,0.8)',
+            backdropFilter: 'blur(4px)',
+            WebkitBackdropFilter: 'blur(4px)',
             border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: '12px',
+            borderRadius: '8px',
             boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
           }}
         >
