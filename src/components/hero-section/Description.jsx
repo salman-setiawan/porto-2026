@@ -152,7 +152,7 @@ const HeroDescription = () => {
             setShowAll((prev) => !prev)
           }}
           onMouseEnter={() => playMechanicalSound(3, 0.3)}
-          className="flex justify-center w-full gap-1 pt-3 text-[13px] text-white/40 hover:text-white/80 transition-colors duration-200 cursor-pointer"
+          className="flex justify-center w-full gap-1 pt-3 text-[14px] text-white/40 hover:text-white/80 transition-colors duration-200 cursor-pointer"
         >
           {showAll ? 'Show less ↑' : 'Show more ↓'}
         </button>
