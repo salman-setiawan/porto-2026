@@ -4,12 +4,13 @@ export const DataHome = {
     title: "Hi, my name is Salman!",
     position: [
       "an UI/UX Designer",
-      "a Frontend Developer"
+      "a Web Developer",
+      "a Game Designer"
     ],
     desc: [
       {
-        en: "I'm an Informatics graduate specializing in UI/UX Design and Frontend Development, passionate about crafting meaningful digital experiences through thoughtful design and clean code.",
-        id: 'Saya adalah lulusan Informatika dengan spesialisasi di bidang UI/UX Design dan Frontend Development. Saya memiliki ketertarikan dalam menciptakan pengalaman digital yang bermakna melalui perpaduan desain yang matang dan kode yang terstruktur.',
+        en: "I'm an Informatics graduate specializing in UI/UX Design, passionate about crafting meaningful digital experiences through thoughtful design and clean code.",
+        id: 'Saya adalah lulusan Informatika dengan spesialisasi di bidang UI/UX Design. Saya memiliki ketertarikan dalam menciptakan pengalaman digital yang bermakna melalui perpaduan desain yang matang dan kode yang terstruktur.',
       },
       {
         en: "With professional experience in designing digital products, from enterprise ERP systems to marketing websites, I focus on creating intuitive, user-centered interfaces. I also enjoy bringing designs to life through frontend development using ReactJS and TailwindCSS, building responsive, functional, and engaging web experiences.",
@@ -30,16 +31,21 @@ export const DataHome = {
     {
       id: 1,
       title: {
-        en: "Duitra Apps",
-        id: "Aplikasi Duitra",
+        en: "Mivia RPG",
+        id: "Mivia RPG",
       },
       desc: {
         en: 'Track every expense, stay under budget, and take control of your finances in minutes. No complexity. No confusion.',
         id: 'Catat setiap pengeluaran, tetap di bawah anggaran, dan kontrol keuanganmu dalam menit. Tidak kompleks. Tidak bingung.',
       },
       tag: [
-        { en: 'Product Design', id: 'Desain Produk' },
-        { en: 'Mobile App', id: 'Aplikasi Mobile' },
+        { en: 'Game Design', id: 'Game Produk' },
+        { en: 'Web Browser Game', id: 'Permainan Browser Web' },
+      ],
+      stack: [
+        { en: 'Typescript', id: 'Typescript' },
+        { en: 'React', id: 'React' },
+        { en: 'Tailwind CSS', id: 'Tailwind CSS' },
       ],
       cta: [
         { en: 'View Website', id: 'Kunjungi Website', link: 'https://duitra.id' },
@@ -60,6 +66,36 @@ export const DataHome = {
       tag: [
         { en: 'Product Design', id: 'Desain Produk' },
         { en: 'Mobile App', id: 'Aplikasi Mobile' },
+      ],
+      stack: [
+        { en: 'Flutter', id: 'Flutter' },
+        { en: 'Dart', id: 'Dart' },
+      ],
+      cta: [
+        { en: 'View Website', id: 'Kunjungi Website', link: 'https://duitra.id' },
+        { en: 'See on Play Store', id: 'Lihat di Play Store', link: 'https://play.google.com/store/apps/details?id=com.duitra.app' },
+      ],
+      media: '/project-1/heroimg_desktop.webp',
+    },
+    {
+      id: 2,
+      title: {
+        en: "Aevenic",
+        id: "Aevenic",
+      },
+      desc: {
+        en: 'Track every expense, stay under budget, and take control of your finances in minutes. No complexity. No confusion.',
+        id: 'Catat setiap pengeluaran, tetap di bawah anggaran, dan kontrol keuanganmu dalam menit. Tidak kompleks. Tidak bingung.',
+      },
+      tag: [
+        { en: 'Product Design', id: 'Desain Produk' },
+        { en: 'Web Design', id: 'Rancangan Web' },
+        { en: 'Web Development', id: 'Pengembangan Web' },
+      ],
+      stack: [
+        { en: 'Javascript', id: 'Javascript' },
+        { en: 'React', id: 'React' },
+        { en: 'Tailwind CSS', id: 'Tailwind CSS' },
       ],
       cta: [
         { en: 'View Website', id: 'Kunjungi Website', link: 'https://duitra.id' },

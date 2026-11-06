@@ -84,7 +84,9 @@ const HeroDescription = () => {
             <p className={`transition-all transform ${getFadeClasses()}`}>
               {renderPosition(positions[currentPositionIndex])}
             </p>
-            <p>based on Indonesia.</p>
+            <p>based in</p>
+            <p className='text-white'>🇮🇩</p>
+            <p>Indonesia.</p>
           </div>
           <div className="flex gap-1 items-center">
             <p className='text-white/70 text-[14px]'>and currently</p>
@@ -119,7 +121,7 @@ const HeroDescription = () => {
         />
       </div>
       <div>
-        <h3 className='text-white text-[40px] font-crimson h-[48px] italic tracking-tighter'>About me . .</h3>
+        <h3 className='text-white text-[36px] font-crimson h-[40px] italic tracking-tighter'>About me . .</h3>
 
         {/* Always show first paragraph */}
         <p className='text-white/70 text-[15px] mt-3'>

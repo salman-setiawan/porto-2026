@@ -70,7 +70,7 @@ const TabSection = () => {
       {/* Header row: title left, CTA right */}
       <div ref={headerRef} className="flex items-center justify-between">
         {/* Title — same spec as "About me . ." */}
-        <h3 className="text-white text-[40px] font-crimson italic tracking-tighter leading-none">
+        <h3 className="text-white text-[36px] font-crimson h-[48px] italic tracking-tighter">
           {isProjects ? 'Projects . .' : 'Experience . .'}
         </h3>
 
@@ -121,7 +121,7 @@ const TabSection = () => {
             style={{
               fontFamily: 'var(--font-crimson, Georgia, serif)',
               fontStyle: 'italic',
-              fontSize: '22px',
+              fontSize: '20px',
               color: 'rgba(255,255,255,1)',
               letterSpacing: '-0.03em',
               lineHeight: 1,

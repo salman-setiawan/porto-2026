@@ -2,6 +2,7 @@ import React from 'react'
 import HeroDescription from '../components/hero-section/Description'
 import TabSection from '../components/TabSection'
 import SeamlessSlider from '../components/showcase-section/SeamlessSlider'
+import MusicPlayer from '../components/MusicPlayer'
 
 const Home = () => {
   return (
@@ -13,6 +14,9 @@ const Home = () => {
       <div className="md:mx-auto">
         <SeamlessSlider />
       </div>
+
+      {/* Floating Background Music Player */}
+      <MusicPlayer />
     </div>
   )
 }

@@ -50,10 +50,17 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
           <span className="hidden md:block absolute -top-[5px] -right-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
           <span className="hidden md:block absolute -bottom-[5px] -right-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
 
-          <div className="flex flex-wrap gap-2 z-10">
-            {project.tag?.map((tag, index) => (
-              <Chip key={index} label={tag.en || tag} />
-            ))}
+          <div className="space-y-2 relative z-10">
+            <div className="flex flex-wrap gap-2">
+              {project.tag?.map((tag, index) => (
+                <Chip key={index} label={tag.en || tag} />
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {project.stack?.map((stack, index) => (
+                <Chip key={index} label={stack.en || stack} autoIcon={true} />
+              ))}
+            </div>
           </div>
 
           <HalftoneGlow color="rgba(59, 79, 255, 1)" className="-top-48 left-16 w-[420px] h-[420px]" animation="pulse-radial 4s infinite" />
