@@ -89,7 +89,7 @@ const SeamlessSlider = () => {
         `}
       </style>
 
-      <div className="max-w-[860px] px-0 md:px-8 mx-auto relative flex justify-center h-[420px]">
+      <div className="max-w-[860px] px-0 md:px-8 mx-auto relative flex justify-center h-[400px] -mt-[50px]">
         {/* Mobile & Tablet: 2 columns */}
         <div className="flex md:hidden gap-2 w-fit mx-auto overflow-visible">
           <Column shots={columns2[0]} direction="up" duration={30} className="h-full w-[440px]" />
@@ -104,7 +104,7 @@ const SeamlessSlider = () => {
         </div>
 
         {/* Top Overlay Gradient */}
-        <div className="absolute inset-x-0 top-0 h-[200px] bg-gradient-to-b from-[#141414] via-[#141414]/40 to-transparent z-[100] pointer-events-none"></div>
+        <div className="absolute inset-x-0 top-0 h-[320px] bg-gradient-to-b from-[#141414] via-[#141414]/50 to-transparent z-[100] pointer-events-none"></div>
 
         {/* Bottom Overlay Gradient & CTA Button */}
         <div className="absolute inset-x-0 bottom-0 h-[320px] bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent z-[100] flex items-end justify-center pb-10 pointer-events-none">

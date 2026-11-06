@@ -47,6 +47,26 @@ export const DataHome = {
       ],
       media: '/project-1/heroimg_desktop.webp',
     },
+    {
+      id: 2,
+      title: {
+        en: "Duitra Apps",
+        id: "Aplikasi Duitra",
+      },
+      desc: {
+        en: 'Track every expense, stay under budget, and take control of your finances in minutes. No complexity. No confusion.',
+        id: 'Catat setiap pengeluaran, tetap di bawah anggaran, dan kontrol keuanganmu dalam menit. Tidak kompleks. Tidak bingung.',
+      },
+      tag: [
+        { en: 'Product Design', id: 'Desain Produk' },
+        { en: 'Mobile App', id: 'Aplikasi Mobile' },
+      ],
+      cta: [
+        { en: 'View Website', id: 'Kunjungi Website', link: 'https://duitra.id' },
+        { en: 'See on Play Store', id: 'Lihat di Play Store', link: 'https://play.google.com/store/apps/details?id=com.duitra.app' },
+      ],
+      media: '/project-1/heroimg_desktop.webp',
+    },
   ],
   experience: [
     {

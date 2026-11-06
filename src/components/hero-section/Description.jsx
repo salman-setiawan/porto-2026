@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { DataHome } from '../../data/dataHome'
 import Button from '../Button'
+import { playMechanicalSound, playCrispClick, playWhoosh } from '../../utils/sound'
 
 const HeroDescription = () => {
   const positions = Array.isArray(DataHome.heroSection.position)
@@ -9,6 +10,7 @@ const HeroDescription = () => {
 
   const [currentPositionIndex, setCurrentPositionIndex] = useState(0)
   const [fadeState, setFadeState] = useState('visible') // 'visible' | 'exit' | 'enter'
+  const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
     if (positions.length <= 1) return
@@ -116,13 +118,44 @@ const HeroDescription = () => {
           octave={3}
         />
       </div>
-      <div className='space-y-3'>
+      <div>
         <h3 className='text-white text-[40px] font-crimson h-[48px] italic tracking-tighter'>About me . .</h3>
-        {DataHome.heroSection.desc.map((item, index) => (
-          <p key={index} className='text-white/70 text-[15px]'>
-            {item.en}
-          </p>
-        ))}
+
+        {/* Always show first paragraph */}
+        <p className='text-white/70 text-[15px] mt-3'>
+          {DataHome.heroSection.desc[0]?.en}
+        </p>
+
+        {/* Paragraphs 1 & 2 — animated expand/collapse via grid trick */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateRows: showAll ? '1fr' : '0fr',
+            opacity: showAll ? 1 : 0,
+            transition: 'grid-template-rows 0.4s ease-out, opacity 0.35s ease-out',
+          }}
+        >
+          <div className="overflow-hidden">
+            {DataHome.heroSection.desc.slice(1).map((item, index) => (
+              <p key={index} className='text-white/70 text-[15px] mt-3'>
+                {item.en}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        {/* Show More / Show Less CTA */}
+        <button
+          onClick={() => {
+            playCrispClick(0.4)
+            playWhoosh(0.15)
+            setShowAll((prev) => !prev)
+          }}
+          onMouseEnter={() => playMechanicalSound(3, 0.3)}
+          className="flex justify-center w-full gap-1 pt-3 text-[13px] text-white/40 hover:text-white/80 transition-colors duration-200 cursor-pointer"
+        >
+          {showAll ? 'Show less ↑' : 'Show more ↓'}
+        </button>
       </div>
     </div>
   )

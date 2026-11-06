@@ -24,9 +24,9 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
 
       {/* Grid 2 kolom tanpa gap, border dashed saling terhubung */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-0 relative'>
-        
+
         {/* Kolom 1: Informasi Project */}
-        <div className='relative p-6 md:p-7 border border-dashed border-white/15 md:border-r-0 bg-white/[0.015] hover:bg-white/[0.03] transition-colors duration-300 flex flex-col justify-between overflow-hidden'>
+        <div className='relative py-4 px-3 border border-dashed border-white/15 md:border-r-0 bg-white/[0.015] hover:bg-white/[0.03] transition-colors duration-300 flex flex-col justify-between overflow-hidden'>
           {/* Crosshairs Sudut Kolom Informasi */}
           <span className="absolute -top-[5px] -left-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
           <span className="absolute -top-[5px] -right-[5px] md:hidden text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
