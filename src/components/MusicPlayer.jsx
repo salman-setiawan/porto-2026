@@ -83,10 +83,10 @@ const MusicPlayer = () => {
       })
     }
 
-    ;['pointerdown', 'touchstart', 'click', 'keydown', 'wheel', 'mousemove', 'pointerover'].forEach((evt) => {
-      window.addEventListener(evt, triggerPlayOnInteraction, { passive: true, capture: true })
-      document.addEventListener(evt, triggerPlayOnInteraction, { passive: true, capture: true })
-    })
+      ;['pointerdown', 'touchstart', 'click', 'keydown', 'wheel', 'mousemove', 'pointerover'].forEach((evt) => {
+        window.addEventListener(evt, triggerPlayOnInteraction, { passive: true, capture: true })
+        document.addEventListener(evt, triggerPlayOnInteraction, { passive: true, capture: true })
+      })
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime)
@@ -96,7 +96,7 @@ const MusicPlayer = () => {
       audio.removeEventListener('pause', handlePauseState)
       cleanupListeners()
     }
-      }, [])
+  }, [])
 
   // Efek toggle mute
   useEffect(() => {
@@ -197,7 +197,7 @@ const MusicPlayer = () => {
               <span className="font-medium text-white/90 truncate">
                 just chillin - enfx
               </span>
-              <span className="text-white/40">
+              <span className="hidden text-white/40">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
             </div>
@@ -208,7 +208,7 @@ const MusicPlayer = () => {
             onClick={toggleMute}
             onMouseEnter={() => playMechanicalSound(3)}
             className={`
-              p-2 rounded-lg border flex items-center gap-1.5 text-[12px] font-medium
+              p-1 rounded-lg border flex items-center gap-1.5 text-[12px] font-medium
               cursor-pointer active:scale-95 transition-all shrink-0
               ${isMuted
                 ? 'bg-red-500/10 hover:bg-red-500/20 border-red-500/20 text-red-300'
@@ -249,7 +249,7 @@ const MusicPlayer = () => {
         {/* Interactive Progress Bar */}
         <div
           onClick={handleSeek}
-          className="w-full h-1 bg-white/10 cursor-pointer relative overflow-hidden group/bar"
+          className="w-full h-0.5 bg-white/10 cursor-pointer relative overflow-hidden group/bar"
         >
           <div
             className={`h-full transition-all duration-100 ${isMuted

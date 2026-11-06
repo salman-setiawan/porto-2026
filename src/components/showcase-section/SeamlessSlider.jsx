@@ -30,19 +30,24 @@ const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
         className="flex flex-col gap-2"
         style={{
           animation: `${animationName} ${duration}s linear infinite`,
-          willChange: 'transform'
+          willChange: 'transform',
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
         }}
       >
         {/* First set */}
         {shots.map((shot, index) => (
           <div
             key={`a-${index}`}
-            className="rounded-md overflow-hidden border border-white/10 flex-shrink-0"
+            className="rounded-md overflow-hidden"
           >
             <img
               src={shot}
               alt={`Portfolio shot ${index + 1}`}
-              className="w-full h-auto object-cover"
+              className="w-full"
+              loading="eager"
+              decoding="async"
             />
           </div>
         ))}
@@ -50,12 +55,14 @@ const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
         {shots.map((shot, index) => (
           <div
             key={`b-${index}`}
-            className="rounded-md overflow-hidden border border-white/10 flex-shrink-0"
+            className="rounded-md overflow-hidden"
           >
             <img
               src={shot}
               alt={`Portfolio shot ${index + 1}`}
-              className="w-full h-auto object-cover"
+              className="w-full"
+              loading="eager"
+              decoding="async"
             />
           </div>
         ))}
@@ -79,12 +86,12 @@ const SeamlessSlider = () => {
       <style>
         {`
           @keyframes scroll-up {
-            from { transform: translateY(0); }
-            to { transform: translateY(-50%); }
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(0, -50%, 0); }
           }
           @keyframes scroll-down {
-            from { transform: translateY(-50%); }
-            to { transform: translateY(0); }
+            from { transform: translate3d(0, -50%, 0); }
+            to { transform: translate3d(0, 0, 0); }
           }
         `}
       </style>

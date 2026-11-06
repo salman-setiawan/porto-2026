@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useMemo } from 'react'
 import { DataHome } from '../../data/dataHome'
 import Chip from '../Chip'
 import Button from '../Button'
@@ -24,6 +24,65 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
     project.media?.desktop ||
     project.media?.mobile ||
     '/project-1/heroimg_desktop.webp'
+
+  // Palet warna terkurasi berdasarkan teori harmoni warna (Analogous & Tonal Harmony)
+  // Menjamin setiap kartu memiliki warna latar yang berbeda & inner glow yang selaras tanpa tabrakan.
+  const HARMONIOUS_PALETTES = [
+    {
+      // 1. Deep Cyber Sapphire (Blue -> Cyan glow)
+      baseHue: 228,
+      bg: '#0a0f1d',
+      ambientGlow: 'radial-gradient(circle at 80% 80%, rgba(30, 64, 175, 0.45) 0%, transparent 65%), radial-gradient(circle at 20% 20%, rgba(14, 116, 144, 0.25) 0%, transparent 55%)',
+      conicLight: 'conic-gradient(from 0deg, transparent 0deg, rgba(6, 182, 212, 0.4) 90deg, rgba(59, 130, 246, 0.65) 180deg, transparent 270deg)',
+    },
+    {
+      // 2. Deep Aurora Emerald (Green -> Mint/Teal glow)
+      baseHue: 158,
+      bg: '#081712',
+      ambientGlow: 'radial-gradient(circle at 80% 80%, rgba(5, 150, 105, 0.42) 0%, transparent 65%), radial-gradient(circle at 20% 20%, rgba(13, 148, 136, 0.25) 0%, transparent 55%)',
+      conicLight: 'conic-gradient(from 0deg, transparent 0deg, rgba(20, 184, 166, 0.4) 90deg, rgba(52, 211, 153, 0.65) 180deg, transparent 270deg)',
+    },
+    {
+      // 3. Royal Velvet Amethyst (Violet -> Fuchsia glow)
+      baseHue: 276,
+      bg: '#140b1d',
+      ambientGlow: 'radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.42) 0%, transparent 65%), radial-gradient(circle at 20% 20%, rgba(192, 38, 211, 0.25) 0%, transparent 55%)',
+      conicLight: 'conic-gradient(from 0deg, transparent 0deg, rgba(217, 70, 239, 0.4) 90deg, rgba(168, 85, 247, 0.65) 180deg, transparent 270deg)',
+    },
+    {
+      // 4. Sunset Bronze & Amber (Warm Amber -> Gold glow)
+      baseHue: 32,
+      bg: '#1b1207',
+      ambientGlow: 'radial-gradient(circle at 80% 80%, rgba(217, 119, 6, 0.42) 0%, transparent 65%), radial-gradient(circle at 20% 20%, rgba(234, 88, 12, 0.25) 0%, transparent 55%)',
+      conicLight: 'conic-gradient(from 0deg, transparent 0deg, rgba(245, 158, 11, 0.4) 90deg, rgba(251, 191, 36, 0.65) 180deg, transparent 270deg)',
+    },
+    {
+      // 5. Deep Ruby Crimson (Crimson -> Rose Coral glow)
+      baseHue: 345,
+      bg: '#1a0910',
+      ambientGlow: 'radial-gradient(circle at 80% 80%, rgba(225, 29, 72, 0.42) 0%, transparent 65%), radial-gradient(circle at 20% 20%, rgba(244, 63, 94, 0.25) 0%, transparent 55%)',
+      conicLight: 'conic-gradient(from 0deg, transparent 0deg, rgba(251, 113, 133, 0.4) 90deg, rgba(244, 63, 94, 0.65) 180deg, transparent 270deg)',
+    },
+  ]
+
+  // Generate tema warna latar & inner effect berdasarkan project
+  const colorTheme = useMemo(() => {
+    // Gunakan project.id jika berupa angka, atau hash string jika custom
+    const numId = typeof project.id === 'number' ? project.id : null
+    if (numId !== null && numId > 0) {
+      const paletteIndex = (numId - 1) % HARMONIOUS_PALETTES.length
+      return HARMONIOUS_PALETTES[paletteIndex]
+    }
+
+    // Fallback hashing terdistribusi untuk id/title dinamis lainnya
+    const key = String(project.id || project.title?.en || imageSrc)
+    let hash = 0
+    for (let i = 0; i < key.length; i++) {
+      hash = key.charCodeAt(i) + ((hash << 5) - hash)
+    }
+    const paletteIndex = Math.abs(hash) % HARMONIOUS_PALETTES.length
+    return HARMONIOUS_PALETTES[paletteIndex]
+  }, [project.id, project.title, imageSrc])
 
   return (
     <div className='relative w-full group'>
@@ -99,13 +158,26 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className='relative aspect-square w-full border border-dashed border-white/15 bg-white/[0.015] hover:bg-white/[0.03] transition-colors duration-300 overflow-hidden'
+          className='relative aspect-square w-full border border-dashed border-white/15 transition-colors duration-300 overflow-hidden'
+          style={{
+            backgroundColor: colorTheme.bg,
+            backgroundImage: colorTheme.ambientGlow,
+          }}
         >
           {/* Crosshairs Sudut Kolom Gambar */}
           <span className="absolute -top-[5px] -right-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
           <span className="absolute -bottom-[5px] -right-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
 
-          {/* Cahaya putar biru muda yang bergerak mengikuti kursor */}
+          {/* Dot grid pattern latar (SVG crisp dots seperti HalftoneGlow tanpa mask/fading) */}
+          <div
+            className="absolute inset-0 z-0 pointer-events-none opacity-20"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='12' cy='12' r='1.2' fill='white'/%3E%3C/svg%3E")`,
+              backgroundRepeat: 'repeat',
+            }}
+          />
+
+          {/* Cahaya putar yang bergerak mengikuti kursor (warna komplementer) */}
           <div
             className="absolute pointer-events-none transition-opacity duration-500 ease-out z-0"
             style={{
@@ -120,8 +192,8 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
               className="w-72 h-72 rounded-full"
               style={{
                 animation: 'spin-slow 6s linear infinite',
-                background: 'conic-gradient(from 0deg, transparent 0deg, rgba(26, 39, 158, 0.45) 90deg, rgba(59, 79, 255, 0.6) 180deg, transparent 270deg)',
-                filter: 'blur(38px)',
+                background: colorTheme.conicLight,
+                filter: 'blur(128px)',
               }}
             />
           </div>

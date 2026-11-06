@@ -1,7 +1,7 @@
 export const DataHome = {
   heroSection: {
     avatar: "/avatar.gif",
-    title: "Hi, my name is Salman!",
+    title: "i'm Salman!",
     position: [
       "an UI/UX Designer",
       "a Web Developer",
@@ -25,6 +25,18 @@ export const DataHome = {
       { label: 'Instagram', link: 'https://instagram.com/eisenflux' },
       { label: 'LinkedIn', link: 'https://linkedin.com/in/salman-setiawan' },
       { label: 'GitHub', link: 'https://github.com/salman-setiawan' },
+    ],
+    greetings: [
+      { text: 'Hi,', lang: 'en' }, // English
+      { text: 'Hola,', lang: 'es' }, // Spanish
+      { text: 'こんにちは,', lang: 'ja' }, // Japanese
+      { text: 'Hallo,', lang: 'de' }, // German
+      { text: 'Bonjour,', lang: 'fr' }, // French
+      { text: '안녕하세요,', lang: 'ko' }, // Korean
+      { text: 'Ciao,', lang: 'it' }, // Italian
+      { text: 'Olá,', lang: 'pt' }, // Portuguese
+      { text: 'Merhaba,', lang: 'tr' }, // Turkish
+      { text: 'Привет,', lang: 'ru' }, // Russian
     ],
   },
   projects: [

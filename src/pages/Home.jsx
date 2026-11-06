@@ -7,7 +7,7 @@ import MusicPlayer from '../components/MusicPlayer'
 const Home = () => {
   return (
     <div className='flex flex-col w-full overflow-x-hidden relative min-h-screen'>
-      <div className="items-center mx-auto px-4 md:px-8 py-8 max-w-[860px] bg-[#141414] space-y-8">
+      <div className="items-center mx-auto px-4 md:px-8 pt-8 max-w-[860px] bg-[#141414] space-y-8">
         <HeroDescription />
         <TabSection />
       </div>

@@ -3,6 +3,8 @@ import { DataHome } from '../../data/dataHome'
 import Button from '../Button'
 import { playMechanicalSound, playCrispClick, playWhoosh } from '../../utils/sound'
 
+// Greeting multi-bahasa diambil dari dataHome.js → heroSection.greetings
+
 const HeroDescription = () => {
   const positions = Array.isArray(DataHome.heroSection.position)
     ? DataHome.heroSection.position
@@ -11,6 +13,9 @@ const HeroDescription = () => {
   const [currentPositionIndex, setCurrentPositionIndex] = useState(0)
   const [fadeState, setFadeState] = useState('visible') // 'visible' | 'exit' | 'enter'
   const [showAll, setShowAll] = useState(false)
+
+  // State cycling greeting multi-bahasa
+  const [greetingIndex, setGreetingIndex] = useState(0)
 
   useEffect(() => {
     if (positions.length <= 1) return
@@ -37,6 +42,14 @@ const HeroDescription = () => {
       clearTimeout(timeoutEnter)
     }
   }, [positions.length])
+
+  // Cycling greeting
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGreetingIndex((prev) => (prev + 1) % DataHome.heroSection.greetings.length)
+    }, 1300)
+    return () => clearInterval(interval)
+  }, [])
 
   const getFadeClasses = () => {
     if (fadeState === 'exit') {
@@ -78,7 +91,12 @@ const HeroDescription = () => {
           <img src={DataHome.heroSection.avatar} className="scale-110 object-cover" alt="avatar" />
         </div>
         <div className='space-y-0.5'>
-          <h2 className='text-xl font-bold'>{DataHome.heroSection.title}</h2>
+          <div className="flex gap-x-1 overflow-hidden">
+            <h2 lang={DataHome.heroSection.greetings[greetingIndex].lang} className='text-xl font-bold text-blue-300'>
+              {DataHome.heroSection.greetings[greetingIndex].text}
+            </h2>
+            <h2 className='text-xl font-bold'>{DataHome.heroSection.title}</h2>
+          </div>
           <div className="overflow-hidden flex flex-wrap gap-x-1 items-center text-white/70 text-[14px] max-w-[200px] md:max-w-full">
             <p>i'm</p>
             <p className={`transition-all transform ${getFadeClasses()}`}>
@@ -88,9 +106,9 @@ const HeroDescription = () => {
             <p className='text-white'>🇮🇩</p>
             <p>Indonesia.</p>
           </div>
-          <div className="flex gap-1 items-center">
-            <p className='text-white/70 text-[14px]'>and currently</p>
-            <p className='text-green-300 text-[13px] px-1 bg-green-300/15 font-semibold rounded'>Open to Work</p>
+          <div className="flex gap-1 items-center text-[14px]">
+            <p className='text-white/70'>and i'm also</p>
+            <p className='text-green-300 text-[14px] font-medium'>Available to Work</p>
           </div>
         </div>
       </div>
