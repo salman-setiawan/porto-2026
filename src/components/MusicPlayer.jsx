@@ -187,7 +187,7 @@ const MusicPlayer = () => {
       {/* ── Floating Bar Mini Player Panel (Desktop selalu ada, Mobile Slide in/out dari kanan) ── */}
       <div
         className={`
-          flex items-center gap-3 pl-3 pr-1.5 py-1.5 rounded-lg
+          rounded-lg
           bg-[#181818]/90 border border-white/10 backdrop-blur-xl
           shadow-[0_8px_32px_rgba(0,0,0,0.65)]
           transition-all duration-300 ease-out
@@ -201,73 +201,74 @@ const MusicPlayer = () => {
           }
         `}
       >
-        {/* Info Lagu & Progress Slider */}
-        <div className="flex flex-col gap-1 w-44 md:w-48">
-          <div className="flex items-center justify-between text-[11px] leading-tight">
-            <span className="font-medium text-white/90 truncate tracking-tight">
-              just chillin
-            </span>
-            <span className="text-[10px] text-white/40">
-              {formatTime(currentTime)} / {formatTime(duration)}
-            </span>
+        <div className="flex items-center gap-3 pl-3 pr-1.5 py-1.5">
+          {/* Info Lagu & Progress Slider */}
+          <div className="flex flex-col gap-1 w-44 md:w-48">
+            <div className="flex items-end justify-between text-[11px] leading-tight">
+              <span className="text-white/90 truncate">
+                just chillin - enfx
+              </span>
+              <span className="text-[10px] text-white/40">
+                {formatTime(currentTime)} / {formatTime(duration)}
+              </span>
+            </div>
           </div>
 
-          {/* Interactive Progress Bar */}
-          <div
-            onClick={handleSeek}
-            className="w-full h-1.5 bg-white/10 rounded-full cursor-pointer relative overflow-hidden group/bar"
+          {/* Tombol Mute / Unmute */}
+          <button
+            onClick={toggleMute}
+            onMouseEnter={() => playMechanicalSound(3)}
+            className={`
+              p-2 rounded-lg border flex items-center gap-1.5 text-[12px] font-medium
+              cursor-pointer active:scale-95 transition-all shrink-0
+              ${isMuted
+                ? 'bg-red-500/10 hover:bg-red-500/20 border-red-500/20 text-red-300'
+                : 'bg-white/5 hover:bg-white/15 border-white/10 text-white/80 hover:text-white'
+              }
+            `}
+            title={isMuted ? 'Unmute BGM' : 'Mute BGM'}
           >
-            <div
-              className={`h-full rounded-full transition-all duration-100 ${isMuted
-                ? 'bg-white/30'
-                : 'bg-gradient-to-r from-blue-500 to-sky-400'
-                }`}
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+            {isMuted ? (
+              /* Icon Speaker Muted */
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <line x1="23" y1="9" x2="17" y2="15" />
+                <line x1="17" y1="9" x2="23" y2="15" />
+              </svg>
+            ) : (
+              /* Icon Speaker Active */
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+              </svg>
+            )}
+          </button>
+
+          {/* Mobile Close Button: Menyembunyikan floating bar dan memunculkan kembali toggle button */}
+          <button
+            onClick={() => {
+              playCrispClick()
+              setIsOpenMobile(false)
+            }}
+            className="md:hidden p-1.5 text-white/40 hover:text-white text-xs cursor-pointer active:scale-95 transition-colors"
+            title="Minimize player"
+          >
+            ✕
+          </button>
         </div>
-
-        {/* Tombol Mute / Unmute */}
-        <button
-          onClick={toggleMute}
-          onMouseEnter={() => playMechanicalSound(3)}
-          className={`
-            p-2 rounded-lg border flex items-center gap-1.5 text-[12px] font-medium
-            cursor-pointer active:scale-95 transition-all shrink-0
-            ${isMuted
-              ? 'bg-red-500/10 hover:bg-red-500/20 border-red-500/20 text-red-300'
-              : 'bg-white/5 hover:bg-white/15 border-white/10 text-white/80 hover:text-white'
-            }
-          `}
-          title={isMuted ? 'Unmute BGM' : 'Mute BGM'}
+        {/* Interactive Progress Bar */}
+        <div
+          onClick={handleSeek}
+          className="w-full h-1.5 bg-white/10 cursor-pointer relative overflow-hidden group/bar"
         >
-          {isMuted ? (
-            /* Icon Speaker Muted */
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-              <line x1="23" y1="9" x2="17" y2="15" />
-              <line x1="17" y1="9" x2="23" y2="15" />
-            </svg>
-          ) : (
-            /* Icon Speaker Active */
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
-            </svg>
-          )}
-        </button>
-
-        {/* Mobile Close Button: Menyembunyikan floating bar dan memunculkan kembali toggle button */}
-        <button
-          onClick={() => {
-            playCrispClick()
-            setIsOpenMobile(false)
-          }}
-          className="md:hidden p-1.5 text-white/40 hover:text-white text-xs cursor-pointer active:scale-95 transition-colors"
-          title="Minimize player"
-        >
-          ✕
-        </button>
+          <div
+            className={`h-full transition-all duration-100 ${isMuted
+              ? 'bg-white/30'
+              : 'bg-gradient-to-r from-blue-500 to-sky-400'
+              }`}
+            style={{ width: `${progress}%` }}
+          />
+        </div>
       </div>
     </div>
   )
