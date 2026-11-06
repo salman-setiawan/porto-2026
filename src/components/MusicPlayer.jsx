@@ -48,40 +48,34 @@ const MusicPlayer = () => {
     audio.addEventListener('play', handlePlayState)
     audio.addEventListener('pause', handlePauseState)
 
-    // 1. Coba langsung auto-start bersuara (unmuted) begitu dibuka/refresh
-    const tryAutoPlay = () => {
-      audio.muted = false
-      audio.volume = DEFAULT_BG_VOLUME
+    // Trigger autoplay saat user mulai scroll ke bawah
+    let hasStarted = false
 
-      audio.play().then(() => {
-        setIsPlaying(true)
-        setIsMuted(false)
-      }).catch(() => {
-        // Pada perangkat mobile (iOS Safari & Chrome Android), OS menerapkan kebijakan mutlak:
-        // Audio DILARANG berputar sebelum pengguna menyentuh layar pertama kali (User Gesture).
-        // Kita pasang trigger capture pada sentuhan pertama (touch/tap/scroll) agar lagu langsung bersuara:
-        const unlockMobile = () => {
-          audio.muted = false
-          audio.volume = DEFAULT_BG_VOLUME
-          audio.play().then(() => {
-            setIsPlaying(true)
-            setIsMuted(false)
-          }).catch(() => { })
+    const handleScrollPlay = () => {
+      if (hasStarted) return
 
-            ;['touchstart', 'touchend', 'pointerdown', 'click', 'scroll'].forEach((evt) => {
-              document.removeEventListener(evt, unlockMobile, true)
-              window.removeEventListener(evt, unlockMobile, true)
-            })
-        }
+      // Cek apakah user sudah mulai scroll ke bawah (misal melewati 20px)
+      if (window.scrollY > 20) {
+        hasStarted = true
+        audio.muted = false
+        audio.volume = DEFAULT_BG_VOLUME
+        audio.play().then(() => {
+          setIsPlaying(true)
+          setIsMuted(false)
+        }).catch((err) => {
+          console.warn('Autoplay scroll blocked:', err)
+        })
 
-          ;['touchstart', 'touchend', 'pointerdown', 'click', 'scroll'].forEach((evt) => {
-            document.addEventListener(evt, unlockMobile, { once: true, passive: true, capture: true })
-            window.addEventListener(evt, unlockMobile, { once: true, passive: true, capture: true })
-          })
-      })
+        window.removeEventListener('scroll', handleScrollPlay)
+        window.removeEventListener('touchmove', handleScrollPlay)
+      }
     }
 
-    tryAutoPlay()
+    window.addEventListener('scroll', handleScrollPlay, { passive: true })
+    window.addEventListener('touchmove', handleScrollPlay, { passive: true })
+
+    // Cek jika saat load halaman posisi sudah dalam kondisi scroll
+    handleScrollPlay()
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime)
@@ -89,6 +83,8 @@ const MusicPlayer = () => {
       audio.removeEventListener('ended', handleEnded)
       audio.removeEventListener('play', handlePlayState)
       audio.removeEventListener('pause', handlePauseState)
+      window.removeEventListener('scroll', handleScrollPlay)
+      window.removeEventListener('touchmove', handleScrollPlay)
     }
   }, [])
 
