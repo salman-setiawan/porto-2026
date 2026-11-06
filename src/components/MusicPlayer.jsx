@@ -49,6 +49,8 @@ const MusicPlayer = () => {
     audio.addEventListener('pause', handlePauseState)
 
     // Mulai musik saat user melakukan gesture interaksi pertama
+    // mousemove/pointerover: bekerja jika site sudah punya media engagement score
+    // pointerdown/click/touchstart/keydown/wheel: selalu bekerja (valid user gesture)
     let hasTriggered = false
 
     const triggerPlayOnInteraction = () => {
@@ -64,25 +66,26 @@ const MusicPlayer = () => {
           .then(() => {
             setIsPlaying(true)
             setIsMuted(false)
+            cleanupListeners()
           })
-          .catch((err) => {
-            console.warn('Playback blocked by browser policy:', err)
+          .catch(() => {
+            // Browser masih blokir (misal hover di kunjungan pertama) — reset agar
+            // gesture nyata berikutnya (click/touch) bisa mencoba lagi
+            hasTriggered = false
           })
       }
-
-      cleanupListeners()
     }
 
     const cleanupListeners = () => {
-      ;['pointerdown', 'touchstart', 'click', 'keydown', 'wheel'].forEach((evt) => {
+      ;['pointerdown', 'touchstart', 'click', 'keydown', 'wheel', 'mousemove', 'pointerover'].forEach((evt) => {
         window.removeEventListener(evt, triggerPlayOnInteraction, true)
         document.removeEventListener(evt, triggerPlayOnInteraction, true)
       })
     }
 
-    ;['pointerdown', 'touchstart', 'click', 'keydown', 'wheel'].forEach((evt) => {
-      window.addEventListener(evt, triggerPlayOnInteraction, { once: true, passive: true, capture: true })
-      document.addEventListener(evt, triggerPlayOnInteraction, { once: true, passive: true, capture: true })
+    ;['pointerdown', 'touchstart', 'click', 'keydown', 'wheel', 'mousemove', 'pointerover'].forEach((evt) => {
+      window.addEventListener(evt, triggerPlayOnInteraction, { passive: true, capture: true })
+      document.addEventListener(evt, triggerPlayOnInteraction, { passive: true, capture: true })
     })
 
     return () => {
