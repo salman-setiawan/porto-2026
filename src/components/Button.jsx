@@ -56,7 +56,7 @@ const Button = ({
     : ''
 
   const socialStyle = type === 'social'
-    ? 'px-3 py-1.5 flex items-center rounded-md text-[13px] font-medium shadow-lg shadow-black/10 cursor-pointer bg-[#292929] hover:bg-[#1d1d1d]'
+    ? 'px-3 py-1.5 flex items-center rounded-md text-[13px] font-medium shadow-lg shadow-black/10 cursor-pointer bg-[#323232] hover:bg-[#1d1d1d]'
     : ''
 
   const stateStyle = type === 'state'
