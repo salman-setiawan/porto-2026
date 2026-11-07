@@ -1,4 +1,4 @@
-import React from 'react'
+import { memo } from 'react'
 import { getBrandIconPath } from '../utils/brandIcons'
 
 const Chip = ({ label, icon, autoIcon = false, className = '', ...props }) => {

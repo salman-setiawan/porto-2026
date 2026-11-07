@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react'
 
 /**
  * PixelFlare Component (Animated Pixel Dither Flame Flare)
@@ -35,10 +35,10 @@ const PixelFlare = ({
 
     // Palet warna membara: Hitam -> Merah Tua -> Crimson -> Oranye Api (Evil Buttons) -> Kuning Emas
     const COLOR_STOPS = [
-      { t: 0.00, r: 16,  g: 5,   b: 3 },
-      { t: 0.18, r: 95,  g: 18,  b: 8 },
-      { t: 0.45, r: 195, g: 38,  b: 8 },
-      { t: 0.72, r: 255, g: 85,  b: 8 },
+      { t: 0.00, r: 16, g: 5, b: 3 },
+      { t: 0.18, r: 95, g: 18, b: 8 },
+      { t: 0.45, r: 195, g: 38, b: 8 },
+      { t: 0.72, r: 255, g: 85, b: 8 },
       { t: 0.88, r: 255, g: 145, b: 24 },
       { t: 1.00, r: 255, g: 215, b: 70 },
     ]
@@ -68,15 +68,15 @@ const PixelFlare = ({
 
     // Bayer 4x4 Dither Matrix
     const BAYER = [
-      0 / 16,  8 / 16,  2 / 16, 10 / 16,
-      12 / 16, 4 / 16, 14 / 16,  6 / 16,
-      3 / 16, 11 / 16,  1 / 16,  9 / 16,
-      15 / 16, 7 / 16, 13 / 16,  5 / 16,
+      0 / 16, 8 / 16, 2 / 16, 10 / 16,
+      12 / 16, 4 / 16, 14 / 16, 6 / 16,
+      3 / 16, 11 / 16, 1 / 16, 9 / 16,
+      15 / 16, 7 / 16, 13 / 16, 5 / 16,
     ]
 
     // Resolusi internal canvas — lebih besar = pixel dots lebih kecil & halus
-    const W = 320
-    const H = 200
+    const W = 420
+    const H = 300
 
     canvas.width = W
     canvas.height = H
@@ -117,7 +117,7 @@ const PixelFlare = ({
           else if (lum > 1) lum = 1
 
           const colIdx = Math.floor(lum * 255)
-          data[pIdx]     = PALETTE_R[colIdx]
+          data[pIdx] = PALETTE_R[colIdx]
           data[pIdx + 1] = PALETTE_G[colIdx]
           data[pIdx + 2] = PALETTE_B[colIdx]
           data[pIdx + 3] = 255

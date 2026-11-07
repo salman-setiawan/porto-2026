@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { DataHome } from '../../data/dataHome'
 import Chip from '../Chip'
 import Button from '../Button'
@@ -7,13 +7,14 @@ import HalftoneGlow from '../../motion/HalftoneGlow'
 const ProjectCard = ({ project = DataHome.projects[0] }) => {
   if (!project) return null
 
-  const imageCardRef = useRef(null)
+  const mobileImageRef = useRef(null)
+  const desktopImageRef = useRef(null)
   const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 })
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleMouseMove = (e) => {
-    if (!imageCardRef.current) return
-    const rect = imageCardRef.current.getBoundingClientRect()
+  const handleMouseMove = (e, ref) => {
+    if (!ref.current) return
+    const rect = ref.current.getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
     setCursorPos({ x, y })
@@ -97,6 +98,60 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
       {/* Grid 2 kolom tanpa gap, border dashed saling terhubung */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-0 relative'>
 
+        {/* Kolom 2: Visual / Mockup Gambar Mobile */}
+        <div
+          ref={mobileImageRef}
+          onMouseMove={(e) => handleMouseMove(e, mobileImageRef)}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className='relative md:hidden aspect-[4/3] w-full border border-dashed border-white/15 transition-colors duration-300 overflow-hidden'
+          style={{
+            backgroundColor: colorTheme.bg,
+            backgroundImage: colorTheme.ambientGlow,
+          }}
+        >
+          {/* Crosshairs Sudut Kolom Gambar */}
+          <span className="absolute -top-[5px] -right-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
+          <span className="absolute -bottom-[5px] -right-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
+
+          {/* Dot grid pattern latar (SVG crisp dots seperti HalftoneGlow tanpa mask/fading) */}
+          <div
+            className="absolute inset-0 z-0 pointer-events-none opacity-20"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='12' cy='12' r='1.2' fill='white'/%3E%3C/svg%3E")`,
+              backgroundRepeat: 'repeat',
+            }}
+          />
+
+          {/* Cahaya putar yang bergerak mengikuti kursor (warna komplementer) */}
+          <div
+            className="absolute pointer-events-none transition-opacity duration-500 ease-out z-0"
+            style={{
+              left: `${cursorPos.x}px`,
+              top: `${cursorPos.y}px`,
+              transform: 'translate(-50%, -50%)',
+              opacity: isHovered ? 1 : 0.25,
+            }}
+          >
+            {/* Inner element yang berputar 360 derajat */}
+            <div
+              className="w-72 h-72 rounded-full"
+              style={{
+                animation: 'spin-slow 6s linear infinite',
+                animationPlayState: isHovered ? 'running' : 'paused',
+                background: colorTheme.conicLight,
+                filter: 'blur(128px)',
+              }}
+            />
+          </div>
+
+          <img
+            className="top-24 left-32 relative h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out z-10"
+            src={imageSrc}
+            alt={project.title?.en || 'Project Thumbnail'}
+          />
+        </div>
+
         {/* Kolom 1: Informasi Project */}
         <div className='relative py-4 px-3 border border-dashed border-white/15 md:border-r-0 bg-white/[0.015] hover:bg-white/[0.03] transition-colors duration-300 flex flex-col justify-between overflow-hidden'>
           {/* Crosshairs Sudut Kolom Informasi */}
@@ -152,13 +207,13 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
           </div>
         </div>
 
-        {/* Kolom 2: Visual / Mockup Gambar */}
+        {/* Kolom 2: Visual / Mockup Gambar Desktop*/}
         <div
-          ref={imageCardRef}
-          onMouseMove={handleMouseMove}
+          ref={desktopImageRef}
+          onMouseMove={(e) => handleMouseMove(e, desktopImageRef)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className='relative aspect-square w-full border border-dashed border-white/15 transition-colors duration-300 overflow-hidden'
+          className='relative hidden md:block aspect-square w-full border border-dashed border-white/15 transition-colors duration-300 overflow-hidden'
           style={{
             backgroundColor: colorTheme.bg,
             backgroundImage: colorTheme.ambientGlow,
@@ -192,6 +247,7 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
               className="w-72 h-72 rounded-full"
               style={{
                 animation: 'spin-slow 6s linear infinite',
+                animationPlayState: isHovered ? 'running' : 'paused',
                 background: colorTheme.conicLight,
                 filter: 'blur(128px)',
               }}

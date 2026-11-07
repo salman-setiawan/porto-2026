@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { DataHome } from '../data/dataHome'
 import ExperienceContent from './experience-section/ExperienceContent'
 import ProjectCard from './project-section/ProjectCard'
@@ -7,7 +7,7 @@ import Button from './Button'
 const ProjectsContent = () => {
   const projects = DataHome.projects || []
   return (
-    <div className="space-y-1">
+    <div className="space-y-3 md:space-y-1">
       {projects.map((project, index) => (
         <ProjectCard key={project.id || index} project={project} />
       ))}

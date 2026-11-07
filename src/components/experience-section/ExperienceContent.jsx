@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { DataHome } from '../../data/dataHome'
 import { playWhoosh } from '../../utils/sound'
 

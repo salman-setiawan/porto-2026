@@ -1,4 +1,4 @@
-import React from 'react'
+
 import Button from '../Button'
 
 // All portfolio shots - add more as needed

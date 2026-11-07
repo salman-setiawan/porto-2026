@@ -7,7 +7,7 @@ let clickSoundBuffer = null
 let whooshSoundBuffer = null
 
 // 🟢 Konfigurasi volume global (0.0 s/d 1.0)
-export const SOUND_CONFIG = {
+const SOUND_CONFIG = {
   volume: 0.32,       // Volume untuk efek tetesan air (hover)
   clickVolume: 0.42,  // Volume untuk efek click yang crisp (press/click)
   whooshVolume: 0.16, // Volume untuk efek whoosh gerakan halus (card hover) - dibuat sangat halus & lembut

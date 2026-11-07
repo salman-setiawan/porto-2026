@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Lenis from 'lenis'
 import HeroIntro from '../components/hero-section/Intro'
 import TabSection from '../components/TabSection'
@@ -36,14 +36,14 @@ const Home = () => {
   }, [])
 
   // Opacity flare: lalu perlahan memudar dan menghilang seiring scroll (dalam jarak 420px)
-  const flareOpacity = Math.max(0, 0.15 * (1 - scrollY / 420))
+  const flareOpacity = Math.max(0, 0.19 * (1 - scrollY / 420))
 
   return (
     <div className='flex flex-col w-full overflow-x-hidden relative min-h-screen bg-[#141414]'>
       {/* ── Latar Flare di Seluruh Area (Fullscreen Width/Height) dengan Opacity 50% & Scroll Fade Out ── */}
       {flareOpacity > 0 && (
         <div
-          className="fixed inset-x-0 top-0 h-[880px] pointer-events-none z-0 transition-opacity duration-75"
+          className="fixed inset-x-0 top-0 h-[320px] md:h-[640px] pointer-events-none z-0 transition-opacity duration-75"
           style={{ opacity: flareOpacity }}
         >
           {/* Flare Background Component (Versi Pixel Buffer - Ultra Lightweight) */}
@@ -61,7 +61,7 @@ const Home = () => {
 
       {/* Konten Halaman */}
       <div className="items-center mx-auto px-4 md:px-8 max-w-[860px] space-y-8 relative z-10">
-        <HeroIntro />
+        <HeroIntro scrollY={scrollY} />
         <TabSection />
       </div>
       <div className="md:mx-auto relative z-10">

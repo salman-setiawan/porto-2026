@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { DataHome } from '../../data/dataHome'
 import Button from '../Button'
 import { playMechanicalSound, playCrispClick, playWhoosh } from '../../utils/sound'
 
 // Greeting multi-bahasa diambil dari dataHome.js → heroSection.greetings
 
-const HeroIntro = () => {
+const HeroIntro = ({ scrollY = 0 }) => {
   const positions = Array.isArray(DataHome.heroSection.position)
     ? DataHome.heroSection.position
     : [DataHome.heroSection.position].filter(Boolean)
@@ -17,34 +17,13 @@ const HeroIntro = () => {
   // State cycling greeting multi-bahasa
   const [greetingIndex, setGreetingIndex] = useState(0)
 
-  // Track scroll position untuk animasi transisi kontinu (scroll-driven scrubbing)
-  const [scrollY, setScrollY] = useState(0)
   // Deteksi mobile (< 768px) — di mobile tidak ada transisi ke pinggir
-  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768)
+  const [isMobile, setIsMobile] = useState(() => (typeof window !== 'undefined' ? window.innerWidth < 768 : false))
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768)
     window.addEventListener('resize', handleResize, { passive: true })
     return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  useEffect(() => {
-    let rafId = null
-    const handleScroll = () => {
-      setScrollY(window.scrollY)
-    }
-
-    const onScroll = () => {
-      cancelAnimationFrame(rafId)
-      rafId = requestAnimationFrame(handleScroll)
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-    handleScroll()
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      cancelAnimationFrame(rafId)
-    }
   }, [])
 
   // Jarak scroll transisi dari Gambar 1 (Intro) ke Gambar 2 (Description)
@@ -127,17 +106,17 @@ const HeroIntro = () => {
         /* ── MOBILE LAYOUT: Static centered, no absolute positioning ── */
         <div className="flex flex-col items-center text-center gap-4 pt-16 pb-8">
           {/* Avatar */}
-          <div className="w-20 h-20 shrink-0 overflow-hidden border-[3px] border-blue-500/80 rounded-lg hover:scale-105 hover:rotate-[-8deg] transition-transform">
+          <div className="w-20 h-20 shrink-0 overflow-hidden border-[3px] border-blue-500/80 rounded-lg hover:scale-110 hover:rotate-[-8deg] transition-transform">
             <img src={DataHome.heroSection.avatar} className="scale-110 object-cover" alt="avatar" />
           </div>
 
           {/* Text Info */}
           <div className="flex flex-col items-center space-y-0.5">
-            <div className="flex gap-x-1">
-              <h2 lang={DataHome.heroSection.greetings[greetingIndex].lang} className='text-xl font-bold text-blue-300'>
+            <div className="flex gap-x-1 font-medium text-[32px] h-[42px] font-crimson italic">
+              <h2 lang={DataHome.heroSection.greetings[greetingIndex].lang} className='text-blue-300'>
                 {DataHome.heroSection.greetings[greetingIndex].text}
               </h2>
-              <h2 className='text-xl font-bold'>{DataHome.heroSection.title}</h2>
+              <h2>{DataHome.heroSection.title}</h2>
             </div>
             <div className="overflow-hidden flex flex-wrap gap-x-1 items-center justify-center text-white/70 text-[14px]">
               <p>i'm</p>

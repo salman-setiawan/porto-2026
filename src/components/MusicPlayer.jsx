@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { playMechanicalSound, playCrispClick } from '../utils/sound'
 
 // ── PENGATURAN VOLUME LATAR (0.0 s/d 1.0) ──
@@ -197,7 +197,7 @@ const MusicPlayer = () => {
               <span className="font-medium text-white/90 truncate">
                 just chillin - enfx
               </span>
-              <span className="hidden text-white/40">
+              <span className="text-[11px] text-white/40 tabular-nums">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
             </div>
