@@ -175,7 +175,7 @@ const HeroIntro = ({ scrollY = 0 }) => {
               className={`absolute top-0 flex flex-col space-y-0.5 pointer-events-auto ${progress > 0.4 ? 'items-start text-left' : 'items-center text-center'}`}
               style={{
                 left: `calc(${progress * 96}px + ${(1 - progress) * 50}%)`,
-                transform: `translate3d(-${(1 - progress) * 50}%, ${98 + (1 - progress) * 240}px, 0)`,
+                transform: `translate3d(-${(1 - progress) * 50}%, ${88 + (1 - progress) * 240}px, 0)`,
                 width: progress > 0.4 ? 'auto' : '320px',
                 maxWidth: progress > 0.4 ? 'calc(100% - 100px)' : '320px',
                 willChange: 'transform, left',
