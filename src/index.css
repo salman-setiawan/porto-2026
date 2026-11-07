@@ -102,19 +102,38 @@ body.light-theme .pixel-flare-wrapper canvas {
   opacity: 0.65;
 }
 
-/* ── Buttery Smooth Theme Transition Controller ── */
-html.theme-transitioning,
-html.theme-transitioning *,
-html.theme-transitioning *::before,
-html.theme-transitioning *::after {
-  transition: background-color 450ms cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 450ms cubic-bezier(0.4, 0, 0.2, 1),
-    color 450ms cubic-bezier(0.4, 0, 0.2, 1),
-    fill 450ms cubic-bezier(0.4, 0, 0.2, 1),
-    stroke 450ms cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 450ms cubic-bezier(0.4, 0, 0.2, 1),
-    filter 450ms cubic-bezier(0.4, 0, 0.2, 1) !important;
-  transition-delay: 0s !important;
+/* ── Transisi Mode Gelap/Terang Bertahap (Staged & Lightweight Transitions) ── */
+/* Transisi difokuskan secara bertahap pada permukaan & teks tanpa wildcard global (*) */
+html.theme-transitioning body,
+html.theme-transitioning .bg-app-primary {
+  transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html.theme-transitioning .bg-app-surface,
+html.theme-transitioning .bg-app-surface-elevated,
+html.theme-transitioning .bg-app-surface-glass,
+html.theme-transitioning .border-app-subtle,
+html.theme-transitioning .border-app-medium {
+  transition: background-color 380ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 380ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 380ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html.theme-transitioning h1,
+html.theme-transitioning h2,
+html.theme-transitioning h3,
+html.theme-transitioning h4,
+html.theme-transitioning p,
+html.theme-transitioning span,
+html.theme-transitioning a,
+html.theme-transitioning button,
+html.theme-transitioning .text-app-primary,
+html.theme-transitioning .text-app-secondary,
+html.theme-transitioning .text-app-muted,
+html.theme-transitioning .text-app-accent,
+html.theme-transitioning .theme-icon-filter {
+  transition: color 400ms cubic-bezier(0.4, 0, 0.2, 1),
+    filter 400ms cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* ── Utility Classes for Systematized 3-Color Tokens ── */
@@ -199,14 +218,12 @@ html.theme-transitioning *::after {
 
   0%,
   100% {
-    mask-size: 80%;
-    -webkit-mask-size: 80%;
+    transform: scale(0.92);
     opacity: 0.2;
   }
 
   50% {
-    mask-size: 110%;
-    -webkit-mask-size: 110%;
+    transform: scale(1.08);
     opacity: 0.5;
   }
 }

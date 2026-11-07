@@ -48,10 +48,9 @@ const MusicPlayer = () => {
     audio.addEventListener('play', handlePlayState)
     audio.addEventListener('pause', handlePauseState)
 
-    // Mulai musik saat user melakukan gesture interaksi pertama
-    // mousemove/pointerover: bekerja jika site sudah punya media engagement score
-    // pointerdown/click/touchstart/keydown/wheel: selalu bekerja (valid user gesture)
+    // Mulai musik saat user melakukan klik pertama pada objek atau latar manapun di halaman
     let hasTriggered = false
+    const CLICK_EVENTS = ['click', 'pointerdown', 'touchstart']
 
     const triggerPlayOnInteraction = () => {
       if (hasTriggered) return
@@ -69,24 +68,21 @@ const MusicPlayer = () => {
             cleanupListeners()
           })
           .catch(() => {
-            // Browser masih blokir (misal hover di kunjungan pertama) — reset agar
-            // gesture nyata berikutnya (click/touch) bisa mencoba lagi
+            // Jika browser memblokir, reset flag agar klik/tap berikutnya mencoba lagi
             hasTriggered = false
           })
       }
     }
 
     const cleanupListeners = () => {
-      ;['pointerdown', 'touchstart', 'click', 'keydown', 'wheel', 'mousemove', 'pointerover'].forEach((evt) => {
-        window.removeEventListener(evt, triggerPlayOnInteraction, true)
+      CLICK_EVENTS.forEach((evt) => {
         document.removeEventListener(evt, triggerPlayOnInteraction, true)
       })
     }
 
-      ;['pointerdown', 'touchstart', 'click', 'keydown', 'wheel', 'mousemove', 'pointerover'].forEach((evt) => {
-        window.addEventListener(evt, triggerPlayOnInteraction, { passive: true, capture: true })
-        document.addEventListener(evt, triggerPlayOnInteraction, { passive: true, capture: true })
-      })
+    CLICK_EVENTS.forEach((evt) => {
+      document.addEventListener(evt, triggerPlayOnInteraction, { passive: true, capture: true })
+    })
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime)
@@ -133,7 +129,7 @@ const MusicPlayer = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50 select-none">
-      <audio ref={audioRef} src={audioSrc} loop preload="auto" />
+      <audio ref={audioRef} src={audioSrc} loop preload="none" />
 
       {/* ── Mobile Circular Toggle Button (Slide out ke kanan saat dibuka) ── */}
       <div

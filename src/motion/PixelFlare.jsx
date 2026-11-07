@@ -4,12 +4,14 @@ import { useRef, useEffect } from 'react'
  * PixelFlare Component (Animated Pixel Dither Flame Flare)
  *
  * Merender flame flare menggunakan direct pixel buffer 32-bit
- * (Uint8Array + putImageData) — dioptimasi dengan zero-allocation render loop.
+ * (Uint8Array + putImageData) — dioptimasi dengan zero-allocation render loop
+ * dan rasio resolusi 210x150 yang menghasilkan tampilan pixel dither autentik
+ * dengan konsumsi CPU 75% lebih ringan.
  */
 
-// Resolusi internal canvas (420x300)
-const W = 420
-const H = 300
+// Resolusi internal canvas (210x150) — di-upscale pixelated oleh CSS
+const W = 210
+const H = 150
 
 // Palet warna membara: Hitam -> Merah Tua -> Crimson -> Oranye Api (Evil Buttons) -> Kuning Emas
 const COLOR_STOPS = [
@@ -89,26 +91,37 @@ const PixelFlare = ({
     let animationFrameId
     let time = 0
 
-    // ── MODE PIXEL: Render Pixel Buffer 32-bit (Zero memory leak) ──
+    // ── MODE PIXEL: Render Pixel Buffer 32-bit (Zero memory leak & hoist loop invariant) ──
     const render = () => {
       if (!isVisible) return
 
       time += 0.03 * speed
       let pIdx = 0
 
+      const timeTerm1 = time * 0.95
+      const timeTerm2 = time * 0.75
+      const timeTerm3 = time * 0.6
+
       for (let y = 0; y < H; y++) {
         const v = y / H
         const bayerRow = (y & 3) << 2
 
+        const rowTerm1 = v * 2.8 - timeTerm1
+        const dy = v - 0.75
+        const dy2 = dy * dy
+        const rowTerm3 = -v * 6.0 + timeTerm3
+        const vBias = 0.35 + v * 0.8
+
         for (let x = 0; x < W; x++) {
           const u = x / W
+          const dx = u - 0.35
 
-          const w1 = Math.sin(u * 3.4 + v * 2.8 - time * 0.95)
-          const w2 = Math.sin(Math.sqrt((u - 0.35) * (u - 0.35) + (v - 0.75) * (v - 0.75)) * 4.8 - time * 0.75)
-          const w3 = Math.sin((u * 2.2 - v * 2.5) * 2.4 + time * 0.6)
+          const w1 = Math.sin(u * 3.4 + rowTerm1)
+          const w2 = Math.sin(Math.sqrt(dx * dx + dy2) * 4.8 - timeTerm2)
+          const w3 = Math.sin(u * 5.28 + rowTerm3)
 
-          let val = (w1 + w2 + w3 + 3.0) / 6.0
-          const bias = (1.15 - u * 0.55) * (0.35 + v * 0.8)
+          const val = (w1 + w2 + w3 + 3.0) / 6.0
+          const bias = (1.15 - u * 0.55) * vBias
           let lum = Math.pow(val * bias * numIntensity, 1.3)
 
           const dither = BAYER[bayerRow | (x & 3)] - 0.5

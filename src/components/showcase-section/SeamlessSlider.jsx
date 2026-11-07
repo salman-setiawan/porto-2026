@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import Button from '../Button'
 
 // All portfolio shots
@@ -46,7 +47,7 @@ const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
               src={shot}
               alt={`Portfolio shot ${index + 1}`}
               className="w-full"
-              loading="eager"
+              loading="lazy"
               decoding="async"
             />
           </div>
@@ -58,7 +59,7 @@ const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
               src={shot}
               alt={`Portfolio shot ${index + 1}`}
               className="w-full"
-              loading="eager"
+              loading="lazy"
               decoding="async"
             />
           </div>
@@ -69,6 +70,17 @@ const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
 }
 
 const SeamlessSlider = () => {
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : true
+  )
+
+  useEffect(() => {
+    const mql = window.matchMedia('(min-width: 768px)')
+    const onChange = (e) => setIsDesktop(e.matches)
+    mql.addEventListener('change', onChange)
+    return () => mql.removeEventListener('change', onChange)
+  }, [])
+
   return (
     <div className="w-full pb-16 bg-app-primary overflow-hidden">
       <div className="max-w-[860px] mx-auto relative z-[110] top-12 pointer-events-none px-4 md:px-8">
@@ -77,18 +89,21 @@ const SeamlessSlider = () => {
       </div>
 
       <div className="max-w-[860px] px-0 md:px-8 mx-auto relative flex justify-center h-[400px] -mt-[50px]">
-        {/* Mobile & Tablet: 2 columns */}
-        <div className="flex md:hidden gap-2 w-fit mx-auto overflow-visible">
-          <Column shots={COLUMNS_2[0]} direction="up" duration={30} className="h-full w-[440px]" />
-          <Column shots={COLUMNS_2[1]} direction="down" duration={30} className="h-full w-[440px]" />
-        </div>
-
-        {/* Desktop: 3 columns */}
-        <div className="hidden md:flex gap-2">
-          <Column shots={COLUMNS_3[0]} direction="up" duration={30} className="h-full" />
-          <Column shots={COLUMNS_3[1]} direction="down" duration={35} className="h-full" />
-          <Column shots={COLUMNS_3[2]} direction="up" duration={30} className="h-full" />
-        </div>
+        {/* Render adaptif: hanya me-render satu varian kolom yang sesuai breakpoint untuk menghindari duplikasi 48 node DOM & animasi tak henti */}
+        {isDesktop ? (
+          /* Desktop: 3 columns */
+          <div className="flex gap-2 w-full">
+            <Column shots={COLUMNS_3[0]} direction="up" duration={30} className="h-full" />
+            <Column shots={COLUMNS_3[1]} direction="down" duration={35} className="h-full" />
+            <Column shots={COLUMNS_3[2]} direction="up" duration={30} className="h-full" />
+          </div>
+        ) : (
+          /* Mobile & Tablet: 2 columns */
+          <div className="flex gap-2 w-fit mx-auto overflow-visible">
+            <Column shots={COLUMNS_2[0]} direction="up" duration={30} className="h-full w-[440px]" />
+            <Column shots={COLUMNS_2[1]} direction="down" duration={30} className="h-full w-[440px]" />
+          </div>
+        )}
 
         {/* Top Overlay Gradient */}
         <div

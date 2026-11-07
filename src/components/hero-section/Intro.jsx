@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { DataHome } from '../../data/dataHome'
 import Button from '../Button'
-import { playMechanicalSound, playCrispClick, playWhoosh } from '../../utils/sound'
+import { playCrispClick, playWhoosh } from '../../utils/sound'
 
 // Icon Sosial SVG statis (didefinisikan di luar komponen agar tidak di-recreate tiap render)
 const SOCIAL_ICONS = [

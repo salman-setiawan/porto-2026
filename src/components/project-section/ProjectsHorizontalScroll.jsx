@@ -121,11 +121,12 @@ const ProjectsHorizontalScroll = ({ children }) => {
     window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', handleResize)
 
-    // Initial trigger check
-    updateScroll()
+    // Initial trigger check via animation frame
+    const initRaf = requestAnimationFrame(updateScroll)
     const timer = setTimeout(updateScroll, 100)
 
     return () => {
+      cancelAnimationFrame(initRaf)
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleResize)
       clearTimeout(timer)
@@ -204,7 +205,7 @@ const ProjectsHorizontalScroll = ({ children }) => {
             ))}
 
             {/* Ending Slide: Box "Show More Project" */}
-            <MoreProjectsCard url="/projects" />
+            <MoreProjectsCard url="https://dribbble.com/eisenflux" />
           </div>
         </div>
 

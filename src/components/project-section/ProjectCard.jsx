@@ -5,7 +5,6 @@ import Button from '../Button'
 import HalftoneGlow from '../../motion/HalftoneGlow'
 
 // Palet warna terkurasi berdasarkan teori harmoni warna (Analogous & Tonal Harmony)
-// Didefinisikan di luar komponen agar tidak di-recreate setiap render
 const HARMONIOUS_PALETTES = [
   {
     // 1. Deep Cyber Sapphire (Blue -> Cyan glow)
@@ -47,14 +46,14 @@ const HARMONIOUS_PALETTES = [
 // Komponen Visual Mockup Gambar reusable untuk Mobile & Desktop
 const ProjectVisualCard = ({
   cardRef,
-  isHovered,
+  isHovered = false,
   onMouseMove,
   onMouseEnter,
   onMouseLeave,
   colorTheme,
-  cursorPos,
+  cursorPos = { x: 50, y: 50 },
   imageSrc,
-  title,
+  showGlow = false,
   className = '',
 }) => (
   <div
@@ -81,61 +80,59 @@ const ProjectVisualCard = ({
       }}
     />
 
-    {/* Cahaya putar yang bergerak mengikuti kursor */}
-    <div
-      className="absolute pointer-events-none transition-opacity duration-500 ease-out z-0"
-      style={{
-        left: `${cursorPos.x}px`,
-        top: `${cursorPos.y}px`,
-        transform: 'translate(-50%, -50%)',
-        opacity: isHovered ? 1 : 0.25,
-      }}
-    >
+    {/* Cahaya glow kursor khusus Desktop (tanpa spin slow, blur lebih ringan 48px, ukuran lebih lebar) */}
+    {showGlow && (
       <div
-        className="w-72 h-72 rounded-full"
+        className="absolute top-0 left-0 pointer-events-none transition-opacity duration-300 ease-out z-0 will-change-transform"
         style={{
-          animation: 'spin-slow 6s linear infinite',
-          animationPlayState: isHovered ? 'running' : 'paused',
-          background: colorTheme.conicLight,
-          filter: 'blur(128px)',
+          transform: `translate3d(${cursorPos.x - 200}px, ${cursorPos.y - 200}px, 0)`,
+          opacity: isHovered ? 1 : 0.25,
         }}
-      />
-    </div>
+      >
+        <div
+          className="w-[400px] h-[400px] rounded-full"
+          style={{
+            background: colorTheme.conicLight,
+            filter: 'blur(48px)',
+          }}
+        />
+      </div>
+    )}
 
     <img
       className="top-24 left-32 relative h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out z-10"
       src={imageSrc}
+      alt="Project screenshot"
+      loading="lazy"
+      decoding="async"
     />
   </div>
 )
 
 const ProjectCard = ({ project = DataHome.projects[0] }) => {
-  if (!project) return null
-
-  const mobileImageRef = useRef(null)
   const desktopImageRef = useRef(null)
   const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 })
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleMouseMove = (e, ref) => {
-    if (!ref.current) return
-    const rect = ref.current.getBoundingClientRect()
+  const handleMouseMove = (e) => {
+    if (!desktopImageRef.current) return
+    const rect = desktopImageRef.current.getBoundingClientRect()
     setCursorPos({
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
     })
   }
 
+  const projectTitle = project?.title?.en || project?.title || ''
   const imageSrc =
-    (typeof project.media === 'string' && project.media) ||
-    project.media?.desktop ||
-    project.media?.mobile ||
+    (typeof project?.media === 'string' && project?.media) ||
+    project?.media?.desktop ||
+    project?.media?.mobile ||
     '/project-1/heroimg_desktop.webp'
-
-  const projectTitle = project.title?.en || project.title
 
   // Generate tema warna latar & inner effect berdasarkan project
   const colorTheme = useMemo(() => {
+    if (!project) return HARMONIOUS_PALETTES[0]
     const numId = typeof project.id === 'number' ? project.id : null
     if (numId !== null && numId > 0) {
       return HARMONIOUS_PALETTES[(numId - 1) % HARMONIOUS_PALETTES.length]
@@ -147,28 +144,20 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
       hash = key.charCodeAt(i) + ((hash << 5) - hash)
     }
     return HARMONIOUS_PALETTES[Math.abs(hash) % HARMONIOUS_PALETTES.length]
-  }, [project.id, projectTitle, imageSrc])
+  }, [project, projectTitle, imageSrc])
 
-  const visualProps = {
-    isHovered,
-    onMouseEnter: () => setIsHovered(true),
-    onMouseLeave: () => setIsHovered(false),
-    colorTheme,
-    cursorPos,
-    imageSrc,
-    title: projectTitle,
-  }
+  if (!project) return null
 
   return (
     <div className='relative w-full group'>
       {/* Grid 2 kolom tanpa gap, border dashed saling terhubung */}
       <div className='flex flex-col md:flex-row'>
 
-        {/* Kolom 2: Visual / Mockup Gambar Mobile */}
+        {/* Kolom 2: Visual / Mockup Gambar Mobile (Tanpa glow kursor & tanpa mouse listener) */}
         <ProjectVisualCard
-          {...visualProps}
-          cardRef={mobileImageRef}
-          onMouseMove={(e) => handleMouseMove(e, mobileImageRef)}
+          showGlow={false}
+          colorTheme={colorTheme}
+          imageSrc={imageSrc}
           className="md:hidden aspect-[4/3]"
         />
 
@@ -227,11 +216,17 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
           </div>
         </div>
 
-        {/* Kolom 2: Visual / Mockup Gambar Desktop*/}
+        {/* Kolom 2: Visual / Mockup Gambar Desktop dengan Hover Glow Teroptimasi */}
         <ProjectVisualCard
-          {...visualProps}
           cardRef={desktopImageRef}
-          onMouseMove={(e) => handleMouseMove(e, desktopImageRef)}
+          showGlow={true}
+          isHovered={isHovered}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onMouseMove={handleMouseMove}
+          colorTheme={colorTheme}
+          cursorPos={cursorPos}
+          imageSrc={imageSrc}
           className="hidden md:block h-[460px] md:h-[480px]"
         />
 

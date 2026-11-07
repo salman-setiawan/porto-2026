@@ -208,4 +208,45 @@ export const DataHome = {
       },
     },
   ],
+  footnote: {
+    statusText: {
+      en: 'Available for freelance & full-time roles',
+      id: 'Tersedia untuk proyek freelance & kerja full-time',
+    },
+    headline: {
+      top: 'Your',
+      bottom: 'Move',
+    },
+    subtext: {
+      en: "Got a project in mind, a role to fill, or just want to explore ideas together? The deck is shuffled and the move is yours.",
+      id: 'Punya ide proyek, posisi yang ingin diisi, atau sekadar ingin berdiskusi bersama? Dek kartu sudah dikocok dan giliran ada di tanganmu.',
+    },
+    cardAction: {
+      en: 'Say hello.',
+      id: 'Katakan halo.',
+    },
+    email: 'salmansetiawan88@gmail.com',
+    resumeUrl: '#',
+    copyText: {
+      copied: 'Copied! ✓',
+      copy: 'Copy',
+    },
+    resumeLabel: {
+      en: 'View résumé',
+      id: 'Lihat résumé',
+    },
+    copyright: 'Salman Setiawan © 2026',
+    builtWith: {
+      en: 'Built with React & Tailwind',
+      id: 'Dibangun dengan React & Tailwind',
+    },
+    badge: {
+      en: 'Open to Work',
+      id: 'Buka Kesempatan',
+    },
+    backToTop: {
+      en: 'Back to top',
+      id: 'Kembali ke atas',
+    },
+  },
 }
