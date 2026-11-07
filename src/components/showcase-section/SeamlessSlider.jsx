@@ -70,10 +70,10 @@ const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
 
 const SeamlessSlider = () => {
   return (
-    <div className="w-full pb-16 bg-[#141414] overflow-hidden">
+    <div className="w-full pb-16 bg-app-primary overflow-hidden">
       <div className="relative z-[110] top-12 pointer-events-none px-4 md:px-8">
-        <h3 className="text-white text-[80px] font-crimson h-[100px] italic tracking-tighter">Playground</h3>
-        <p className="text-white/80 text-sm mt-2">A collection of my other design explorations and shots.</p>
+        <h3 className="text-app-primary text-[80px] font-crimson h-[100px] italic tracking-tighter">Playground</h3>
+        <p className="text-app-secondary text-sm mt-2">A collection of my other design explorations and shots.</p>
       </div>
 
       <div className="max-w-[860px] px-0 md:px-8 mx-auto relative flex justify-center h-[400px] -mt-[50px]">
@@ -91,10 +91,16 @@ const SeamlessSlider = () => {
         </div>
 
         {/* Top Overlay Gradient */}
-        <div className="absolute inset-x-0 top-0 h-[320px] bg-gradient-to-b from-[#141414] via-[#141414]/50 to-transparent z-[100] pointer-events-none" />
+        <div
+          className="absolute inset-x-0 top-0 h-[320px] z-[100] pointer-events-none"
+          style={{ background: 'var(--slider-gradient-top)' }}
+        />
 
         {/* Bottom Overlay Gradient & CTA Button */}
-        <div className="absolute inset-x-0 bottom-0 h-[320px] bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent z-[100] flex items-end justify-center pb-10 pointer-events-none">
+        <div
+          className="absolute inset-x-0 bottom-0 h-[320px] z-[100] flex items-end justify-center pb-10 pointer-events-none"
+          style={{ background: 'var(--slider-gradient-bottom)' }}
+        >
           <div className="pointer-events-auto">
             <Button
               label="Click to See More"

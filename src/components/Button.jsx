@@ -5,9 +5,9 @@ import { playMechanicalSound, playCrispClick } from '../utils/sound'
 let globalButtonCounter = 0
 
 const TYPE_STYLES = {
-  base: 'px-3 py-1.5 rounded-md text-[13px] font-medium shadow-lg shadow-black/10 cursor-pointer bg-blue-700 hover:bg-blue-800',
-  nav: 'px-3 h-[31px] flex items-center rounded-md text-[13px] font-medium shadow-lg shadow-black/10 cursor-pointer bg-blue-600 hover:bg-blue-800',
-  social: 'px-3 py-1.5 flex items-center rounded-md text-[13px] font-medium shadow-lg shadow-black/10 cursor-pointer bg-[#323232] hover:bg-[#1d1d1d]',
+  base: 'px-3 py-1.5 rounded-md text-[13px] font-medium shadow-lg shadow-black/10 cursor-pointer bg-orange-600 hover:bg-orange-700 text-white',
+  nav: 'px-3 h-[31px] flex items-center rounded-md text-[13px] font-medium shadow-lg shadow-black/10 cursor-pointer bg-orange-500 hover:bg-orange-600 text-white',
+  social: 'px-3 py-1.5 flex items-center rounded-md text-[13px] font-medium shadow-lg shadow-black/10 cursor-pointer bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] text-[var(--text-primary)] border border-[var(--border-subtle)] transition-colors',
 }
 
 const Button = ({
@@ -46,7 +46,7 @@ const Button = ({
 
   const typeStyle = TYPE_STYLES[type] || ''
   const stateStyle = type === 'state'
-    ? (active ? 'bg-blue-600 hover:bg-blue-800 text-white' : 'bg-[#202020] hover:bg-[#141414] text-white/80')
+    ? (active ? 'bg-orange-500 hover:bg-orange-600 text-white' : 'bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)]')
     : ''
 
   const content = (

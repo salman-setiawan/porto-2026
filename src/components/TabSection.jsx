@@ -68,7 +68,7 @@ const TabSection = () => {
     <div ref={sectionRef} className="space-y-3">
       {/* Header row: title left, CTA right */}
       <div ref={headerRef} className="flex items-center justify-between">
-        <h3 className="text-white text-[36px] font-crimson h-[48px] italic tracking-tighter"> {isProjects ? 'Projects' : 'Experience'} </h3>
+        <h3 className="text-app-primary text-[36px] font-crimson h-[48px] italic tracking-tighter"> {isProjects ? 'Projects' : 'Experience'} </h3>
         <Button type="social" width="w-fit" label={ctaLabel} onClick={handleSwitch} octave={3} />
       </div>
 
@@ -94,12 +94,12 @@ const TabSection = () => {
             justifyContent: 'space-between',
             gap: '12px',
             padding: '8px 8px 8px 12px',
-            background: 'rgba(22,22,22,0.8)',
-            backdropFilter: 'blur(4px)',
-            WebkitBackdropFilter: 'blur(4px)',
-            border: '1px solid rgba(255,255,255,0.08)',
+            background: 'var(--bg-surface-glass)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: '8px',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.25)',
           }}
         >
           <span
@@ -107,7 +107,7 @@ const TabSection = () => {
               fontFamily: 'var(--font-crimson, Georgia, serif)',
               fontStyle: 'italic',
               fontSize: '20px',
-              color: 'rgba(255,255,255,1)',
+              color: 'var(--text-primary)',
               letterSpacing: '-0.03em',
               lineHeight: 1,
             }}

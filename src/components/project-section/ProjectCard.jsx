@@ -69,8 +69,8 @@ const ProjectVisualCard = ({
     }}
   >
     {/* Crosshairs Sudut Kolom Gambar */}
-    <span className="absolute -top-[5px] -right-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
-    <span className="absolute -bottom-[5px] -right-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
+    <span className="absolute -top-[5px] -right-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
+    <span className="absolute -bottom-[5px] -right-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
 
     {/* Dot grid pattern latar */}
     <div
@@ -174,16 +174,16 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
         />
 
         {/* Kolom 1: Informasi Project */}
-        <div className='relative py-4 px-3 border border-dashed border-white/15 md:border-r-0 bg-white/[0.015] hover:bg-white/[0.03] transition-colors duration-300 flex flex-col justify-between overflow-hidden'>
+        <div className='relative py-4 px-3 border border-dashed border-app-subtle md:border-r-0 bg-app-surface/20 hover:bg-app-surface/40 transition-colors duration-300 flex flex-col justify-between overflow-hidden'>
           {/* Crosshairs Sudut Kolom Informasi */}
-          <span className="absolute -top-[5px] -left-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
-          <span className="absolute -top-[5px] -right-[5px] md:hidden text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
-          <span className="absolute -bottom-[5px] -left-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
-          <span className="absolute -bottom-[5px] -right-[5px] md:hidden text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
+          <span className="absolute -top-[5px] -left-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
+          <span className="absolute -top-[5px] -right-[5px] md:hidden text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
+          <span className="absolute -bottom-[5px] -left-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
+          <span className="absolute -bottom-[5px] -right-[5px] md:hidden text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
 
           {/* Crosshair Persimpangan Atas & Bawah Tengah (MD screen) */}
-          <span className="hidden md:block absolute -top-[5px] -right-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
-          <span className="hidden md:block absolute -bottom-[5px] -right-[5px] text-[10px] leading-none text-white/30 font-mono select-none group-hover:text-blue-400 transition-colors z-20">+</span>
+          <span className="hidden md:block absolute -top-[5px] -right-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
+          <span className="hidden md:block absolute -bottom-[5px] -right-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
 
           <div className="space-y-2 relative z-10">
             <div className="flex flex-wrap gap-2">
@@ -198,15 +198,15 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
             </div>
           </div>
 
-          <HalftoneGlow color="rgba(59, 79, 255, 1)" className="-top-48 left-16 w-[420px] h-[420px]" animation="pulse-radial 4s infinite" />
+          <HalftoneGlow color="rgba(249, 115, 22, 0.85)" className="-top-48 left-16 w-[420px] h-[420px]" animation="pulse-radial 4s infinite" />
 
           <div className="space-y-5 pt-8 z-10">
             <div className='space-y-3'>
-              <h3 className='text-white text-[38px] md:text-[40px] font-crimson h-[48px] italic tracking-tighter'>
+              <h3 className='text-app-primary text-[38px] md:text-[40px] font-crimson h-[48px] italic tracking-tighter'>
                 {projectTitle}
               </h3>
               {project.desc && (
-                <p className="text-white/70 text-[14px] leading-relaxed">
+                <p className="text-app-secondary text-[14px] leading-relaxed">
                   {project.desc?.en || project.desc}
                 </p>
               )}

@@ -4,11 +4,23 @@ import HeroIntro from '../components/hero-section/Intro'
 import TabSection from '../components/TabSection'
 import SeamlessSlider from '../components/showcase-section/SeamlessSlider'
 import MusicPlayer from '../components/MusicPlayer'
+import ThemeToggle from '../components/ThemeToggle'
 import PixelFlare from '../motion/PixelFlare'
 
 const Home = () => {
   // Track scroll position untuk memudarkan flare saat di-scroll
   const [scrollY, setScrollY] = useState(0)
+  const [isLight, setIsLight] = useState(
+    () => typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'light'
+  )
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setIsLight(document.documentElement.getAttribute('data-theme') === 'light')
+    })
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+    return () => observer.disconnect()
+  }, [])
 
   // Lenis Smooth Scroll untuk mengatur kecepatan dan kehalusan scroll
   useEffect(() => {
@@ -35,11 +47,12 @@ const Home = () => {
     }
   }, [])
 
-  // Opacity flare
-  const flareOpacity = Math.max(0, 0.19 * (1 - scrollY / 420))
+  // Opacity flare: 0.15 dark mode, 0.25 light mode
+  const baseOpacity = isLight ? 0.3 : 0.15
+  const flareOpacity = Math.max(0, baseOpacity * (1 - scrollY / 420))
 
   return (
-    <div className='flex flex-col w-full overflow-x-hidden relative min-h-screen bg-[#141414]'>
+    <div className='flex flex-col w-full overflow-x-hidden relative min-h-screen bg-app-primary transition-colors duration-300'>
       {flareOpacity > 0 && (
         <div
           className="fixed inset-x-0 top-0 h-[320px] md:h-[640px] pointer-events-none z-0 transition-opacity duration-75"
@@ -48,7 +61,7 @@ const Home = () => {
           <PixelFlare speed={1.0} intensity="vibrant" />
           <div
             className="absolute inset-0 pointer-events-none"
-            style={{ background: 'linear-gradient(to top, #141414 0%, rgba(20,20,20,0.85) 30%, rgba(20,20,20,0.35) 65%, transparent 100%)' }}
+            style={{ background: 'var(--flare-mask)' }}
           />
         </div>
       )}
@@ -62,6 +75,7 @@ const Home = () => {
         <SeamlessSlider />
       </div>
       <MusicPlayer />
+      <ThemeToggle />
     </div>
   )
 }

@@ -83,16 +83,16 @@ const HeroIntro = ({ scrollY = 0 }) => {
       return (
         <>
           <span>{match[1]} </span>
-          <span className="text-white">{match[2]}</span>
+          <span className="text-app-primary">{match[2]}</span>
         </>
       )
     }
-    return <span className="text-white">{text}</span>
+    return <span className="text-app-primary">{text}</span>
   }
 
   // Komponen Helper Internal untuk menghindari kode JSX ganda
   const renderAvatar = (hoverScaleClass = 'hover:scale-105') => (
-    <div className={`w-20 h-20 shrink-0 overflow-hidden border-[3px] border-blue-500/80 rounded-lg ${hoverScaleClass} hover:rotate-[-8deg] transition-transform`}>
+    <div className={`w-20 h-20 shrink-0 overflow-hidden border-[3px] border-app-accent rounded-lg ${hoverScaleClass} hover:rotate-[-8deg] transition-transform shadow-lg shadow-orange-500/10`}>
       <img src={DataHome.heroSection.avatar} className="scale-110 object-cover" alt="avatar" />
     </div>
   )
@@ -100,23 +100,23 @@ const HeroIntro = ({ scrollY = 0 }) => {
   const renderInfoText = (isLeftAligned = false) => (
     <>
       <div className="flex gap-x-1 font-medium text-[32px] h-[42px] font-crimson italic">
-        <h2 lang={DataHome.heroSection.greetings[greetingIndex].lang} className='text-blue-300'>
+        <h2 lang={DataHome.heroSection.greetings[greetingIndex].lang} className='text-app-accent'>
           {DataHome.heroSection.greetings[greetingIndex].text}
         </h2>
-        <h2>{DataHome.heroSection.title}</h2>
+        <h2 className='text-app-primary'>{DataHome.heroSection.title}</h2>
       </div>
-      <div className={`overflow-hidden flex flex-wrap gap-x-1 items-center ${isLeftAligned ? 'justify-start' : 'justify-center'} text-white/70 text-[14px]`}>
+      <div className={`overflow-hidden flex flex-wrap gap-x-1 items-center ${isLeftAligned ? 'justify-start' : 'justify-center'} text-app-secondary text-[14px]`}>
         <p>i'm</p>
         <p className={`transition-all transform ${getFadeClasses()}`}>
           {renderPosition(positions[currentPositionIndex])}
         </p>
         <p>based in</p>
-        <p className='text-white'>🇮🇩</p>
+        <p className='text-app-primary'>🇮🇩</p>
         <p>Indonesia.</p>
       </div>
       <div className="flex gap-1 items-center text-[14px]">
-        <p className='text-white/70'>and i'm also</p>
-        <p className='text-green-300 text-[14px] font-medium'>Available to Work</p>
+        <p className='text-app-secondary'>and i'm also</p>
+        <p className='text-app-accent text-[14px] font-medium'>Available to Work</p>
       </div>
     </>
   )
@@ -201,9 +201,9 @@ const HeroIntro = ({ scrollY = 0 }) => {
 
       {/* ── Section About me ── */}
       <div>
-        <h3 className='text-white text-[36px] font-crimson h-[40px] italic tracking-tighter'>About me . .</h3>
+        <h3 className='text-app-primary text-[36px] font-crimson h-[40px] italic tracking-tighter'>About me . .</h3>
 
-        <p className='text-white/70 text-[15px] mt-3'>
+        <p className='text-app-secondary text-[15px] mt-3'>
           {DataHome.heroSection.desc[0]?.en}
         </p>
 
@@ -217,7 +217,7 @@ const HeroIntro = ({ scrollY = 0 }) => {
         >
           <div className="overflow-hidden">
             {DataHome.heroSection.desc.slice(1).map((item, index) => (
-              <p key={index} className='text-white/70 text-[15px] mt-3'>
+              <p key={index} className='text-app-secondary text-[15px] mt-3'>
                 {item.en}
               </p>
             ))}
@@ -231,7 +231,7 @@ const HeroIntro = ({ scrollY = 0 }) => {
             setShowAll((prev) => !prev)
           }}
           onMouseEnter={() => playMechanicalSound(3, 0.3)}
-          className="flex justify-center w-full gap-1 pt-3 text-[14px] text-white/40 hover:text-white/80 transition-colors duration-200 cursor-pointer"
+          className="flex justify-center w-full gap-1 pt-3 text-[14px] text-app-muted hover:text-app-primary transition-colors duration-200 cursor-pointer"
         >
           {showAll ? 'Show less ↑' : 'Show more ↓'}
         </button>

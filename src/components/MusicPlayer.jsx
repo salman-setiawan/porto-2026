@@ -148,18 +148,18 @@ const MusicPlayer = () => {
             setIsOpenMobile(true)
           }}
           onMouseEnter={() => playMechanicalSound(3)}
-          className="relative w-12 h-12 rounded-full bg-[#1b1b1b]/90 border border-white/10 backdrop-blur-md flex items-center justify-center text-white/90 shadow-2xl active:scale-95 transition-all cursor-pointer"
+          className="relative w-12 h-12 rounded-full bg-app-surface border border-app-subtle backdrop-blur-md flex items-center justify-center text-app-primary shadow-2xl active:scale-95 transition-all cursor-pointer"
           aria-label="Open Audio Player"
         >
           {isPlaying && !isMuted ? (
-            <img src="/icons/audio-active.svg" alt="Muted" className="w-4 h-4 object-contain brightness-0 invert" />
+            <img src="/icons/audio-active.svg" alt="Active" className="w-4 h-4 object-contain theme-icon-filter" />
           ) : (
-            <img src="/icons/audio-muted.svg" alt="Muted" className="w-4 h-4 object-contain brightness-0 invert" />
+            <img src="/icons/audio-muted.svg" alt="Muted" className="w-4 h-4 object-contain theme-icon-filter" />
           )}
 
           {/* Indicator dot status */}
           <span
-            className={`absolute top-1 right-1 w-3 h-3 rounded-full border-2 border-[#141414] ${isPlaying && !isMuted ? 'bg-green-400 animate-pulse' : 'bg-red-400/80'}`}
+            className={`absolute top-1 right-1 w-3 h-3 rounded-full border-2 border-app-primary ${isPlaying && !isMuted ? 'bg-orange-500 animate-pulse' : 'bg-app-muted'}`}
           />
         </button>
       </div>
@@ -167,7 +167,7 @@ const MusicPlayer = () => {
       {/* ── Floating Bar Mini Player Panel ── */}
       <div
         className={`
-          rounded bg-[#181818]/90 border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.65)] transition-all duration-300 ease-out
+          rounded bg-app-surface/90 border border-app-subtle backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out
           ${'md:opacity-100 md:translate-x-0 md:pointer-events-auto ' +
           (isOpenMobile ? 'opacity-100 translate-x-0 pointer-events-auto scale-100' : 'max-md:opacity-0 max-md:translate-x-12 max-md:pointer-events-none max-md:absolute max-md:bottom-0 max-md:right-0 max-md:scale-95')
           }
@@ -177,10 +177,10 @@ const MusicPlayer = () => {
 
           {/* Info Lagu */}
           <div className="flex items-center justify-between text-[12px] w-44 md:w-48">
-            <span className="font-medium text-white/90 truncate">
+            <span className="font-medium text-app-primary truncate">
               just chillin - enfx
             </span>
-            <span className="text-white/40 tabular-nums">
+            <span className="text-app-muted tabular-nums">
               {formatTime(currentTime)} / {formatTime(duration)}
             </span>
           </div>
@@ -193,22 +193,22 @@ const MusicPlayer = () => {
               className={`
                 p-1 rounded flex items-center gap-1.5 text-[12px] font-medium
                 cursor-pointer active:scale-95 transition-all shrink-0 w-[24px] justify-center
-                ${isMuted ? 'bg-red-500/10 hover:bg-red-500/20 text-red-300' : 'hover:bg-white/15 text-white/80 hover:text-white'}
+                ${isMuted ? 'bg-orange-500/15 hover:bg-orange-500/25 text-orange-400' : 'hover:bg-app-surface-elevated text-app-secondary hover:text-app-primary'}
               `}
             >
               {isMuted ? (
                 /* Icon Speaker Muted */
-                <img src="/icons/audio-muted.svg" alt="Muted" className="w-3.5 h-3.5 object-contain brightness-0 invert" />
+                <img src="/icons/audio-muted.svg" alt="Muted" className="w-3.5 h-3.5 object-contain theme-icon-filter" />
               ) : (
                 /* Icon Speaker Active */
-                <img src="/icons/audio-active.svg" alt="Active" className="w-3.5 h-3.5 object-contain brightness-0 invert" />
+                <img src="/icons/audio-active.svg" alt="Active" className="w-3.5 h-3.5 object-contain theme-icon-filter" />
               )}
             </button>
 
             {/* Mobile Close Button */}
             <button
               onClick={() => { playCrispClick(), setIsOpenMobile(false) }}
-              className="md:hidden p-1 text-white/40 hover:text-white text-xs cursor-pointer active:scale-95 transition-colors hover:bg-white/15 rounded w-[24px] justify-center"
+              className="md:hidden p-1 text-app-muted hover:text-app-primary text-xs cursor-pointer active:scale-95 transition-colors hover:bg-app-surface-elevated rounded w-[24px] justify-center"
             >
               ✕
             </button>
@@ -218,10 +218,10 @@ const MusicPlayer = () => {
         {/* Interactive Progress Bar */}
         <div
           onClick={handleSeek}
-          className="w-full h-0.5 bg-white/10 cursor-pointer relative overflow-hidden group/bar"
+          className="w-full h-0.5 bg-app-surface-elevated cursor-pointer relative overflow-hidden group/bar"
         >
           <div
-            className={`h-full transition-all duration-100 ${isMuted ? 'bg-white/30' : 'bg-gradient-to-r from-blue-500 to-sky-400'}`}
+            className={`h-full transition-all duration-100 ${isMuted ? 'bg-app-muted' : 'bg-gradient-to-r from-orange-500 to-amber-400'}`}
             style={{ width: `${progress}%` }}
           />
         </div>

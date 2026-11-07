@@ -15,32 +15,32 @@ const ExperienceCard = memo(({ experience, isHovered, isAnyHovered, onHover, onL
       className={`
         relative p-5 border border-dashed transition-all duration-300 ease-out flex flex-col justify-between group cursor-pointer
         ${isHovered
-          ? 'scale-102 z-30 opacity-100 bg-white/[0.045] border-white/40'
+          ? 'scale-102 z-30 opacity-100 bg-app-surface border-app-accent shadow-lg shadow-orange-500/5'
           : isAnyHovered
-            ? 'opacity-20 border-white/10 bg-white/[0.01]'
-            : 'scale-100 opacity-100 border-white/15 bg-white/[0.015] hover:border-white/30'
+            ? 'opacity-20 border-app-subtle bg-app-primary'
+            : 'scale-100 opacity-100 border-app-subtle bg-app-surface/40 hover:border-app-medium'
         }
       `}
     >
-      {/* 4 Corner Crosshairs (+) khas grid arsitektural */}
-      <span className={`absolute -top-[5px] -left-[5px] text-[10px] leading-none font-mono select-none transition-colors ${isHovered ? 'text-blue-400' : 'text-white/30'}`}>+</span>
-      <span className={`absolute -top-[5px] -right-[5px] text-[10px] leading-none font-mono select-none transition-colors ${isHovered ? 'text-blue-400' : 'text-white/30'}`}>+</span>
-      <span className={`absolute -bottom-[5px] -left-[5px] text-[10px] leading-none font-mono select-none transition-colors ${isHovered ? 'text-blue-400' : 'text-white/30'}`}>+</span>
-      <span className={`absolute -bottom-[5px] -right-[5px] text-[10px] leading-none font-mono select-none transition-colors ${isHovered ? 'text-blue-400' : 'text-white/30'}`}>+</span>
+      {/* 4 Corner Crosshairs (+) */}
+      <span className={`absolute -top-[5px] -left-[5px] text-[10px] leading-none font-mono select-none transition-colors ${isHovered ? 'text-app-accent font-bold' : 'text-app-muted'}`}>+</span>
+      <span className={`absolute -top-[5px] -right-[5px] text-[10px] leading-none font-mono select-none transition-colors ${isHovered ? 'text-app-accent font-bold' : 'text-app-muted'}`}>+</span>
+      <span className={`absolute -bottom-[5px] -left-[5px] text-[10px] leading-none font-mono select-none transition-colors ${isHovered ? 'text-app-accent font-bold' : 'text-app-muted'}`}>+</span>
+      <span className={`absolute -bottom-[5px] -right-[5px] text-[10px] leading-none font-mono select-none transition-colors ${isHovered ? 'text-app-accent font-bold' : 'text-app-muted'}`}>+</span>
 
       <div className="space-y-3">
         {/* Header: Company, Role & Period */}
         <div>
           <div className="flex flex-wrap items-center justify-between items-start">
             <div>
-              <h4 className={`text-[15px] font-bold tracking-tight transition-colors ${isHovered ? 'text-blue-300' : 'text-white'}`}>
+              <h4 className={`text-[15px] font-bold tracking-tight transition-colors ${isHovered ? 'text-app-accent' : 'text-app-primary'}`}>
                 {experience.role?.en || experience.role}
               </h4>
-              <p className="text-blue-400 text-[13px] font-medium">
+              <p className="text-app-accent text-[13px] font-medium">
                 {experience.title}
               </p>
             </div>
-            <p className="text-[12px] text-white/40">
+            <p className="text-[12px] text-app-muted">
               {periodText}
             </p>
           </div>
@@ -48,7 +48,7 @@ const ExperienceCard = memo(({ experience, isHovered, isAnyHovered, onHover, onL
 
         {/* Jobdesc */}
         {experience.jobdesc && (
-          <p className="text-white/60 text-[14px] leading-relaxed">
+          <p className="text-app-secondary text-[14px] leading-relaxed">
             {experience.jobdesc?.en || experience.jobdesc}
           </p>
         )}
@@ -61,8 +61,8 @@ const ExperienceCard = memo(({ experience, isHovered, isAnyHovered, onHover, onL
             <span
               key={idx}
               className={`text-[11px] px-2 py-0.5 rounded transition-colors ${isHovered
-                ? 'bg-white/[0.03] border border-white/20 text-white/70'
-                : 'bg-white/[0.03] border border-white/10 text-white/50'
+                ? 'bg-app-surface border border-app-accent text-app-primary'
+                : 'bg-app-surface border border-app-subtle text-app-muted'
                 }`}
             >
               {item.en || item}

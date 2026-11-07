@@ -5,8 +5,31 @@
 }
 
 :root {
-  color-scheme: light dark;
-  background-color: #141414;
+  --bg-primary: #141414;
+  --bg-surface: #1e1e1e;
+  --bg-surface-elevated: #282828;
+  --bg-surface-glass: rgba(26, 26, 26, 0.85);
+
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.72);
+  --text-muted: rgba(255, 255, 255, 0.42);
+
+  --border-subtle: rgba(255, 255, 255, 0.15);
+  --border-medium: rgba(255, 255, 255, 0.3);
+
+  --accent: #f97316;
+  --accent-hover: #ea580c;
+  --accent-light: #fb923c;
+  --accent-glow: rgba(249, 115, 22, 0.85);
+  --text-accent: #fb923c;
+
+  --flare-mask: linear-gradient(to top, #141414 0%, rgba(20, 20, 20, 0.85) 30%, rgba(20, 20, 20, 0.35) 65%, transparent 100%);
+  --slider-gradient-top: linear-gradient(to bottom, #141414 0%, rgba(20, 20, 20, 0.5) 50%, transparent 100%);
+  --slider-gradient-bottom: linear-gradient(to top, #141414 0%, rgba(20, 20, 20, 0.4) 50%, transparent 100%);
+
+  color-scheme: dark;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: "Momo Trust Sans", sans-serif;
 
   font-synthesis: none;
@@ -15,23 +38,171 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Light Mode Inversion (High Contrast & Maximum Readability) ── */
+:root[data-theme="light"],
+body.light-theme {
+  --bg-primary: #f8f9fa;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #eaecee;
+  --bg-surface-glass: rgba(255, 255, 255, 0.88);
+
+  --text-primary: #0a0a0a;
+  --text-secondary: #374151;
+  --text-muted: #64748b;
+
+  --border-subtle: rgba(0, 0, 0, 0.24);
+  --border-medium: rgba(0, 0, 0, 0.28);
+
+  --accent: #ea580c;
+  --accent-hover: #c2410c;
+  --accent-light: #f97316;
+  --accent-glow: rgba(234, 88, 12, 0.35);
+  --text-accent: #c2410c;
+
+  --flare-mask: linear-gradient(to top, #f8f9fa 0%, rgba(248, 249, 250, 0.92) 35%, rgba(248, 249, 250, 0.45) 65%, transparent 100%);
+  --slider-gradient-top: linear-gradient(to bottom, #f8f9fa 0%, rgba(248, 249, 250, 0.6) 50%, transparent 100%);
+  --slider-gradient-bottom: linear-gradient(to top, #f8f9fa 0%, rgba(248, 249, 250, 0.5) 50%, transparent 100%);
+
+  color-scheme: light;
+}
+
+body {
+  transition: background-color 350ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Theme-Aware Icon Filter ── */
+/* Di Dark Mode: brightness(0) invert(1) agar icon putih */
+/* Di Light Mode: brightness(0) TANPA invert agar icon hitam/kontras tinggi */
+.theme-icon-filter {
+  filter: brightness(0) invert(1);
+  transition: filter 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root[data-theme="light"] .theme-icon-filter,
+body.light-theme .theme-icon-filter {
+  filter: brightness(0);
+}
+
+/* ── Pixel Flare Light/Dark Adaptation ── */
+.pixel-flare-wrapper {
+  background-color: #0a0302;
+  transition: background-color 450ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root[data-theme="light"] .pixel-flare-wrapper,
+body.light-theme .pixel-flare-wrapper {
+  background-color: transparent;
+}
+
+:root[data-theme="light"] .pixel-flare-wrapper canvas,
+body.light-theme .pixel-flare-wrapper canvas {
+  mix-blend-mode: multiply;
+  opacity: 0.65;
+}
+
+/* ── Buttery Smooth Theme Transition Controller ── */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: background-color 450ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 450ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 450ms cubic-bezier(0.4, 0, 0.2, 1),
+    fill 450ms cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 450ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 450ms cubic-bezier(0.4, 0, 0.2, 1),
+    filter 450ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition-delay: 0s !important;
+}
+
+/* ── Utility Classes for Systematized 3-Color Tokens ── */
+.bg-app-primary {
+  background-color: var(--bg-primary);
+}
+
+.bg-app-surface {
+  background-color: var(--bg-surface);
+}
+
+.bg-app-surface-elevated {
+  background-color: var(--bg-surface-elevated);
+}
+
+.bg-app-surface-glass {
+  background-color: var(--bg-surface-glass);
+}
+
+.text-app-primary {
+  color: var(--text-primary);
+}
+
+.text-app-secondary {
+  color: var(--text-secondary);
+}
+
+.text-app-muted {
+  color: var(--text-muted);
+}
+
+.text-app-accent {
+  color: var(--text-accent);
+}
+
+.text-app-accent-light {
+  color: var(--accent-light);
+}
+
+.bg-app-accent {
+  background-color: var(--accent);
+}
+
+.border-app-accent {
+  border-color: var(--accent);
+}
+
+.border-app-subtle {
+  border-color: var(--border-subtle);
+}
+
+.border-app-medium {
+  border-color: var(--border-medium);
+}
+
 /* ── Global Keyframe Animations ── */
 @keyframes tabFadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes float-slow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 @keyframes pulse-radial {
-  0%, 100% {
+
+  0%,
+  100% {
     mask-size: 80%;
     -webkit-mask-size: 80%;
     opacity: 0.2;
   }
+
   50% {
     mask-size: 110%;
     -webkit-mask-size: 110%;
@@ -40,17 +211,31 @@
 }
 
 @keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes scroll-up {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(0, -50%, 0); }
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, -50%, 0);
+  }
 }
 
 @keyframes scroll-down {
-  from { transform: translate3d(0, -50%, 0); }
-  to { transform: translate3d(0, 0, 0); }
-}
+  from {
+    transform: translate3d(0, -50%, 0);
+  }
 
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}

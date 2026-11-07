@@ -157,7 +157,7 @@ const PixelFlare = ({
   }, [speed, intensity])
 
   return (
-    <div className={`absolute inset-0 overflow-hidden pointer-events-none select-none bg-[#0a0302] ${className}`}>
+    <div className={`absolute inset-0 overflow-hidden pointer-events-none select-none pixel-flare-wrapper ${className}`}>
       <canvas
         ref={canvasRef}
         className="w-full h-full object-cover"
