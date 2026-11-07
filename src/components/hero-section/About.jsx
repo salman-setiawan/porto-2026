@@ -1,9 +1,5 @@
 import { DataHome } from '../../data/dataHome'
 
-/**
- * About Section Component
- * Menampilkan deskripsi profil lengkap tanpa fitur expand / show more
- */
 const About = () => {
   const descItems = DataHome.heroSection.desc || []
 

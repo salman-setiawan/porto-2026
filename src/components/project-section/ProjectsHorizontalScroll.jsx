@@ -94,7 +94,8 @@ const ProjectsHorizontalScroll = ({ children }) => {
     // startX + projects.length * (cardWidth + gap) + moreCardWidth - totalTravel = gridRight
     // => totalTravel = startX + projects.length * (cardWidth + gap) + moreCardWidth - gridRight
     const totalContentWidth = projects.length * (cardWidth + gap) + moreCardWidth
-    const totalTravel = Math.max(0, startX + totalContentWidth - gridRight)
+    const endingOffset = windowWidth >= 768 ? 50 : 0
+    const totalTravel = Math.max(0, startX + totalContentWidth - gridRight - endingOffset)
     const currentTranslateX = startX - progress * totalTravel
 
     if (trackRef.current) {
@@ -203,9 +204,7 @@ const ProjectsHorizontalScroll = ({ children }) => {
             ))}
 
             {/* Ending Slide: Box "Show More Project" */}
-            <div className="w-[320px] md:w-[420px] shrink-0">
-              <MoreProjectsCard url="/projects" />
-            </div>
+            <MoreProjectsCard url="/projects" />
           </div>
         </div>
 

@@ -191,9 +191,9 @@ const HeroIntro = ({ scrollY = 0 }) => {
         </div>
       ) : (
         /* ── DESKTOP LAYOUT: Scroll-driven animated absolute positioning ── */
-        <div className="relative w-full h-[650px]">
+        <div className="relative w-full h-[700px]">
           <div
-            className="w-full relative h-[140px] pointer-events-auto"
+            className="w-full relative h-[140px] pointer-events-auto -mt-16"
             style={{
               transform: `translate3d(0, ${heroOffsetY}px, 0)`,
               willChange: 'transform',
@@ -204,7 +204,7 @@ const HeroIntro = ({ scrollY = 0 }) => {
               className="absolute top-0 pointer-events-auto"
               style={{
                 left: `${(1 - progress) * 50}%`,
-                transform: `translate3d(-${(1 - progress) * 50}%, ${95 + (1 - progress) * 140}px, 0)`,
+                transform: `translate3d(-${(1 - progress) * 50}%, ${230 + (1 - progress) * 140}px, 0)`,
                 willChange: 'transform, left',
               }}
             >
@@ -216,7 +216,7 @@ const HeroIntro = ({ scrollY = 0 }) => {
               className={`absolute top-0 flex flex-col space-y-0.5 pointer-events-auto ${progress > 0.4 ? 'items-start text-left' : 'items-center text-center'}`}
               style={{
                 left: `calc(${progress * 96}px + ${(1 - progress) * 50}%)`,
-                transform: `translate3d(-${(1 - progress) * 50}%, ${88 + (1 - progress) * 240}px, 0)`,
+                transform: `translate3d(-${(1 - progress) * 50}%, ${222 + (1 - progress) * 240}px, 0)`,
                 width: progress > 0.4 ? 'auto' : '320px',
                 maxWidth: progress > 0.4 ? 'calc(100% - 100px)' : '320px',
                 willChange: 'transform, left',
@@ -230,7 +230,7 @@ const HeroIntro = ({ scrollY = 0 }) => {
               className="absolute top-0 flex gap-2.5 pointer-events-auto"
               style={{
                 left: `${(1 - progress) * 50}%`,
-                transform: `translate3d(-${(1 - progress) * 50}%, ${192 + (1 - progress) * 240}px, 0)`,
+                transform: `translate3d(-${(1 - progress) * 50}%, ${330 + (1 - progress) * 240}px, 0)`,
                 willChange: 'transform, left',
               }}
             >
