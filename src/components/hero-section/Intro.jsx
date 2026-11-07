@@ -5,7 +5,7 @@ import { playMechanicalSound, playCrispClick, playWhoosh } from '../../utils/sou
 
 // Greeting multi-bahasa diambil dari dataHome.js → heroSection.greetings
 
-const HeroDescription = () => {
+const HeroIntro = () => {
   const positions = Array.isArray(DataHome.heroSection.position)
     ? DataHome.heroSection.position
     : [DataHome.heroSection.position].filter(Boolean)
@@ -16,6 +16,34 @@ const HeroDescription = () => {
 
   // State cycling greeting multi-bahasa
   const [greetingIndex, setGreetingIndex] = useState(0)
+
+  // Track scroll position untuk animasi transisi kontinu (scroll-driven scrubbing)
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    let rafId = null
+    const handleScroll = () => {
+      setScrollY(window.scrollY)
+    }
+
+    const onScroll = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(handleScroll)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    handleScroll()
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(rafId)
+    }
+  }, [])
+
+  // Jarak scroll transisi dari Gambar 1 (Intro) ke Gambar 2 (Description)
+  const SCROLL_DISTANCE = 420
+  const progress = Math.min(1, Math.max(0, scrollY / SCROLL_DISTANCE))
+  // Hero tertahan di atas viewport selama proses scroll transisi
+  const heroOffsetY = Math.min(scrollY, SCROLL_DISTANCE)
 
   useEffect(() => {
     if (positions.length <= 1) return
@@ -86,57 +114,100 @@ const HeroDescription = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex gap-4 items-center w-full">
-        <div className="w-22 h-22 md:w-20 md:h-20 shrink-0 overflow-hidden border-[3px] border-blue-500/80 rounded-lg hover:scale-105 hover:rotate-[-8deg]">
-          <img src={DataHome.heroSection.avatar} className="scale-110 object-cover" alt="avatar" />
+      {/* Scroll Track: Menahan hero di viewport selagi About me naik ke atas menempel ke hero */}
+      <div
+        className="relative w-full h-[650px]"
+      >
+        {/* Pinned Hero Container: Bergerak bersama scroll hingga About me menempel */}
+        <div
+          className="w-full relative h-[140px] pointer-events-auto"
+          style={{
+            transform: `translate3d(0, ${heroOffsetY}px, 0)`,
+            willChange: 'transform',
+          }}
+        >
+          {/* ── AVATAR: Meluncur fisik dari tengah ke kiri atas TANPA FADE ── */}
+          <div
+            className="absolute top-0 pointer-events-auto"
+            style={{
+              left: `${(1 - progress) * 50}%`,
+              transform: `translate3d(-${(1 - progress) * 50}%, ${95 + (1 - progress) * 140}px, 0)`,
+              willChange: 'transform, left',
+            }}
+          >
+            <div className="w-20 h-20 shrink-0 overflow-hidden border-[3px] border-blue-500/80 rounded-lg hover:scale-105 hover:rotate-[-8deg] transition-transform">
+              <img src={DataHome.heroSection.avatar} className="scale-110 object-cover" alt="avatar" />
+            </div>
+          </div>
+
+          {/* ── TEKS INFO: Meluncur fisik dari bawah avatar ke samping kanan avatar TANPA FADE ── */}
+          <div
+            className={`absolute top-0 flex flex-col space-y-0.5 pointer-events-auto ${progress > 0.4 ? 'items-start text-left' : 'items-center text-center'
+              }`}
+            style={{
+              left: `calc(${progress * 96}px + ${(1 - progress) * 50}%)`,
+              transform: `translate3d(-${(1 - progress) * 50}%, ${98 + (1 - progress) * 240}px, 0)`,
+              width: progress > 0.4 ? 'auto' : '320px',
+              maxWidth: progress > 0.4 ? 'calc(100% - 100px)' : '320px',
+              willChange: 'transform, left',
+            }}
+          >
+            <div className="flex gap-x-1">
+              <h2 lang={DataHome.heroSection.greetings[greetingIndex].lang} className='text-xl font-bold text-blue-300'>
+                {DataHome.heroSection.greetings[greetingIndex].text}
+              </h2>
+              <h2 className='text-xl font-bold'>{DataHome.heroSection.title}</h2>
+            </div>
+            <div className={`overflow-hidden flex flex-wrap gap-x-1 items-center ${progress > 0.4 ? 'justify-start' : 'justify-center'} text-white/70 text-[14px]`}>
+              <p>i'm</p>
+              <p className={`transition-all transform ${getFadeClasses()}`}>
+                {renderPosition(positions[currentPositionIndex])}
+              </p>
+              <p>based in</p>
+              <p className='text-white'>🇮🇩</p>
+              <p>Indonesia.</p>
+            </div>
+            <div className="flex gap-1 items-center text-[14px]">
+              <p className='text-white/70'>and i'm also</p>
+              <p className='text-green-300 text-[14px] font-medium'>Available to Work</p>
+            </div>
+          </div>
+
+          {/* ── SOCIAL BUTTONS: Meluncur fisik dari tengah bawah ke kiri bawah TANPA FADE ── */}
+          <div
+            className="absolute top-0 flex gap-2.5 pointer-events-auto"
+            style={{
+              left: `${(1 - progress) * 50}%`,
+              transform: `translate3d(-${(1 - progress) * 50}%, ${192 + (1 - progress) * 240}px, 0)`,
+              willChange: 'transform, left',
+            }}
+          >
+            <Button
+              width="w-fit"
+              type='social'
+              label={DataHome.heroSection.cta[0].label}
+              url={DataHome.heroSection.cta[0].link}
+              icon={socialIcons[0]}
+              octave={1}
+            />
+            <Button
+              width="w-fit"
+              type='social'
+              label={DataHome.heroSection.cta[1].label}
+              url={DataHome.heroSection.cta[1].link}
+              icon={socialIcons[1]}
+              octave={2}
+            />
+            <Button
+              width="w-fit"
+              type='social'
+              label={DataHome.heroSection.cta[2].label}
+              url={DataHome.heroSection.cta[2].link}
+              icon={socialIcons[2]}
+              octave={3}
+            />
+          </div>
         </div>
-        <div className='space-y-0.5'>
-          <div className="flex gap-x-1 overflow-hidden">
-            <h2 lang={DataHome.heroSection.greetings[greetingIndex].lang} className='text-xl font-bold text-blue-300'>
-              {DataHome.heroSection.greetings[greetingIndex].text}
-            </h2>
-            <h2 className='text-xl font-bold'>{DataHome.heroSection.title}</h2>
-          </div>
-          <div className="overflow-hidden flex flex-wrap gap-x-1 items-center text-white/70 text-[14px] max-w-[200px] md:max-w-full">
-            <p>i'm</p>
-            <p className={`transition-all transform ${getFadeClasses()}`}>
-              {renderPosition(positions[currentPositionIndex])}
-            </p>
-            <p>based in</p>
-            <p className='text-white'>🇮🇩</p>
-            <p>Indonesia.</p>
-          </div>
-          <div className="flex gap-1 items-center text-[14px]">
-            <p className='text-white/70'>and i'm also</p>
-            <p className='text-green-300 text-[14px] font-medium'>Available to Work</p>
-          </div>
-        </div>
-      </div>
-      <div className="flex gap-2.5">
-        <Button
-          width="w-fit"
-          type='social'
-          label={DataHome.heroSection.cta[0].label}
-          url={DataHome.heroSection.cta[0].link}
-          icon={socialIcons[0]}
-          octave={1}
-        />
-        <Button
-          width="w-fit"
-          type='social'
-          label={DataHome.heroSection.cta[1].label}
-          url={DataHome.heroSection.cta[1].link}
-          icon={socialIcons[1]}
-          octave={2}
-        />
-        <Button
-          width="w-fit"
-          type='social'
-          label={DataHome.heroSection.cta[2].label}
-          url={DataHome.heroSection.cta[2].link}
-          icon={socialIcons[2]}
-          octave={3}
-        />
       </div>
       <div>
         <h3 className='text-white text-[36px] font-crimson h-[40px] italic tracking-tighter'>About me . .</h3>
@@ -181,4 +252,4 @@ const HeroDescription = () => {
   )
 }
 
-export default HeroDescription
+export default HeroIntro
