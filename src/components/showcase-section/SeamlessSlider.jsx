@@ -1,8 +1,7 @@
-
 import Button from '../Button'
 
-// All portfolio shots - add more as needed
-const shots = [
+// All portfolio shots
+const SHOTS = [
   '/shots/estore.webp',
   '/shots/halogbs.webp',
   '/shots/learnx.webp',
@@ -10,7 +9,7 @@ const shots = [
 ]
 
 // Duplicate shots to ensure we have enough for 3 columns
-const allShots = [...shots, ...shots, ...shots]
+const ALL_SHOTS = [...SHOTS, ...SHOTS, ...SHOTS]
 
 // Split into columns (distribute evenly)
 const splitIntoColumns = (items, numCols) => {
@@ -20,6 +19,10 @@ const splitIntoColumns = (items, numCols) => {
   })
   return columns
 }
+
+// Pre-computed columns (hanya dihitung 1x di level modul)
+const COLUMNS_3 = splitIntoColumns(ALL_SHOTS, 3)
+const COLUMNS_2 = splitIntoColumns(ALL_SHOTS, 2)
 
 const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
   const animationName = direction === 'up' ? 'scroll-up' : 'scroll-down'
@@ -38,10 +41,7 @@ const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
       >
         {/* First set */}
         {shots.map((shot, index) => (
-          <div
-            key={`a-${index}`}
-            className="rounded-md overflow-hidden"
-          >
+          <div key={`a-${index}`} className="rounded-md overflow-hidden">
             <img
               src={shot}
               alt={`Portfolio shot ${index + 1}`}
@@ -53,10 +53,7 @@ const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
         ))}
         {/* Duplicate set for seamless loop */}
         {shots.map((shot, index) => (
-          <div
-            key={`b-${index}`}
-            className="rounded-md overflow-hidden"
-          >
+          <div key={`b-${index}`} className="rounded-md overflow-hidden">
             <img
               src={shot}
               alt={`Portfolio shot ${index + 1}`}
@@ -72,10 +69,6 @@ const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
 }
 
 const SeamlessSlider = () => {
-  // Split shots into 3 columns for desktop
-  const columns3 = splitIntoColumns(allShots, 3)
-  const columns2 = splitIntoColumns(allShots, 2)
-
   return (
     <div className="w-full pb-16 bg-[#141414] overflow-hidden">
       <div className="relative z-[110] top-12 pointer-events-none px-4 md:px-8">
@@ -83,35 +76,22 @@ const SeamlessSlider = () => {
         <p className="text-white/80 text-sm mt-2">A collection of my other design explorations and shots.</p>
       </div>
 
-      <style>
-        {`
-          @keyframes scroll-up {
-            from { transform: translate3d(0, 0, 0); }
-            to { transform: translate3d(0, -50%, 0); }
-          }
-          @keyframes scroll-down {
-            from { transform: translate3d(0, -50%, 0); }
-            to { transform: translate3d(0, 0, 0); }
-          }
-        `}
-      </style>
-
       <div className="max-w-[860px] px-0 md:px-8 mx-auto relative flex justify-center h-[400px] -mt-[50px]">
         {/* Mobile & Tablet: 2 columns */}
         <div className="flex md:hidden gap-2 w-fit mx-auto overflow-visible">
-          <Column shots={columns2[0]} direction="up" duration={30} className="h-full w-[440px]" />
-          <Column shots={columns2[1]} direction="down" duration={30} className="h-full w-[440px]" />
+          <Column shots={COLUMNS_2[0]} direction="up" duration={30} className="h-full w-[440px]" />
+          <Column shots={COLUMNS_2[1]} direction="down" duration={30} className="h-full w-[440px]" />
         </div>
 
         {/* Desktop: 3 columns */}
         <div className="hidden md:flex gap-2">
-          <Column shots={columns3[0]} direction="up" duration={30} className="h-full" />
-          <Column shots={columns3[1]} direction="down" duration={35} className="h-full" />
-          <Column shots={columns3[2]} direction="up" duration={30} className="h-full" />
+          <Column shots={COLUMNS_3[0]} direction="up" duration={30} className="h-full" />
+          <Column shots={COLUMNS_3[1]} direction="down" duration={35} className="h-full" />
+          <Column shots={COLUMNS_3[2]} direction="up" duration={30} className="h-full" />
         </div>
 
         {/* Top Overlay Gradient */}
-        <div className="absolute inset-x-0 top-0 h-[320px] bg-gradient-to-b from-[#141414] via-[#141414]/50 to-transparent z-[100] pointer-events-none"></div>
+        <div className="absolute inset-x-0 top-0 h-[320px] bg-gradient-to-b from-[#141414] via-[#141414]/50 to-transparent z-[100] pointer-events-none" />
 
         {/* Bottom Overlay Gradient & CTA Button */}
         <div className="absolute inset-x-0 bottom-0 h-[320px] bg-gradient-to-t from-[#141414] via-[#141414]/40 to-transparent z-[100] flex items-end justify-center pb-10 pointer-events-none">
@@ -129,4 +109,3 @@ const SeamlessSlider = () => {
 }
 
 export default SeamlessSlider
-

@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { DataHome } from '../../data/dataHome'
 import { playWhoosh } from '../../utils/sound'
 
-const ExperienceCard = ({ experience, isHovered, isAnyHovered, onHover, onLeave }) => {
+const ExperienceCard = memo(({ experience, isHovered, isAnyHovered, onHover, onLeave }) => {
   const periodText = `${experience.dateStart || ''} — ${experience.dateEnd || ''}`
 
   return (
@@ -72,7 +72,7 @@ const ExperienceCard = ({ experience, isHovered, isAnyHovered, onHover, onLeave 
       )}
     </div>
   )
-}
+})
 
 const ExperienceContent = () => {
   const experiences = DataHome.experience || []
@@ -101,4 +101,3 @@ const ExperienceContent = () => {
 }
 
 export default ExperienceContent
-export { ExperienceCard }

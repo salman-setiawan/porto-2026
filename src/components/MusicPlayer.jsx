@@ -152,98 +152,67 @@ const MusicPlayer = () => {
           aria-label="Open Audio Player"
         >
           {isPlaying && !isMuted ? (
-            /* Equalizer wave animasi saat audio bersuara */
-            <div className="flex items-end gap-[2px] h-4 mt-1.5">
-              <span className="w-1 bg-blue-400 rounded-full animate-bounce [animation-delay:0ms] h-full" />
-              <span className="w-1 bg-blue-400 rounded-full animate-bounce [animation-delay:150ms] h-2/3" />
-              <span className="w-1 bg-blue-400 rounded-full animate-bounce [animation-delay:300ms] h-full" />
-            </div>
+            <img src="/icons/audio-active.svg" alt="Muted" className="w-4 h-4 object-contain brightness-0 invert" />
           ) : (
-            /* Speaker Mute Icon */
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-              <line x1="23" y1="9" x2="17" y2="15" />
-              <line x1="17" y1="9" x2="23" y2="15" />
-            </svg>
+            <img src="/icons/audio-muted.svg" alt="Muted" className="w-4 h-4 object-contain brightness-0 invert" />
           )}
 
           {/* Indicator dot status */}
           <span
-            className={`absolute top-0 right-0 w-3 h-3 rounded-full border-2 border-[#141414] ${isPlaying && !isMuted ? 'bg-green-400 animate-pulse' : 'bg-red-400/80'
-              }`}
+            className={`absolute top-1 right-1 w-3 h-3 rounded-full border-2 border-[#141414] ${isPlaying && !isMuted ? 'bg-green-400 animate-pulse' : 'bg-red-400/80'}`}
           />
         </button>
       </div>
 
-      {/* ── Floating Bar Mini Player Panel (Desktop selalu ada, Mobile Slide in/out dari kanan) ── */}
+      {/* ── Floating Bar Mini Player Panel ── */}
       <div
         className={`
-          rounded-lg bg-[#181818]/90 border border-white/10 backdrop-blur-xl
-          shadow-[0_8px_32px_rgba(0,0,0,0.65)] transition-all duration-300 ease-out
-          ${
-          /* Di desktop selalu tampil normal */
-          'md:opacity-100 md:translate-x-0 md:pointer-events-auto ' +
-          /* Di mobile slide in/out */
-          (isOpenMobile
-            ? 'opacity-100 translate-x-0 pointer-events-auto scale-100'
-            : 'max-md:opacity-0 max-md:translate-x-12 max-md:pointer-events-none max-md:absolute max-md:bottom-0 max-md:right-0 max-md:scale-95')
+          rounded bg-[#181818]/90 border border-white/10 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.65)] transition-all duration-300 ease-out
+          ${'md:opacity-100 md:translate-x-0 md:pointer-events-auto ' +
+          (isOpenMobile ? 'opacity-100 translate-x-0 pointer-events-auto scale-100' : 'max-md:opacity-0 max-md:translate-x-12 max-md:pointer-events-none max-md:absolute max-md:bottom-0 max-md:right-0 max-md:scale-95')
           }
         `}
       >
-        <div className="flex items-center gap-3 pl-3 pr-1.5 py-1.5">
+        <div className="flex items-center gap-4 pl-3 pr-1.5 py-1.5">
+
           {/* Info Lagu */}
-          <div className="flex flex-col gap-1 w-44 md:w-48">
-            <div className="flex items-center justify-between text-[12px]">
-              <span className="font-medium text-white/90 truncate">
-                just chillin - enfx
-              </span>
-              <span className="text-[11px] text-white/40 tabular-nums">
-                {formatTime(currentTime)} / {formatTime(duration)}
-              </span>
-            </div>
+          <div className="flex items-center justify-between text-[12px] w-44 md:w-48">
+            <span className="font-medium text-white/90 truncate">
+              just chillin - enfx
+            </span>
+            <span className="text-white/40 tabular-nums">
+              {formatTime(currentTime)} / {formatTime(duration)}
+            </span>
           </div>
 
           {/* Tombol Mute / Unmute */}
-          <button
-            onClick={toggleMute}
-            onMouseEnter={() => playMechanicalSound(3)}
-            className={`
-              p-1 rounded-lg border flex items-center gap-1.5 text-[12px] font-medium
-              cursor-pointer active:scale-95 transition-all shrink-0
-              ${isMuted
-                ? 'bg-red-500/10 hover:bg-red-500/20 border-red-500/20 text-red-300'
-                : 'bg-white/5 hover:bg-white/15 border-white/10 text-white/80 hover:text-white'
-              }
-            `}
-            title={isMuted ? 'Unmute BGM' : 'Mute BGM'}
-          >
-            {isMuted ? (
-              /* Icon Speaker Muted */
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <line x1="23" y1="9" x2="17" y2="15" />
-                <line x1="17" y1="9" x2="23" y2="15" />
-              </svg>
-            ) : (
-              /* Icon Speaker Active */
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
-              </svg>
-            )}
-          </button>
+          <div className="flex">
+            <button
+              onClick={toggleMute}
+              onMouseEnter={() => playMechanicalSound(3)}
+              className={`
+                p-1 rounded flex items-center gap-1.5 text-[12px] font-medium
+                cursor-pointer active:scale-95 transition-all shrink-0 w-[24px] justify-center
+                ${isMuted ? 'bg-red-500/10 hover:bg-red-500/20 text-red-300' : 'hover:bg-white/15 text-white/80 hover:text-white'}
+              `}
+            >
+              {isMuted ? (
+                /* Icon Speaker Muted */
+                <img src="/icons/audio-muted.svg" alt="Muted" className="w-3.5 h-3.5 object-contain brightness-0 invert" />
+              ) : (
+                /* Icon Speaker Active */
+                <img src="/icons/audio-active.svg" alt="Active" className="w-3.5 h-3.5 object-contain brightness-0 invert" />
+              )}
+            </button>
 
-          {/* Mobile Close Button: Menyembunyikan floating bar dan memunculkan kembali toggle button */}
-          <button
-            onClick={() => {
-              playCrispClick()
-              setIsOpenMobile(false)
-            }}
-            className="md:hidden p-1.5 text-white/40 hover:text-white text-xs cursor-pointer active:scale-95 transition-colors"
-            title="Minimize player"
-          >
-            ✕
-          </button>
+            {/* Mobile Close Button */}
+            <button
+              onClick={() => { playCrispClick(), setIsOpenMobile(false) }}
+              className="md:hidden p-1 text-white/40 hover:text-white text-xs cursor-pointer active:scale-95 transition-colors hover:bg-white/15 rounded w-[24px] justify-center"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Interactive Progress Bar */}
@@ -252,10 +221,7 @@ const MusicPlayer = () => {
           className="w-full h-0.5 bg-white/10 cursor-pointer relative overflow-hidden group/bar"
         >
           <div
-            className={`h-full transition-all duration-100 ${isMuted
-              ? 'bg-white/30'
-              : 'bg-gradient-to-r from-blue-500 to-sky-400'
-              }`}
+            className={`h-full transition-all duration-100 ${isMuted ? 'bg-white/30' : 'bg-gradient-to-r from-blue-500 to-sky-400'}`}
             style={{ width: `${progress}%` }}
           />
         </div>

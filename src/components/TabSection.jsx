@@ -16,36 +16,37 @@ const ProjectsContent = () => {
 }
 
 const TabSection = () => {
-  // Projects shown first by default
   const [activeTab, setActiveTab] = useState('Projects')
   const [isFloating, setIsFloating] = useState(false)
 
   const headerRef = useRef(null)
   const sectionRef = useRef(null)
+  const switchTimerRef = useRef(null)
 
   const isProjects = activeTab === 'Projects'
+  const ctaLabel = isProjects ? 'Show Experience →' : 'Show Projects →'
 
   // Scroll listener: selalu konsisten & instan mendeteksi saat header melewati batas atas
   useEffect(() => {
     const handleScroll = () => {
       const el = headerRef.current
       if (!el) return
-
       const rect = el.getBoundingClientRect()
-      // Jika bagian bawah header sudah lewat ke atas viewport (misal rect.bottom <= 10)
       setIsFloating(rect.bottom <= 10)
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    handleScroll() // Cek saat initial render / perubahan layout
+    handleScroll()
 
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (switchTimerRef.current) clearTimeout(switchTimerRef.current)
+    }
   }, [])
 
   // Switch tab: scroll smooth ke atas section dulu, lalu switch
   const handleSwitch = useCallback(() => {
     if (sectionRef.current) {
-      // Hitung posisi absolut dengan offset ekstra ke atas agar tidak terpotong (misal 32px breathing room)
       const elementPosition = sectionRef.current.getBoundingClientRect().top + window.scrollY
       const offsetPosition = elementPosition - 36
 
@@ -54,8 +55,8 @@ const TabSection = () => {
         behavior: 'smooth',
       })
 
-      // Tunggu scroll selesai lalu switch tab dengan fade
-      setTimeout(() => {
+      if (switchTimerRef.current) clearTimeout(switchTimerRef.current)
+      switchTimerRef.current = setTimeout(() => {
         setActiveTab((prev) => (prev === 'Projects' ? 'Experience' : 'Projects'))
       }, 450)
     } else {
@@ -63,43 +64,27 @@ const TabSection = () => {
     }
   }, [])
 
-  const ctaLabel = isProjects ? 'Show Experience →' : 'Show Projects →'
-
   return (
     <div ref={sectionRef} className="space-y-3">
       {/* Header row: title left, CTA right */}
       <div ref={headerRef} className="flex items-center justify-between">
-        {/* Title — same spec as "About me . ." */}
-        <h3 className="text-white text-[36px] font-crimson h-[48px] italic tracking-tighter">
-          {isProjects ? 'Projects . .' : 'Experience . .'}
-        </h3>
-
-        {/* CTA toggle button — social style */}
-        <Button
-          type="social"
-          width="w-fit"
-          label={ctaLabel}
-          onClick={handleSwitch}
-          octave={3}
-        />
+        <h3 className="text-white text-[36px] font-crimson h-[48px] italic tracking-tighter"> {isProjects ? 'Projects' : 'Experience'} </h3>
+        <Button type="social" width="w-fit" label={ctaLabel} onClick={handleSwitch} octave={3} />
       </div>
 
       {/* Tab Content Display */}
       <div className="relative">
-        <div
-          key={activeTab}
-          style={{ animation: 'tabFadeIn 0.22s ease-out both' }}
-        >
+        <div key={activeTab} style={{ animation: 'tabFadeIn 0.22s ease-out both' }}>
           {isProjects ? <ProjectsContent /> : <ExperienceContent />}
         </div>
       </div>
 
-      {/* ── Floating bar: slide in/out dari atas + fade in/out tipis ── */}
-      <div
-        className={`fixed top-5 left-1/2 -translate-x-1/2 w-full max-w-[800px] px-6 z-50 transition-all duration-300 ease-out ${isFloating
+      {/* ── Floating bar: slide in/out dari atas ── */}
+      <div className={
+        `fixed top-5 left-1/2 -translate-x-1/2 w-full max-w-[800px] px-6 z-200 transition-all duration-300 ease-out ${isFloating
           ? 'opacity-100 translate-y-0 pointer-events-auto'
           : 'opacity-0 -translate-y-8 pointer-events-none'
-          }`}
+        }`}
       >
         <div
           style={{
@@ -129,25 +114,11 @@ const TabSection = () => {
           >
             {isProjects ? 'Projects . .' : 'Experience . .'}
           </span>
-          <Button
-            type="social"
-            width="w-fit"
-            label={ctaLabel}
-            onClick={handleSwitch}
-            octave={3}
-          />
+          <Button type="social" width="w-fit" label={ctaLabel} onClick={handleSwitch} octave={3} />
         </div>
       </div>
-
-      <style>{`
-        @keyframes tabFadeIn {
-          from { opacity: 0; transform: translateY(6px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
     </div>
   )
 }
 
 export default TabSection
-
