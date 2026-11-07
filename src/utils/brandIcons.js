@@ -10,6 +10,7 @@ export const getBrandIconPath = (name) => {
   if (clean.includes('flutter')) return '/icons/flutter.svg'
   if (clean.includes('dart')) return '/icons/dart.svg'
   if (clean.includes('figma')) return '/icons/figma.svg'
+  if (clean.includes('firebase')) return '/icons/firebase.svg'
 
   return null
 }

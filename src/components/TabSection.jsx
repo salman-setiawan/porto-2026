@@ -7,7 +7,7 @@ import Button from './Button'
 const ProjectsContent = () => {
   const projects = DataHome.projects || []
   return (
-    <div className="space-y-3 md:space-y-1">
+    <div className="space-y-3">
       {projects.map((project, index) => (
         <ProjectCard key={project.id || index} project={project} />
       ))}

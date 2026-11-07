@@ -105,7 +105,6 @@ const ProjectVisualCard = ({
     <img
       className="top-24 left-32 relative h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out z-10"
       src={imageSrc}
-      alt={title || 'Project Thumbnail'}
     />
   </div>
 )
@@ -163,7 +162,7 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
   return (
     <div className='relative w-full group'>
       {/* Grid 2 kolom tanpa gap, border dashed saling terhubung */}
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-0 relative'>
+      <div className='flex flex-col md:flex-row'>
 
         {/* Kolom 2: Visual / Mockup Gambar Mobile */}
         <ProjectVisualCard
@@ -233,7 +232,7 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
           {...visualProps}
           cardRef={desktopImageRef}
           onMouseMove={(e) => handleMouseMove(e, desktopImageRef)}
-          className="hidden md:block aspect-square"
+          className="hidden md:block h-[460px] md:h-[480px]"
         />
 
       </div>

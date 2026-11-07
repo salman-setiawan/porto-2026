@@ -82,6 +82,7 @@ export const DataHome = {
       stack: [
         { en: 'Flutter', id: 'Flutter' },
         { en: 'Dart', id: 'Dart' },
+        { en: 'Firebase', id: 'Firebase' },
       ],
       cta: [
         { en: 'View Website', id: 'Kunjungi Website', link: 'https://duitra.id' },

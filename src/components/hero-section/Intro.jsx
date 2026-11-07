@@ -19,8 +19,30 @@ const HeroIntro = ({ scrollY = 0 }) => {
 
   const [currentPositionIndex, setCurrentPositionIndex] = useState(0)
   const [fadeState, setFadeState] = useState('visible') // 'visible' | 'exit' | 'enter'
-  const [showAll, setShowAll] = useState(false)
   const [greetingIndex, setGreetingIndex] = useState(0)
+  const [isAltAvatar, setIsAltAvatar] = useState(false)
+  const [rotationDegrees, setRotationDegrees] = useState(0)
+  const [isRotating, setIsRotating] = useState(false)
+
+  const handleAvatarClick = () => {
+    if (isRotating) return
+    playCrispClick(0.5)
+    playWhoosh(0.2)
+    setIsRotating(true)
+
+    // Putar 360 derajat penuh sekali putaran
+    setRotationDegrees((prev) => prev + 360)
+
+    // Tepat di tengah putaran (180deg / 250ms), ganti foto
+    setTimeout(() => {
+      setIsAltAvatar((prev) => !prev)
+    }, 250)
+
+    // Selesai putaran (500ms)
+    setTimeout(() => {
+      setIsRotating(false)
+    }, 500)
+  }
 
   // Deteksi mobile (< 768px)
   const [isMobile, setIsMobile] = useState(() => (typeof window !== 'undefined' ? window.innerWidth < 768 : false))
@@ -91,10 +113,29 @@ const HeroIntro = ({ scrollY = 0 }) => {
   }
 
   // Komponen Helper Internal untuk menghindari kode JSX ganda
+  const currentAvatarSrc = isAltAvatar ? '/ravatar.webp' : (DataHome.heroSection.avatar || '/avatar.gif')
+
   const renderAvatar = (hoverScaleClass = 'hover:scale-105') => (
-    <div className={`w-20 h-20 shrink-0 overflow-hidden border-[3px] border-app-accent rounded-lg ${hoverScaleClass} hover:rotate-[-8deg] transition-transform shadow-lg shadow-orange-500/10`}>
-      <img src={DataHome.heroSection.avatar} className="scale-110 object-cover" alt="avatar" />
-    </div>
+    <button
+      type="button"
+      onClick={handleAvatarClick}
+      title="Click to switch avatar"
+      className={`w-20 h-20 shrink-0 cursor-pointer ${hoverScaleClass} hover:rotate-[-8deg] transition-all duration-200 focus:outline-none`}
+      style={{ perspective: '600px' }}
+    >
+      <div
+        className="w-full h-full overflow-hidden border-[3px] border-app-accent rounded-lg shadow-lg shadow-orange-500/10 transition-transform duration-500 ease-in-out"
+        style={{
+          transform: `rotateY(${rotationDegrees}deg)`,
+        }}
+      >
+        <img
+          src={currentAvatarSrc}
+          className={`w-full h-full object-cover pointer-events-none transition-transform duration-300 ${isAltAvatar ? 'scale-240 pt-2' : 'scale-110'}`}
+          alt="avatar"
+        />
+      </div>
+    </button>
   )
 
   const renderInfoText = (isLeftAligned = false) => (
@@ -198,44 +239,6 @@ const HeroIntro = ({ scrollY = 0 }) => {
           </div>
         </div>
       )}
-
-      {/* ── Section About me ── */}
-      <div>
-        <h3 className='text-app-primary text-[36px] font-crimson h-[40px] italic tracking-tighter'>About me . .</h3>
-
-        <p className='text-app-secondary text-[15px] mt-3'>
-          {DataHome.heroSection.desc[0]?.en}
-        </p>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateRows: showAll ? '1fr' : '0fr',
-            opacity: showAll ? 1 : 0,
-            transition: 'grid-template-rows 0.4s ease-out, opacity 0.35s ease-out',
-          }}
-        >
-          <div className="overflow-hidden">
-            {DataHome.heroSection.desc.slice(1).map((item, index) => (
-              <p key={index} className='text-app-secondary text-[15px] mt-3'>
-                {item.en}
-              </p>
-            ))}
-          </div>
-        </div>
-
-        <button
-          onClick={() => {
-            playCrispClick(0.4)
-            playWhoosh(0.15)
-            setShowAll((prev) => !prev)
-          }}
-          onMouseEnter={() => playMechanicalSound(3, 0.3)}
-          className="flex justify-center w-full gap-1 pt-3 text-[14px] text-app-muted hover:text-app-primary transition-colors duration-200 cursor-pointer"
-        >
-          {showAll ? 'Show less ↑' : 'Show more ↓'}
-        </button>
-      </div>
     </div>
   )
 }

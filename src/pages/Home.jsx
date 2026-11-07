@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import Lenis from 'lenis'
 import HeroIntro from '../components/hero-section/Intro'
-import TabSection from '../components/TabSection'
+import About from '../components/hero-section/About'
+import ProjectsHorizontalScroll from '../components/project-section/ProjectsHorizontalScroll'
+import ExperienceContent from '../components/experience-section/ExperienceContent'
 import SeamlessSlider from '../components/showcase-section/SeamlessSlider'
 import MusicPlayer from '../components/MusicPlayer'
 import ThemeToggle from '../components/ThemeToggle'
@@ -52,7 +54,7 @@ const Home = () => {
   const flareOpacity = Math.max(0, baseOpacity * (1 - scrollY / 420))
 
   return (
-    <div className='flex flex-col w-full overflow-x-hidden relative min-h-screen bg-app-primary transition-colors duration-300'>
+    <div className='flex flex-col w-full relative min-h-screen bg-app-primary transition-colors duration-300'>
       {flareOpacity > 0 && (
         <div
           className="fixed inset-x-0 top-0 h-[320px] md:h-[640px] pointer-events-none z-0 transition-opacity duration-75"
@@ -66,14 +68,19 @@ const Home = () => {
         </div>
       )}
 
-      {/* Konten Halaman */}
-      <div className="items-center mx-auto px-4 md:px-8 max-w-[860px] space-y-8">
+      {/* 1. Hero Intro & About Section */}
+      <div className="items-center mx-auto px-4 md:px-8 max-w-[920px] space-y-4">
         <HeroIntro scrollY={scrollY} />
-        <TabSection />
+        <About />
       </div>
-      <div className="md:mx-auto">
-        <SeamlessSlider />
-      </div>
+
+      {/* 2. Pinned Horizontal Projects Showcase Scroll with SeamlessSlider inside */}
+      <ProjectsHorizontalScroll>
+        <div className="md:mx-auto">
+          <SeamlessSlider />
+        </div>
+      </ProjectsHorizontalScroll>
+
       <MusicPlayer />
       <ThemeToggle />
     </div>
