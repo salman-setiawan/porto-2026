@@ -17,12 +17,17 @@ const Footnote = ({
   const headlineBottom = footnoteData.headline?.bottom || "Move"
   const email = footnoteData.email || "salmansetiawan88@gmail.com"
   const subtext = footnoteData.subtext?.[lang] || footnoteData.subtext?.en || "Got a project in mind, a role to fill, or just want to explore ideas together? The deck is shuffled and the move is yours."
-  const cardActionText = footnoteData.cardAction?.[lang] || footnoteData.cardAction?.en || "Say hello."
   const copyrightText = footnoteData.copyright || "Salman Setiawan © 2026"
   const builtWithText = footnoteData.builtWith?.[lang] || footnoteData.builtWith?.en || "Built with React & Tailwind"
   const backToTopText = footnoteData.backToTop?.[lang] || footnoteData.backToTop?.en || "Back to top"
 
   const cardRef = useRef(null)
+  const cardJWrapperRef = useRef(null)
+  const cardJInnerRef = useRef(null)
+  const [isLanded, setIsLanded] = useState(false)
+  const isLandedRef = useRef(false)
+  const hasPlayedLandSoundRef = useRef(false)
+  const rafIdRef = useRef(null)
 
   // Track light/dark mode untuk adaptasi vignette & background
   const [isLight, setIsLight] = useState(
@@ -36,6 +41,181 @@ const Footnote = ({
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
     return () => observer.disconnect()
   }, [])
+
+  // Animasi Kartu J Jatuh selama scroll dari akhir ProjectsHorizontalScroll melintasi SeamlessSlider ke Footnote
+  useEffect(() => {
+    const updateCardFall = () => {
+      const wrapper = cardJWrapperRef.current
+      const inner = cardJInnerRef.current
+      const card = cardRef.current
+      if (!wrapper || !inner || !card) return
+
+      const projectsContainer = document.getElementById('projects-scroll-container')
+      const currentScrollY = window.scrollY || window.pageYOffset || 0
+      const windowHeight = window.innerHeight || 800
+      const windowWidth = window.innerWidth || 1024
+
+      // Jika container projects belum ada / gagal di-resolve, fallback kartu langsung mendarat
+      if (!projectsContainer) {
+        wrapper.style.visibility = 'visible'
+        wrapper.style.opacity = '1'
+        wrapper.style.transform = 'translate3d(0, 0, 0)'
+        wrapper.style.pointerEvents = 'auto'
+        inner.style.transform = ''
+        inner.style.boxShadow = ''
+        if (!isLandedRef.current) {
+          isLandedRef.current = true
+          setIsLanded(true)
+        }
+        return
+      }
+
+      // Koordinat piksel absolut akhir scroll horizontal di ProjectsHorizontalScroll
+      const pRect = projectsContainer.getBoundingClientRect()
+      const projectsStartScroll = pRect.top + currentScrollY
+      const triggerEndScroll = projectsStartScroll + 1800 // Jarak SCROLL_DISTANCE_PX di ProjectsHorizontalScroll
+
+      const cardRect = card.getBoundingClientRect()
+      const cardDocY = cardRect.top + currentScrollY
+
+      // Titik mendarat: saat kartu di Footnote sudah masuk sekitar 65% tinggi layar
+      // Memastikan kartu sudah mendarat sempurna sebelum user fokus membaca Footnote
+      const targetLandedScrollY = cardDocY - windowHeight * 0.65
+      const endFallScrollY = Math.max(targetLandedScrollY, triggerEndScroll + 250)
+      const fallDistance = endFallScrollY - triggerEndScroll
+
+      let p = 0
+      if (currentScrollY <= triggerEndScroll) {
+        p = 0
+      } else if (currentScrollY >= endFallScrollY) {
+        p = 1
+      } else {
+        p = (currentScrollY - triggerEndScroll) / fallDistance
+      }
+
+      // ── Status 1: Belum mulai jatuh (User masih di Hero / scroll horizontal Projects) ──
+      if (p <= 0) {
+        wrapper.style.visibility = 'hidden'
+        wrapper.style.opacity = '0'
+        wrapper.style.pointerEvents = 'none'
+        isLandedRef.current = false
+        hasPlayedLandSoundRef.current = false
+        setIsLanded(false)
+        return
+      }
+
+      // ── Status 2: Sudah mendarat sempurna di atas kartu A (Footnote) ──
+      if (p >= 1) {
+        wrapper.style.visibility = 'visible'
+        wrapper.style.opacity = '1'
+        wrapper.style.transform = 'translate3d(0, 0, 0)'
+        wrapper.style.pointerEvents = 'auto'
+        inner.style.transform = ''
+        inner.style.boxShadow = ''
+
+        if (!isLandedRef.current) {
+          isLandedRef.current = true
+          setIsLanded(true)
+          if (!hasPlayedLandSoundRef.current) {
+            hasPlayedLandSoundRef.current = true
+            playCrispClick(0.35)
+          }
+        }
+        return
+      }
+
+      // ── Status 3: Sedang jatuh (Melayang turun melalui SeamlessSlider) ──
+      if (isLandedRef.current) {
+        isLandedRef.current = false
+        hasPlayedLandSoundRef.current = false
+        setIsLanded(false)
+      }
+
+      wrapper.style.visibility = 'visible'
+      wrapper.style.pointerEvents = 'none'
+
+      // Fade-in cepat di awal jatuh agar transisinya mulus
+      const opacity = Math.min(1, p * 10)
+      wrapper.style.opacity = String(opacity)
+
+      const isDesktop = windowWidth >= 768
+
+      // ── Kurva Lintasan Mengikuti Garis Kuning (Cubic Bézier Curve) ──
+      // P0: Tepat di bawah "Explore All Projects ->" pada kartu Show More Projects
+      const contentPadding = isDesktop ? 32 : 16
+      const gridLeft = Math.max(contentPadding, (windowWidth - 920) / 2 + contentPadding)
+      const gridRight = windowWidth - gridLeft
+      const startX = isDesktop ? (gridRight - 250) : (windowWidth * 0.52)
+      const startY = Math.max(windowHeight * 0.16, 130)
+
+      // P3: Target Landing tepat di atas kartu A pada Footnote
+      const targetX = cardRect.left
+      const targetY = cardRect.top
+
+      // P1: Mulai meluncur dari bawah kartu proyek, bergerak turun dan mulai mengarah ke kanan
+      const p1X = startX + (isDesktop ? 75 : 30)
+      const p1Y = startY + (targetY - startY) * 0.22
+
+      // P2: Melengkung jauh ke kanan luar (melewati sisi kanan SeamlessSlider, mengitari tombol CTA di tengah)
+      const p2X = isDesktop ? Math.max(gridRight + 65, targetX + 130) : (windowWidth * 0.84)
+      const p2Y = startY + (targetY - startY) * 0.68
+
+      // Formula Cubic Bézier B(t)
+      const t = p
+      const oneMinusT = 1 - t
+      const c0 = oneMinusT * oneMinusT * oneMinusT
+      const c1 = 3 * oneMinusT * oneMinusT * t
+      const c2 = 3 * oneMinusT * t * t
+      const c3 = t * t * t
+
+      const desiredViewportX = c0 * startX + c1 * p1X + c2 * p2X + c3 * targetX
+      const desiredViewportY = c0 * startY + c1 * p1Y + c2 * p2Y + c3 * targetY
+
+      const translateX = desiredViewportX - targetX
+      const translateY = desiredViewportY - targetY
+
+      // Efek Rotasi 2D Halus mengikuti kurva (menukik miring saat melengkung ke kanan, lalu mendarat di +3deg):
+      const pathBankAngle = Math.sin(t * Math.PI) * -16
+      const landingAlignment = (1 - t) * -8
+      const rotZ = 3 + landingAlignment + pathBankAngle
+
+      // Sedikit membesar saat melayang di udara (mendekat ke kamera)
+      const scale = 1 + (1 - p) * 0.05
+
+      // Bayangan melayang lembut dan dalam
+      const shadowAlpha = isLight ? 0.25 : 0.75
+      const shadowSpread = Math.round(16 + (1 - p) * 20)
+      const shadowBlur = Math.round(20 + (1 - p) * 30)
+
+      wrapper.style.transform = `translate3d(${translateX.toFixed(2)}px, ${translateY.toFixed(2)}px, 0)`
+      inner.style.transform = `rotate(${rotZ.toFixed(2)}deg) scale(${scale.toFixed(3)})`
+      inner.style.boxShadow = `0 ${shadowSpread}px ${shadowBlur}px -10px rgba(0, 0, 0, ${shadowAlpha})`
+    }
+
+    const onScroll = () => {
+      if (rafIdRef.current) return
+      rafIdRef.current = requestAnimationFrame(() => {
+        rafIdRef.current = null
+        updateCardFall()
+      })
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+
+    // Inisialisasi awal
+    updateCardFall()
+    const timer = setTimeout(updateCardFall, 100)
+
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      clearTimeout(timer)
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current)
+      }
+    }
+  }, [isLight])
 
   // Ambil link sosial dari dataHome jika ada, dengan fallback
   const ctaLinks = DataHome?.heroSection?.cta || [
@@ -87,118 +267,76 @@ const Footnote = ({
       </div>
 
       {/* ── Foreground Content Container (overflow-visible agar kartu tembus ke atas) ── */}
-      <div className="relative z-10 max-w-[920px] mx-auto px-5 sm:px-8 md:px-12 py-8 flex flex-col justify-between min-h-[480px]">
+      <div className="relative z-10 max-w-[920px] mx-auto px-5 sm:px-8 md:px-12 py-8 flex flex-col justify-between">
 
         {/* ── Main Mid Section: Huge Typography & Interactive Playing Card ── */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 md:gap-12">
+        <div className="flex md:items-center justify-between gap-8 md:gap-12">
 
           {/* Left: Headline & Subtext */}
-          <div className="flex flex-col max-w-[580px]">
-            <div className="text-[64px] sm:text-[84px] md:text-[104px] font-crimson italic tracking-tighter text-app-primary select-none drop-shadow-sm -space-y-6 sm:-space-y-8 pl-2">
+          <div className="flex flex-col min-w-[300px] max-w-[580px]">
+            <div className="text-[84px] md:text-[104px] font-crimson italic tracking-tighter text-app-primary select-none drop-shadow-sm -space-y-6 sm:-space-y-8 pl-2">
               <p className="leading-[1.1]">{headlineTop}</p>
               <p className="leading-[1.1]">
                 {headlineBottom}
                 <span className="inline-block text-app-accent ml-1 animate-pulse">.</span>
               </p>
             </div>
-            <p className="mt-2 text-sm sm:text-base text-app-secondary leading-relaxed max-w-[400px]">
+            <p className="mt-2 mb-8 text-[14px] text-app-secondary leading-relaxed max-w-[400px]">
               {subtext}
             </p>
           </div>
 
           {/* Right: Interactive 3D Stacked Playing Cards (A under J) - Tembus keluar ke atas */}
-          <div className="flex items-center justify-start md:justify-end self-center md:self-auto w-full md:w-auto -mt-16 sm:-mt-24 md:-mt-32 pt-0 pl-8 sm:pl-12 relative z-20">
+          <div className="flex items-center justify-start md:justify-end self-center md:self-auto w-full md:w-auto -mt-40 pt-0 pl-8 sm:pl-12 relative z-20">
             <a
               href={`mailto:${email}`}
               ref={cardRef}
               onMouseEnter={handleCardMouseEnter}
               onClick={() => playCrispClick(0.6)}
               className="group relative block w-[195px] sm:w-[225px] md:w-[250px] aspect-[1/1.42] cursor-pointer select-none"
-              style={{
-                transformStyle: 'preserve-3d',
-              }}
             >
               {/* ── CARD A (Bawah / Belakang) ── */}
               <div
-                className={`absolute inset-0 z-10 bg-[#f8f4ea] text-[#1c1917] rounded-2xl p-4 sm:p-5 border-2 transition-all duration-500 ease-out transform -rotate-8 -translate-x-6 -translate-y-2 group-hover:-rotate-[14deg] group-hover:-translate-x-10 group-hover:-translate-y-4 pointer-events-none ${isLight
-                  ? 'shadow-[0_16px_36px_-10px_rgba(0,0,0,0.18)] border-[#e2d5bc]'
-                  : 'shadow-[0_20px_40px_-15px_rgba(0,0,0,0.85)] border-[#e4d8bf]'
+                className={`absolute inset-0 z-10 rounded-3xl overflow-hidden transition-all duration-500 ease-out transform -rotate-8 -translate-x-6 -translate-y-2 group-hover:-rotate-[20deg] group-hover:-translate-x-10 group-hover:-translate-y-4 pointer-events-none ${isLight
+                  ? 'shadow-[0_16px_36px_-10px_rgba(0,0,0,0.18)]'
+                  : 'shadow-[0_20px_40px_-15px_rgba(0,0,0,0.85)]'
                   }`}
               >
-                {/* Playing Card Inner Border */}
-                <div className="absolute inset-2.5 rounded-xl border border-[#d6cbaf]/60 pointer-events-none" />
-
-                {/* Top-Left Index: A */}
-                <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-col items-center leading-none text-[#1c1917]">
-                  <span className="text-[17px] sm:text-[20px] font-bold font-serif">A</span>
-                  <span className="text-[13px] sm:text-[15px] mt-0.5">♠</span>
-                </div>
-
-                {/* Center Ace Spade Motif */}
-                <div className="w-full h-full flex flex-col items-center justify-center opacity-65">
-                  <svg width="44" height="44" viewBox="0 0 24 24" fill="currentColor" className="text-[#1c1917]/75">
-                    <path d="M12 2C10.5 4.5 6 9.5 6 13c0 3 2.5 5 5 5 .5 0 1-.1 1-.1v2.1h-2v1h4v-1h-2v-2.1s.5.1 1 .1c2.5 0 5-2 5-5 0-3.5-4.5-8.5-6-11z" />
-                  </svg>
-                  <span className="font-serif text-[11px] tracking-widest text-[#1c1917]/50 mt-1 uppercase font-semibold">Ace</span>
-                </div>
-
-                {/* Bottom-Right Index (Inverted): A */}
-                <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 flex flex-col items-center leading-none text-[#1c1917] rotate-180">
-                  <span className="text-[17px] sm:text-[20px] font-bold font-serif">A</span>
-                  <span className="text-[13px] sm:text-[15px] mt-0.5">♠</span>
-                </div>
+                <img
+                  src="/A.png"
+                  alt="Playing Card Ace"
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
 
-              {/* ── CARD J (Atas / Paling Depan) ── */}
+              {/* ── CARD J (Atas / Paling Depan - Kartu jatuh selama scroll) ── */}
               <div
-                className={`relative z-20 w-full h-full bg-[#fdfbf7] text-[#1c1917] rounded-2xl p-4 sm:p-5 border-2 transition-all duration-500 ease-out transform rotate-3 group-hover:rotate-1 group-hover:scale-105 group-hover:-translate-y-2 ${isLight
-                  ? 'shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)] border-[#e2d5bc]'
-                  : 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85)] border-[#eee6d3]'
-                  }`}
+                ref={cardJWrapperRef}
+                className="absolute inset-0 z-20 will-change-transform"
               >
-                {/* Playing Card Inner Border */}
-                <div className="absolute inset-2.5 rounded-xl border border-[#d6cbaf]/60 pointer-events-none" />
+                <div
+                  ref={cardJInnerRef}
+                  className={`relative w-full h-full rounded-3xl overflow-hidden ${isLanded
+                    ? `transition-all duration-500 ease-out transform rotate-3 group-hover:rotate-1 group-hover:scale-105 group-hover:rotate-[12deg] group-hover:-translate-y-2 ${isLight
+                      ? 'shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)]'
+                      : 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85)]'
+                    }`
+                    : 'will-change-transform'
+                    }`}
+                >
+                  <img
+                    src="/J.png"
+                    alt="Playing Card Jack"
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                    decoding="async"
+                  />
 
-                {/* Top-Left Index: J */}
-                <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-col items-center leading-none text-[#1c1917]">
-                  <span className="text-[17px] sm:text-[20px] font-bold font-serif">J</span>
-                  <span className="text-[13px] sm:text-[15px] mt-0.5">♠</span>
+                  {/* Subtle sheen highlight on hover */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 </div>
-
-                {/* Bottom-Right Index (Inverted): J */}
-                <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 flex flex-col items-center leading-none text-[#1c1917] rotate-180">
-                  <span className="text-[17px] sm:text-[20px] font-bold font-serif">J</span>
-                  <span className="text-[13px] sm:text-[15px] mt-0.5">♠</span>
-                </div>
-
-                {/* Center Content: Circular Arrow & "Say hello." */}
-                <div className="w-full h-full flex flex-col items-center justify-center gap-3 sm:gap-4 relative z-10">
-                  {/* Circle with Arrow */}
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#dbe8d8] flex items-center justify-center text-[#1c1917] shadow-inner transition-transform duration-300 group-hover:scale-110 group-hover:bg-[#cde0c9]">
-                    <svg
-                      width="22"
-                      height="22"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="transform transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    >
-                      <line x1="7" y1="17" x2="17" y2="7" />
-                      <polyline points="7 7 17 7 17 17" />
-                    </svg>
-                  </div>
-
-                  {/* Say hello text */}
-                  <span className="font-crimson italic text-[20px] sm:text-[23px] text-[#1c1917] tracking-tight group-hover:text-app-accent transition-colors">
-                    {cardActionText}
-                  </span>
-                </div>
-
-                {/* Subtle sheen highlight */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               </div>
             </a>
           </div>

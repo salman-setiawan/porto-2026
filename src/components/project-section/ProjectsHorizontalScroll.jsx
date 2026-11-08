@@ -150,7 +150,7 @@ const ProjectsHorizontalScroll = ({ children }) => {
         top: `${SCROLL_DISTANCE_PX}px`,
         left: 0,
         width: '100%',
-        zIndex: 10,
+        zIndex: 'auto',
       }
     }
     // 'before' - berada tepat di posisi alaminya di bawah Hero section
@@ -159,13 +159,14 @@ const ProjectsHorizontalScroll = ({ children }) => {
       top: 0,
       left: 0,
       width: '100%',
-      zIndex: 10,
+      zIndex: 'auto',
     }
   }
 
   return (
     <div
       ref={containerRef}
+      id="projects-scroll-container"
       className="relative w-full"
       style={{
         // Total tinggi dalam piksel = tinggi konten riil + jarak scroll horizontal
@@ -176,10 +177,10 @@ const ProjectsHorizontalScroll = ({ children }) => {
       <div
         ref={showcaseRef}
         style={getPinStyle()}
-        className="overflow-hidden flex flex-col py-6 pointer-events-auto bg-app-primary"
+        className="overflow-visible flex flex-col py-6 pointer-events-auto"
       >
         {/* Header Section: Title "Projects" & Indikator Slide */}
-        <div className="w-full max-w-[920px] mx-auto px-4 md:px-8 mb-2 flex items-center justify-between z-10 shrink-0">
+        <div className="w-full max-w-[920px] mx-auto px-4 md:px-8 mb-2 flex items-center justify-between z-30 relative shrink-0 bg-app-primary">
           <h3 className="text-app-primary text-[32px] md:text-[36px] font-crimson italic tracking-tighter">
             Projects . .
           </h3>
@@ -189,7 +190,7 @@ const ProjectsHorizontalScroll = ({ children }) => {
         </div>
 
         {/* Horizontal Track Container */}
-        <div className="w-full overflow-visible">
+        <div className="w-full overflow-visible relative z-30">
           <div
             ref={trackRef}
             className="flex items-center gap-4 will-change-transform"
@@ -211,7 +212,7 @@ const ProjectsHorizontalScroll = ({ children }) => {
 
         {/* Section Bawah (SeamlessSlider Playground) yang langsung muncul saat scroll horizontal */}
         {children && (
-          <div className="w-full mt-4">
+          <div className="w-full mt-4 relative z-10 [isolation:isolate]">
             {children}
           </div>
         )}

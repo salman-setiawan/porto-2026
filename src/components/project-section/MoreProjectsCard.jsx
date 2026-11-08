@@ -13,7 +13,7 @@ const MoreProjectsCard = ({ url = 'https://dribbble.com/eisenflux' }) => {
   }
 
   const cardContent = (
-    <div className="relative py-4 px-3 border border-dashed border-app-subtle group-hover:border-app-accent/50 bg-app-surface/20 group-hover:bg-app-surface/40 transition-all duration-300 flex items-end h-[609px] md:h-[480px] w-[320px] md:w-[420px] shrink-0">
+    <div className="relative py-4 px-3 border border-dashed border-app-subtle group-hover:border-app-accent/50 bg-app-surface/20 group-hover:bg-app-surface/40 transition-all duration-300 flex items-end h-[609px] md:h-[480px] w-[320px] md:w-[420px] shrink-0 bg-app-primary">
       {/* Crosshairs Sudut Kotak */}
       <span className="absolute -top-[5px] -left-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
       <span className="absolute -top-[5px] -right-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
