@@ -7,7 +7,9 @@ import SeamlessSlider from '../components/showcase-section/SeamlessSlider'
 import MusicPlayer from '../components/MusicPlayer'
 import ThemeToggle from '../components/ThemeToggle'
 import PixelFlare from '../motion/PixelFlare'
-import Footnote from '../components/Footnote'
+import Footnote from '../components/footnote-section/Footnote'
+import FootnoteCards from '../components/footnote-section/FootnoteCards'
+import { DataHome } from '../data/dataHome'
 
 const Home = () => {
   // Track scroll position khusus zona Hero (0-450px) agar tidak memicu re-render tak berguna saat scroll ke bawah
@@ -69,7 +71,7 @@ const Home = () => {
   const isFlareVisible = flareOpacity > 0
 
   return (
-    <div className='flex flex-col w-full relative min-h-screen bg-app-primary transition-colors duration-300'>
+    <div className='flex flex-col w-full relative min-h-screen bg-app-primary transition-colors duration-300 overflow-x-clip'>
       {/* PixelFlare tetap dimount dan hanya disembunyikan via display: none agar IntersectionObserver menjeda tanpa GC thrashing */}
       <div
         className="fixed inset-x-0 top-0 h-[320px] md:h-[640px] pointer-events-none z-0 transition-opacity duration-75"
@@ -98,8 +100,36 @@ const Home = () => {
         </div>
       </ProjectsHorizontalScroll>
 
-      {/* 3. Footnote & Call-to-Action Section (Full Area) */}
-      <Footnote className="mt-14 z-20" />
+      {/* 3. Footnote & Call-to-Action Section (Full Area) dengan Cards di layer atasnya */}
+      <div className="relative w-full mt-14 overflow-visible">
+        <Footnote className="z-10" />
+
+        {/* Layer FootnoteCards berada di atas Footnote (z-30) dengan posisi container yang persis sama */}
+        <div className="absolute inset-0 pointer-events-none z-30 overflow-visible">
+          <div className="max-w-[920px] mx-auto px-5 sm:px-8 md:px-12 py-8 flex flex-col justify-between">
+            <div className="flex md:items-center justify-between gap-8 md:gap-12">
+              {/* Spacer penyeimbang typography kiri */}
+              <div className="flex flex-col min-w-[300px] max-w-[580px] pointer-events-none opacity-0 select-none" aria-hidden="true">
+                <div className="text-[84px] md:text-[104px] font-crimson italic tracking-tighter pl-2">
+                  <p className="leading-[1.1]">{DataHome?.footnote?.headline?.top || 'Your'}</p>
+                  <p className="leading-[1.1]">{DataHome?.footnote?.headline?.bottom || 'Move'}.</p>
+                </div>
+                <p className="mt-2 mb-8 text-[14px] leading-relaxed max-w-[400px]">
+                  {DataHome?.footnote?.subtext?.en || ''}
+                </p>
+              </div>
+
+              {/* Cards yang interaktif dan berada di atas layer Footnote */}
+              <div className="pointer-events-auto">
+                <FootnoteCards
+                  email={DataHome?.footnote?.email || 'salmansetiawan88@gmail.com'}
+                  isLight={isLight}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <MusicPlayer />
       <ThemeToggle />
