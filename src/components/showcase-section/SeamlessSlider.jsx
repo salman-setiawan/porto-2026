@@ -83,12 +83,12 @@ const SeamlessSlider = () => {
 
   return (
     <div className="w-full pb-16 bg-app-primary overflow-hidden">
-      <div className="max-w-[860px] mx-auto relative z-[110] top-12 pointer-events-none px-4 md:px-8">
+      <div className="max-w-[920px] mx-auto relative z-[110] top-12 pointer-events-none px-4 md:px-8">
         <h3 className="text-app-primary text-[80px] font-crimson h-[100px] italic tracking-tighter">Playground</h3>
         <p className="text-app-secondary text-sm mt-2">A collection of my other design explorations and shots.</p>
       </div>
 
-      <div className="max-w-[860px] px-0 md:px-8 mx-auto relative flex justify-center h-[400px] -mt-[50px]">
+      <div className="max-w-[920px] px-0 md:px-8 mx-auto relative flex justify-center h-[400px] -mt-[50px]">
         {/* Render adaptif: hanya me-render satu varian kolom yang sesuai breakpoint untuk menghindari duplikasi 48 node DOM & animasi tak henti */}
         {isDesktop ? (
           /* Desktop: 3 columns */

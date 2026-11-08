@@ -58,7 +58,7 @@ const Footnote = ({
       className={`w-full relative overflow-visible ${isLight ? 'text-app-primary' : 'text-white'
         } ${className}`}
     >
-      {/* ── Background Layer: Dikurung dengan overflow-hidden agar PixelFlare tidak bocor ── */}
+      {/* ── Background Layer ── */}
       <div
         className={`absolute inset-0 overflow-hidden pointer-events-none z-0 border-t border-app-subtle transition-colors duration-300 ${isLight ? 'bg-app-primary' : 'bg-[#090302]'
           }`}
@@ -87,7 +87,7 @@ const Footnote = ({
       </div>
 
       {/* ── Foreground Content Container (overflow-visible agar kartu tembus ke atas) ── */}
-      <div className="relative z-10 max-w-[920px] mx-auto px-5 sm:px-8 md:px-12 pt-8 pb-10 flex flex-col justify-between min-h-[460px] md:min-h-[500px]">
+      <div className="relative z-10 max-w-[920px] mx-auto px-5 sm:px-8 md:px-12 py-8 flex flex-col justify-between min-h-[480px]">
 
         {/* ── Main Mid Section: Huge Typography & Interactive Playing Card ── */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 md:gap-12">
@@ -101,7 +101,7 @@ const Footnote = ({
                 <span className="inline-block text-app-accent ml-1 animate-pulse">.</span>
               </p>
             </div>
-            <p className="mt-4 sm:mt-6 text-sm sm:text-base text-app-secondary leading-relaxed max-w-[440px]">
+            <p className="mt-2 text-sm sm:text-base text-app-secondary leading-relaxed max-w-[400px]">
               {subtext}
             </p>
           </div>
@@ -205,7 +205,7 @@ const Footnote = ({
         </div>
 
         {/* ── Bottom Section: Direct Email & Socials ── */}
-        <div className="pt-6 sm:pt-8 border-t border-app-subtle space-y-6">
+        <div className="pt-5 border-t border-app-subtle space-y-5">
 
           {/* Row: Email (Kiri) & CTA Socials (Kanan) */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -213,7 +213,7 @@ const Footnote = ({
               <a
                 href={`mailto:${email}`}
                 onClick={() => playCrispClick(0.5)}
-                className="text-base sm:text-xl md:text-2xl font-mono text-app-primary hover:text-app-accent transition-colors flex items-center gap-1.5"
+                className="text-app-primary hover:text-app-accent transition-colors flex items-center gap-1.5"
               >
                 <span>{email}</span>
                 <svg
@@ -252,12 +252,12 @@ const Footnote = ({
           </div>
 
           {/* Bottom Meta Bar: Copyright & Back to Top */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-app-subtle text-xs text-app-muted">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t border-app-subtle text-sm text-app-muted">
 
             {/* Center/Left Info */}
-            <div className="flex items-center gap-2 font-mono text-[11px]">
+            <div className="flex items-center gap-2">
               <span>{copyrightText}</span>
-              <span className="opacity-40">·</span>
+              <span className='font-bold'>·</span>
               <span>{builtWithText}</span>
             </div>
 

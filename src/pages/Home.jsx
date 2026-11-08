@@ -99,7 +99,7 @@ const Home = () => {
       </ProjectsHorizontalScroll>
 
       {/* 3. Footnote & Call-to-Action Section (Full Area) */}
-      <Footnote className="mt-28 sm:mt-36 md:mt-44 z-20" />
+      <Footnote className="mt-14 z-20" />
 
       <MusicPlayer />
       <ThemeToggle />
