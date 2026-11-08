@@ -48,7 +48,7 @@ const Footnote = ({
 
   return (
     <footer
-      className={`w-full relative overflow-visible ${isLight ? 'text-app-primary' : 'text-white'
+      className={`w-full relative overflow-hidden ${isLight ? 'text-app-primary' : 'text-white'
         } ${className}`}
     >
       {/* ── Background Layer ── */}
@@ -80,10 +80,10 @@ const Footnote = ({
       </div>
 
       {/* ── Foreground Content Container (overflow-visible agar kartu tembus ke atas) ── */}
-      <div className="relative z-10 max-w-[920px] mx-auto px-5 sm:px-8 md:px-12 py-8 flex flex-col justify-between">
+      <div className="relative z-10 max-w-[920px] mx-auto px-5 sm:px-8 md:px-12 flex flex-col justify-between py-6">
 
-        {/* ── Main Mid Section: Huge Typography & Space for Interactive Playing Card ── */}
-        <div className="flex md:items-center justify-between gap-8 md:gap-12">
+        {/* ── Main Mid Section ── */}
+        <div className="flex md:items-center">
 
           {/* Left: Headline & Subtext */}
           <div className="flex flex-col min-w-[300px] max-w-[580px]">
@@ -94,17 +94,14 @@ const Footnote = ({
                 <span className="inline-block text-app-accent ml-1 animate-pulse">.</span>
               </p>
             </div>
-            <p className="mt-2 mb-8 text-[14px] text-app-secondary leading-relaxed max-w-[400px]">
+            <p className="mt-2 mb-5 text-[14px] text-app-secondary leading-relaxed max-w-[400px]">
               {subtext}
             </p>
           </div>
-
-          {/* Spacer kanan untuk menjaga layout grid / flex tetap identik saat cards dirender di atas layer footnote */}
-          <div className="w-[195px] sm:w-[225px] md:w-[250px] aspect-[1/1.42] shrink-0 pl-8 sm:pl-12 self-center md:self-auto hidden sm:block opacity-0 pointer-events-none" aria-hidden="true" />
         </div>
 
         {/* ── Bottom Section: Direct Email & Socials ── */}
-        <div className="pt-5 border-t border-app-subtle space-y-5">
+        <div className="pt-4 border-t border-app-subtle space-y-5">
 
           {/* Row: Email (Kiri) & CTA Socials (Kanan) */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -152,8 +149,6 @@ const Footnote = ({
 
           {/* Bottom Meta Bar: Copyright & Back to Top */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t border-app-subtle text-sm text-app-muted">
-
-            {/* Center/Left Info */}
             <div className="flex items-center gap-2">
               <span>{copyrightText}</span>
               <span className='font-bold'>·</span>

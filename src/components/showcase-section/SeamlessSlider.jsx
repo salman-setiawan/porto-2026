@@ -82,7 +82,7 @@ const SeamlessSlider = () => {
   }, [])
 
   return (
-    <div className="w-full pb-16 bg-app-primary overflow-hidden">
+    <div className="w-full pb-24 bg-app-primary overflow-hidden">
       <div className="max-w-[920px] mx-auto relative z-[110] top-12 pointer-events-none px-4 md:px-8">
         <h3 className="text-app-primary text-[80px] font-crimson h-[100px] italic tracking-tighter">Playground</h3>
         <p className="text-app-secondary text-sm mt-2">A collection of my other design explorations and shots.</p>

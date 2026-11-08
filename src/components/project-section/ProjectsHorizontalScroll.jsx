@@ -166,6 +166,7 @@ const ProjectsHorizontalScroll = ({ children }) => {
   return (
     <div
       ref={containerRef}
+      id="projects-scroll-container"
       className="relative w-full"
       style={{
         // Total tinggi dalam piksel = tinggi konten riil + jarak scroll horizontal
