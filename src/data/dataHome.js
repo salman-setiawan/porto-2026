@@ -9,16 +9,16 @@ export const DataHome = {
     ],
     desc: [
       {
-        en: "I'm an Informatics graduate specializing in UI/UX Design, passionate about crafting meaningful digital experiences through thoughtful design and clean code.",
-        id: 'Saya adalah lulusan Informatika dengan spesialisasi di bidang UI/UX Design. Saya memiliki ketertarikan dalam menciptakan pengalaman digital yang bermakna melalui perpaduan desain yang matang dan kode yang terstruktur.',
+        en: "I'm an Informatics graduate specializing in UI/UX Design, with a focus on creating intuitive and user-centered digital experiences through user research, wireframing, prototyping, and interface design.",
+        id: 'Saya merupakan lulusan Informatika dengan spesialisasi di bidang UI/UX Design, berfokus pada penciptaan pengalaman digital yang intuitif dan berorientasi pada kebutuhan pengguna melalui user research, wireframing, prototyping, dan perancangan antarmuka.',
       },
       {
-        en: "With professional experience in designing digital products, from enterprise ERP systems to marketing websites, I focus on creating intuitive, user-centered interfaces. I also enjoy bringing designs to life through frontend development using ReactJS and TailwindCSS, building responsive, functional, and engaging web experiences.",
-        id: 'Dengan pengalaman profesional dalam merancang berbagai produk digital, mulai dari sistem ERP untuk instansi hingga website pemasaran, saya berfokus pada pengembangan antarmuka yang intuitif dan berorientasi pada kebutuhan pengguna. Saya juga senang mengimplementasikan desain ke dalam pengembangan frontend menggunakan ReactJS dan TailwindCSS untuk membangun pengalaman web yang responsif, fungsional, dan interaktif.',
+        en: "I've gained professional experience at MKA, where I worked on building EduFams, a family education platform; Eduwork, designing interfaces for a mentor platform; and Inotive, improving the usability and workflows of enterprise ERP systems used by institutions such as PLN and PDAM. I also currently volunteer as a graphic designer at balikpapan.dev.",
+        id: 'Saya memiliki pengalaman profesional di MKA, dengan membangun EduFams, sebuah platform edukasi keluarga; Eduwork, merancang antarmuka platform mentor; serta Inotive, meningkatkan usability dan alur kerja sistem ERP yang digunakan oleh berbagai instansi, termasuk PLN dan PDAM. Saat ini, saya juga menjadi relawan sebagai graphic designer di balikpapan.dev.',
       },
       {
-        en: 'Combining design thinking with technical skills, I strive to bridge the gap between design and development, turning ideas into polished digital products that balance usability, aesthetics, and performance.',
-        id: 'Dengan menggabungkan pemikiran desain dan kemampuan teknis, saya berupaya menjembatani proses desain dan pengembangan untuk mengubah ide menjadi produk digital yang berkualitas, dengan memperhatikan aspek kemudahan penggunaan, estetika, dan performa.',
+        en: 'Beyond professional design work, I explore Frontend and Game Development through personal projects. My tools and technologies include Figma, Miro and Framer for design; React, TailwindCSS, and Framer Motion for web development; and Construct 3 for game development.',
+        id: 'Di luar pekerjaan profesional, saya mengeksplorasi Frontend dan Game Development melalui proyek pribadi. Tools dan teknologi yang saya gunakan meliputi Figma, Miro dan Framer untuk desain; React, TailwindCSS, dan Framer Motion untuk pengembangan website; serta Construct 3 untuk pengembangan game.',
       },
     ],
     cta: [
@@ -43,25 +43,23 @@ export const DataHome = {
     {
       id: 1,
       title: {
-        en: "Mivia RPG",
-        id: "Mivia RPG",
+        en: "balikpapan.dev",
+        id: "balikpapan.dev",
       },
       desc: {
         en: 'Track every expense, stay under budget, and take control of your finances in minutes. No complexity. No confusion.',
         id: 'Catat setiap pengeluaran, tetap di bawah anggaran, dan kontrol keuanganmu dalam menit. Tidak kompleks. Tidak bingung.',
       },
       tag: [
-        { en: 'Game Design', id: 'Game Produk' },
-        { en: 'Web Browser Game', id: 'Permainan Browser Web' },
+        { en: 'Graphic Design', id: 'Desain Grafis' },
+        { en: 'Digital Assets', id: 'Aset Digital' },
       ],
       stack: [
-        { en: 'Typescript', id: 'Typescript' },
-        { en: 'React', id: 'React' },
-        { en: 'Tailwind CSS', id: 'Tailwind CSS' },
+        { en: 'Figma', id: 'Figma' },
       ],
       cta: [
-        { en: 'View Website', id: 'Kunjungi Website', link: 'https://duitra.id' },
-        { en: 'See on Play Store', id: 'Lihat di Play Store', link: 'https://play.google.com/store/apps/details?id=com.duitra.app' },
+        { en: 'Visit Social Media', id: 'Kunjungi Sosial Media', link: 'https://www.instagram.com/balikpapan.dev/' },
+        { en: 'See My Works', id: 'Lihat Karya Saya', link: 'coming-soon' },
       ],
       media: '/project-1/heroimg_desktop.webp',
     },

@@ -189,6 +189,20 @@ html.theme-transitioning .theme-icon-filter {
   border-color: var(--border-medium);
 }
 
+/* ── About keyword hyperlinks ── */
+.keyword-link {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--text-primary);
+  transition: color 150ms ease, text-decoration-color 150ms ease;
+}
+.keyword-link:hover {
+  color: var(--text-accent);
+  text-decoration-color: var(--accent);
+}
+
 /* ── Global Keyframe Animations ── */
 @keyframes tabFadeIn {
   from {
