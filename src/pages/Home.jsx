@@ -28,12 +28,16 @@ const Home = () => {
 
   // Lenis Smooth Scroll dengan performa teroptimasi (decoupled dari React render tree)
   useEffect(() => {
+    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: isTouch ? 0.9 : 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
+      touchMultiplier: 1.0, // 1:1 touch ratio pada mobile, tidak melesat/licin
+      syncTouch: true,      // Sinkron dengan sentuhan jari asli
+      touchInertiaMultiplier: 1.0,
     })
 
     // Hanya update state jika berada di sekitar range aktif Hero (< 450px)

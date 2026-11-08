@@ -58,7 +58,7 @@ const ProjectVisualCard = ({
     )}
 
     <img
-      className="top-24 left-32 relative h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out z-10"
+      className="relative md:top-24 md:left-32 top-0 left-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out z-10"
       src={imageSrc}
       alt={project?.title?.en || project?.title || 'Project screenshot'}
       loading="lazy"

@@ -73,7 +73,9 @@ const Footnote = ({
       // Koordinat piksel absolut akhir scroll horizontal di ProjectsHorizontalScroll
       const pRect = projectsContainer.getBoundingClientRect()
       const projectsStartScroll = pRect.top + currentScrollY
-      const triggerEndScroll = projectsStartScroll + 1800 // Jarak SCROLL_DISTANCE_PX di ProjectsHorizontalScroll
+      const isDesktopFall = windowWidth >= 768
+      const scrollDistancePx = isDesktopFall ? 1800 : 800
+      const triggerEndScroll = projectsStartScroll + scrollDistancePx // Jarak SCROLL_DISTANCE_PX di ProjectsHorizontalScroll
 
       const cardRect = card.getBoundingClientRect()
       const cardDocY = cardRect.top + currentScrollY
