@@ -3,111 +3,8 @@ import { DataHome } from '../../data/dataHome'
 import Chip from '../Chip'
 import Button from '../Button'
 import HalftoneGlow from '../../motion/HalftoneGlow'
-
-// Palet warna terkurasi berdasarkan teori harmoni warna (Analogous & Tonal Harmony)
-const HARMONIOUS_PALETTES = [
-  {
-    // 1. Deep Cyber Sapphire (Blue -> Cyan glow)
-    baseHue: 228,
-    bg: '#0a0f1d',
-    ambientGlow: 'radial-gradient(circle at 80% 80%, rgba(30, 64, 175, 0.45) 0%, transparent 65%), radial-gradient(circle at 20% 20%, rgba(14, 116, 144, 0.25) 0%, transparent 55%)',
-    conicLight: 'conic-gradient(from 0deg, transparent 0deg, rgba(6, 182, 212, 0.4) 90deg, rgba(59, 130, 246, 0.65) 180deg, transparent 270deg)',
-  },
-  {
-    // 2. Deep Aurora Emerald (Green -> Mint/Teal glow)
-    baseHue: 158,
-    bg: '#081712',
-    ambientGlow: 'radial-gradient(circle at 80% 80%, rgba(5, 150, 105, 0.42) 0%, transparent 65%), radial-gradient(circle at 20% 20%, rgba(13, 148, 136, 0.25) 0%, transparent 55%)',
-    conicLight: 'conic-gradient(from 0deg, transparent 0deg, rgba(20, 184, 166, 0.4) 90deg, rgba(52, 211, 153, 0.65) 180deg, transparent 270deg)',
-  },
-  {
-    // 3. Royal Velvet Amethyst (Violet -> Fuchsia glow)
-    baseHue: 276,
-    bg: '#140b1d',
-    ambientGlow: 'radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.42) 0%, transparent 65%), radial-gradient(circle at 20% 20%, rgba(192, 38, 211, 0.25) 0%, transparent 55%)',
-    conicLight: 'conic-gradient(from 0deg, transparent 0deg, rgba(217, 70, 239, 0.4) 90deg, rgba(168, 85, 247, 0.65) 180deg, transparent 270deg)',
-  },
-  {
-    // 4. Sunset Bronze & Amber (Warm Amber -> Gold glow)
-    baseHue: 32,
-    bg: '#1b1207',
-    ambientGlow: 'radial-gradient(circle at 80% 80%, rgba(217, 119, 6, 0.42) 0%, transparent 65%), radial-gradient(circle at 20% 20%, rgba(234, 88, 12, 0.25) 0%, transparent 55%)',
-    conicLight: 'conic-gradient(from 0deg, transparent 0deg, rgba(245, 158, 11, 0.4) 90deg, rgba(251, 191, 36, 0.65) 180deg, transparent 270deg)',
-  },
-  {
-    // 5. Deep Ruby Crimson (Crimson -> Rose Coral glow)
-    baseHue: 345,
-    bg: '#1a0910',
-    ambientGlow: 'radial-gradient(circle at 80% 80%, rgba(225, 29, 72, 0.42) 0%, transparent 65%), radial-gradient(circle at 20% 20%, rgba(244, 63, 94, 0.25) 0%, transparent 55%)',
-    conicLight: 'conic-gradient(from 0deg, transparent 0deg, rgba(251, 113, 133, 0.4) 90deg, rgba(244, 63, 94, 0.65) 180deg, transparent 270deg)',
-  },
-]
-
-// Komponen Visual Mockup Gambar reusable untuk Mobile & Desktop
-const ProjectVisualCard = ({
-  cardRef,
-  isHovered = false,
-  onMouseMove,
-  onMouseEnter,
-  onMouseLeave,
-  colorTheme,
-  cursorPos = { x: 50, y: 50 },
-  imageSrc,
-  showGlow = false,
-  className = '',
-}) => (
-  <div
-    ref={cardRef}
-    onMouseMove={onMouseMove}
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
-    className={`relative w-full border border-dashed border-white/15 transition-colors duration-300 overflow-hidden ${className}`}
-    style={{
-      backgroundColor: colorTheme.bg,
-      backgroundImage: colorTheme.ambientGlow,
-    }}
-  >
-    {/* Crosshairs Sudut Kolom Gambar */}
-    <span className="absolute -top-[5px] -right-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
-    <span className="absolute -bottom-[5px] -right-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
-
-    {/* Dot grid pattern latar */}
-    <div
-      className="absolute inset-0 z-0 pointer-events-none opacity-20"
-      style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Ccircle cx='12' cy='12' r='1.2' fill='white'/%3E%3C/svg%3E")`,
-        backgroundRepeat: 'repeat',
-      }}
-    />
-
-    {/* Cahaya glow kursor khusus Desktop (tanpa spin slow, blur lebih ringan 48px, ukuran lebih lebar) */}
-    {showGlow && (
-      <div
-        className="absolute top-0 left-0 pointer-events-none transition-opacity duration-300 ease-out z-0 will-change-transform"
-        style={{
-          transform: `translate3d(${cursorPos.x - 200}px, ${cursorPos.y - 200}px, 0)`,
-          opacity: isHovered ? 1 : 0.25,
-        }}
-      >
-        <div
-          className="w-[400px] h-[400px] rounded-full"
-          style={{
-            background: colorTheme.conicLight,
-            filter: 'blur(48px)',
-          }}
-        />
-      </div>
-    )}
-
-    <img
-      className="top-24 left-32 relative h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out z-10"
-      src={imageSrc}
-      alt="Project screenshot"
-      loading="lazy"
-      decoding="async"
-    />
-  </div>
-)
+import ProjectVisualCard from './image/ProjectVisualCard'
+import { HARMONIOUS_PALETTES } from './image/colorPalettes'
 
 const ProjectCard = ({ project = DataHome.projects[0] }) => {
   const desktopImageRef = useRef(null)
@@ -155,6 +52,7 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
 
         {/* Kolom 2: Visual / Mockup Gambar Mobile (Tanpa glow kursor & tanpa mouse listener) */}
         <ProjectVisualCard
+          project={project}
           showGlow={false}
           colorTheme={colorTheme}
           imageSrc={imageSrc}
@@ -218,6 +116,7 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
 
         {/* Kolom 2: Visual / Mockup Gambar Desktop dengan Hover Glow Teroptimasi */}
         <ProjectVisualCard
+          project={project}
           cardRef={desktopImageRef}
           showGlow={true}
           isHovered={isHovered}

@@ -61,7 +61,7 @@ export const DataHome = {
         { en: 'Visit Social Media', id: 'Kunjungi Sosial Media', link: 'https://www.instagram.com/balikpapan.dev/' },
         { en: 'See My Works', id: 'Lihat Karya Saya', link: 'coming-soon' },
       ],
-      media: '/project-1/heroimg_desktop.webp',
+      media: '/project-1/PROMOTION-2.jpg',
     },
     {
       id: 2,
