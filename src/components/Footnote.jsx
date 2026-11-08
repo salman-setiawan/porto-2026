@@ -54,7 +54,7 @@ const Footnote = ({
 
   return (
     <footer
-      className={`w-full relative overflow-visible ${isLight ? 'text-app-primary' : 'text-white'
+      className={`w-full relative overflow-hidden ${isLight ? 'text-app-primary' : 'text-white'
         } ${className}`}
     >
       {/* ── Background Layer ── */}
