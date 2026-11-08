@@ -17,19 +17,6 @@ const ProjectsHorizontalScroll = ({ children }) => {
   const [pinMode, setPinMode] = useState('before')
   const [activeCardIndex, setActiveCardIndex] = useState(0)
   const [contentHeight, setContentHeight] = useState(560)
-  const [isDesktop, setIsDesktop] = useState(() =>
-    typeof window !== 'undefined' ? window.innerWidth >= 768 : true
-  )
-
-  useEffect(() => {
-    const handleResizeCheck = () => {
-      setIsDesktop(window.innerWidth >= 768)
-    }
-    window.addEventListener('resize', handleResizeCheck)
-    return () => window.removeEventListener('resize', handleResizeCheck)
-  }, [])
-
-  const currentScrollDistance = isDesktop ? SCROLL_DISTANCE_PX : 800
 
   // Ukur tinggi riil dari showcase wrapper agar container fit dengan card & header
   useEffect(() => {
@@ -59,14 +46,11 @@ const ProjectsHorizontalScroll = ({ children }) => {
     if (!container) return
 
     const currentScrollY = window.scrollY || window.pageYOffset || 0
-    const windowWidth = window.innerWidth || 1024
     const rect = container.getBoundingClientRect()
 
     // Koordinat piksel absolut awal section project di dokumen
-    const desktopMode = windowWidth >= 768
-    const scrollDistance = desktopMode ? SCROLL_DISTANCE_PX : 800
     const triggerStartPixel = rect.top + currentScrollY
-    const triggerEndPixel = triggerStartPixel + scrollDistance
+    const triggerEndPixel = triggerStartPixel + SCROLL_DISTANCE_PX
 
     let progress = 0
     let nextPinMode = 'before'
@@ -82,31 +66,35 @@ const ProjectsHorizontalScroll = ({ children }) => {
     } else {
       // 3. TERTRIGGER: Berada di antara triggerStartPixel dan triggerEndPixel
       nextPinMode = 'pinned'
-      progress = (currentScrollY - triggerStartPixel) / scrollDistance
+      progress = (currentScrollY - triggerStartPixel) / SCROLL_DISTANCE_PX
     }
 
     setPinMode(nextPinMode)
 
     // Perhitungan pergeseran horizontal dalam piksel
+    const windowWidth = window.innerWidth
     let cardWidth = firstCardRef.current?.offsetWidth
     if (!cardWidth || cardWidth <= 0) {
-      cardWidth = desktopMode ? Math.min(860, windowWidth - 64) : Math.min(360, windowWidth - 32)
+      cardWidth = windowWidth >= 768 ? Math.min(860, windowWidth - 64) : Math.min(380, windowWidth - 32)
     }
 
-    const gap = desktopMode ? 32 : 16
+    const gap = windowWidth >= 768 ? 32 : 16
 
     // Sisi kiri dan kanan grid utama (max-w-[920px] mx-auto px-4 md:px-8)
-    const contentPadding = desktopMode ? 32 : 16
+    const contentPadding = windowWidth >= 768 ? 32 : 16
     const gridLeft = Math.max(contentPadding, (windowWidth - 920) / 2 + contentPadding)
     const gridRight = windowWidth - gridLeft
     const startX = gridLeft
 
     // Lebar kartu MoreProjectsCard
-    const moreCardWidth = desktopMode ? 420 : 300
+    const moreCardWidth = windowWidth >= 768 ? 420 : 320
 
     // Ending point sejajar persis dengan sisi kanan grid header (teks "01 / 03")
+    // Pada saat progress = 1:
+    // startX + projects.length * (cardWidth + gap) + moreCardWidth - totalTravel = gridRight
+    // => totalTravel = startX + projects.length * (cardWidth + gap) + moreCardWidth - gridRight
     const totalContentWidth = projects.length * (cardWidth + gap) + moreCardWidth
-    const endingOffset = desktopMode ? 50 : 0
+    const endingOffset = windowWidth >= 768 ? 50 : 0
     const totalTravel = Math.max(0, startX + totalContentWidth - gridRight - endingOffset)
     const currentTranslateX = startX - progress * totalTravel
 
@@ -159,10 +147,10 @@ const ProjectsHorizontalScroll = ({ children }) => {
     if (pinMode === 'after') {
       return {
         position: 'absolute',
-        top: `${currentScrollDistance}px`,
+        top: `${SCROLL_DISTANCE_PX}px`,
         left: 0,
         width: '100%',
-        zIndex: 'auto',
+        zIndex: 10,
       }
     }
     // 'before' - berada tepat di posisi alaminya di bawah Hero section
@@ -171,28 +159,27 @@ const ProjectsHorizontalScroll = ({ children }) => {
       top: 0,
       left: 0,
       width: '100%',
-      zIndex: 'auto',
+      zIndex: 10,
     }
   }
 
   return (
     <div
       ref={containerRef}
-      id="projects-scroll-container"
       className="relative w-full"
       style={{
         // Total tinggi dalam piksel = tinggi konten riil + jarak scroll horizontal
-        height: `${contentHeight + currentScrollDistance}px`,
+        height: `${contentHeight + SCROLL_DISTANCE_PX}px`,
       }}
     >
       {/* Container Showcase */}
       <div
         ref={showcaseRef}
         style={getPinStyle()}
-        className="overflow-visible flex flex-col py-6 pointer-events-auto"
+        className="overflow-hidden flex flex-col py-6 pointer-events-auto bg-app-primary"
       >
         {/* Header Section: Title "Projects" & Indikator Slide */}
-        <div className="w-full max-w-[920px] mx-auto px-4 md:px-8 mb-2 flex items-center justify-between z-30 relative shrink-0 bg-app-primary">
+        <div className="w-full max-w-[920px] mx-auto px-4 md:px-8 mb-2 flex items-center justify-between z-10 shrink-0">
           <h3 className="text-app-primary text-[32px] md:text-[36px] font-crimson italic tracking-tighter">
             Projects . .
           </h3>
@@ -202,7 +189,7 @@ const ProjectsHorizontalScroll = ({ children }) => {
         </div>
 
         {/* Horizontal Track Container */}
-        <div className="w-full overflow-visible relative z-30">
+        <div className="w-full overflow-visible">
           <div
             ref={trackRef}
             className="flex items-center gap-4 will-change-transform"
@@ -224,7 +211,7 @@ const ProjectsHorizontalScroll = ({ children }) => {
 
         {/* Section Bawah (SeamlessSlider Playground) yang langsung muncul saat scroll horizontal */}
         {children && (
-          <div className="w-full mt-4 relative z-10 [isolation:isolate]">
+          <div className="w-full mt-4">
             {children}
           </div>
         )}

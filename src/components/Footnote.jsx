@@ -22,12 +22,6 @@ const Footnote = ({
   const backToTopText = footnoteData.backToTop?.[lang] || footnoteData.backToTop?.en || "Back to top"
 
   const cardRef = useRef(null)
-  const cardJWrapperRef = useRef(null)
-  const cardJInnerRef = useRef(null)
-  const [isLanded, setIsLanded] = useState(false)
-  const isLandedRef = useRef(false)
-  const hasPlayedLandSoundRef = useRef(false)
-  const rafIdRef = useRef(null)
 
   // Track light/dark mode untuk adaptasi vignette & background
   const [isLight, setIsLight] = useState(
@@ -41,183 +35,6 @@ const Footnote = ({
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
     return () => observer.disconnect()
   }, [])
-
-  // Animasi Kartu J Jatuh selama scroll dari akhir ProjectsHorizontalScroll melintasi SeamlessSlider ke Footnote
-  useEffect(() => {
-    const updateCardFall = () => {
-      const wrapper = cardJWrapperRef.current
-      const inner = cardJInnerRef.current
-      const card = cardRef.current
-      if (!wrapper || !inner || !card) return
-
-      const projectsContainer = document.getElementById('projects-scroll-container')
-      const currentScrollY = window.scrollY || window.pageYOffset || 0
-      const windowHeight = window.innerHeight || 800
-      const windowWidth = window.innerWidth || 1024
-
-      // Jika container projects belum ada / gagal di-resolve, fallback kartu langsung mendarat
-      if (!projectsContainer) {
-        wrapper.style.visibility = 'visible'
-        wrapper.style.opacity = '1'
-        wrapper.style.transform = 'translate3d(0, 0, 0)'
-        wrapper.style.pointerEvents = 'auto'
-        inner.style.transform = ''
-        inner.style.boxShadow = ''
-        if (!isLandedRef.current) {
-          isLandedRef.current = true
-          setIsLanded(true)
-        }
-        return
-      }
-
-      // Koordinat piksel absolut akhir scroll horizontal di ProjectsHorizontalScroll
-      const pRect = projectsContainer.getBoundingClientRect()
-      const projectsStartScroll = pRect.top + currentScrollY
-      const isDesktopFall = windowWidth >= 768
-      const scrollDistancePx = isDesktopFall ? 1800 : 800
-      const triggerEndScroll = projectsStartScroll + scrollDistancePx // Jarak SCROLL_DISTANCE_PX di ProjectsHorizontalScroll
-
-      const cardRect = card.getBoundingClientRect()
-      const cardDocY = cardRect.top + currentScrollY
-
-      // Titik mendarat: saat kartu di Footnote sudah masuk sekitar 65% tinggi layar
-      // Memastikan kartu sudah mendarat sempurna sebelum user fokus membaca Footnote
-      const targetLandedScrollY = cardDocY - windowHeight * 0.65
-      const endFallScrollY = Math.max(targetLandedScrollY, triggerEndScroll + 250)
-      const fallDistance = endFallScrollY - triggerEndScroll
-
-      let p = 0
-      if (currentScrollY <= triggerEndScroll) {
-        p = 0
-      } else if (currentScrollY >= endFallScrollY) {
-        p = 1
-      } else {
-        p = (currentScrollY - triggerEndScroll) / fallDistance
-      }
-
-      // ── Status 1: Belum mulai jatuh (User masih di Hero / scroll horizontal Projects) ──
-      if (p <= 0) {
-        wrapper.style.visibility = 'hidden'
-        wrapper.style.opacity = '0'
-        wrapper.style.pointerEvents = 'none'
-        isLandedRef.current = false
-        hasPlayedLandSoundRef.current = false
-        setIsLanded(false)
-        return
-      }
-
-      // ── Status 2: Sudah mendarat sempurna di atas kartu A (Footnote) ──
-      if (p >= 1) {
-        wrapper.style.visibility = 'visible'
-        wrapper.style.opacity = '1'
-        wrapper.style.transform = 'translate3d(0, 0, 0)'
-        wrapper.style.pointerEvents = 'auto'
-        inner.style.transform = ''
-        inner.style.boxShadow = ''
-
-        if (!isLandedRef.current) {
-          isLandedRef.current = true
-          setIsLanded(true)
-          if (!hasPlayedLandSoundRef.current) {
-            hasPlayedLandSoundRef.current = true
-            playCrispClick(0.35)
-          }
-        }
-        return
-      }
-
-      // ── Status 3: Sedang jatuh (Melayang turun melalui SeamlessSlider) ──
-      if (isLandedRef.current) {
-        isLandedRef.current = false
-        hasPlayedLandSoundRef.current = false
-        setIsLanded(false)
-      }
-
-      wrapper.style.visibility = 'visible'
-      wrapper.style.pointerEvents = 'none'
-
-      // Fade-in cepat di awal jatuh agar transisinya mulus
-      const opacity = Math.min(1, p * 10)
-      wrapper.style.opacity = String(opacity)
-
-      const isDesktop = windowWidth >= 768
-
-      // ── Kurva Lintasan Mengikuti Garis Kuning (Cubic Bézier Curve) ──
-      // P0: Tepat di bawah "Explore All Projects ->" pada kartu Show More Projects
-      const contentPadding = isDesktop ? 32 : 16
-      const gridLeft = Math.max(contentPadding, (windowWidth - 920) / 2 + contentPadding)
-      const gridRight = windowWidth - gridLeft
-      const startX = isDesktop ? (gridRight - 250) : (windowWidth * 0.52)
-      const startY = Math.max(windowHeight * 0.16, 130)
-
-      // P3: Target Landing tepat di atas kartu A pada Footnote
-      const targetX = cardRect.left
-      const targetY = cardRect.top
-
-      // P1: Mulai meluncur dari bawah kartu proyek, bergerak turun dan mulai mengarah ke kanan
-      const p1X = startX + (isDesktop ? 75 : 30)
-      const p1Y = startY + (targetY - startY) * 0.22
-
-      // P2: Melengkung jauh ke kanan luar (melewati sisi kanan SeamlessSlider, mengitari tombol CTA di tengah)
-      const p2X = isDesktop ? Math.max(gridRight + 65, targetX + 130) : (windowWidth * 0.84)
-      const p2Y = startY + (targetY - startY) * 0.68
-
-      // Formula Cubic Bézier B(t)
-      const t = p
-      const oneMinusT = 1 - t
-      const c0 = oneMinusT * oneMinusT * oneMinusT
-      const c1 = 3 * oneMinusT * oneMinusT * t
-      const c2 = 3 * oneMinusT * t * t
-      const c3 = t * t * t
-
-      const desiredViewportX = c0 * startX + c1 * p1X + c2 * p2X + c3 * targetX
-      const desiredViewportY = c0 * startY + c1 * p1Y + c2 * p2Y + c3 * targetY
-
-      const translateX = desiredViewportX - targetX
-      const translateY = desiredViewportY - targetY
-
-      // Efek Rotasi 2D Halus mengikuti kurva (menukik miring saat melengkung ke kanan, lalu mendarat di +3deg):
-      const pathBankAngle = Math.sin(t * Math.PI) * -16
-      const landingAlignment = (1 - t) * -8
-      const rotZ = 3 + landingAlignment + pathBankAngle
-
-      // Sedikit membesar saat melayang di udara (mendekat ke kamera)
-      const scale = 1 + (1 - p) * 0.05
-
-      // Bayangan melayang lembut dan dalam
-      const shadowAlpha = isLight ? 0.25 : 0.75
-      const shadowSpread = Math.round(16 + (1 - p) * 20)
-      const shadowBlur = Math.round(20 + (1 - p) * 30)
-
-      wrapper.style.transform = `translate3d(${translateX.toFixed(2)}px, ${translateY.toFixed(2)}px, 0)`
-      inner.style.transform = `rotate(${rotZ.toFixed(2)}deg) scale(${scale.toFixed(3)})`
-      inner.style.boxShadow = `0 ${shadowSpread}px ${shadowBlur}px -10px rgba(0, 0, 0, ${shadowAlpha})`
-    }
-
-    const onScroll = () => {
-      if (rafIdRef.current) return
-      rafIdRef.current = requestAnimationFrame(() => {
-        rafIdRef.current = null
-        updateCardFall()
-      })
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-
-    // Inisialisasi awal
-    updateCardFall()
-    const timer = setTimeout(updateCardFall, 100)
-
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      clearTimeout(timer)
-      if (rafIdRef.current) {
-        cancelAnimationFrame(rafIdRef.current)
-      }
-    }
-  }, [isLight])
 
   // Ambil link sosial dari dataHome jika ada, dengan fallback
   const ctaLinks = DataHome?.heroSection?.cta || [
@@ -296,6 +113,9 @@ const Footnote = ({
               onMouseEnter={handleCardMouseEnter}
               onClick={() => playCrispClick(0.6)}
               className="group relative block w-[195px] sm:w-[225px] md:w-[250px] aspect-[1/1.42] cursor-pointer select-none"
+              style={{
+                transformStyle: 'preserve-3d',
+              }}
             >
               {/* ── CARD A (Bawah / Belakang) ── */}
               <div
@@ -313,32 +133,23 @@ const Footnote = ({
                 />
               </div>
 
-              {/* ── CARD J (Atas / Paling Depan - Kartu jatuh selama scroll) ── */}
+              {/* ── CARD J (Atas / Paling Depan) ── */}
               <div
-                ref={cardJWrapperRef}
-                className="absolute inset-0 z-20 will-change-transform"
+                className={`relative z-20 w-full h-full rounded-3xl overflow-hidden transition-all duration-500 ease-out transform rotate-3 group-hover:rotate-1 group-hover:scale-105 group-hover:rotate-[12deg] group-hover:-translate-y-2 ${isLight
+                  ? 'shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)]'
+                  : 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85)]'
+                  }`}
               >
-                <div
-                  ref={cardJInnerRef}
-                  className={`relative w-full h-full rounded-3xl overflow-hidden ${isLanded
-                    ? `transition-all duration-500 ease-out transform rotate-3 group-hover:rotate-1 group-hover:scale-105 group-hover:rotate-[12deg] group-hover:-translate-y-2 ${isLight
-                      ? 'shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)]'
-                      : 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85)]'
-                    }`
-                    : 'will-change-transform'
-                    }`}
-                >
-                  <img
-                    src="/J.png"
-                    alt="Playing Card Jack"
-                    className="w-full h-full object-contain"
-                    loading="lazy"
-                    decoding="async"
-                  />
+                <img
+                  src="/J.png"
+                  alt="Playing Card Jack"
+                  className="w-full h-full object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
 
-                  {/* Subtle sheen highlight on hover */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                </div>
+                {/* Subtle sheen highlight on hover */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               </div>
             </a>
           </div>
