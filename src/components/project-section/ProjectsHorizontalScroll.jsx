@@ -206,7 +206,7 @@ const ProjectsHorizontalScroll = ({ children }) => {
             ))}
 
             {/* Ending Slide: Box "Show More Project" */}
-            <MoreProjectsCard url="https://dribbble.com/eisenflux" />
+            <MoreProjectsCard url="/projects" />
           </div>
         </div>
 

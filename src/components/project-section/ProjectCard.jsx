@@ -25,7 +25,7 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
     (typeof project?.media === 'string' && project?.media) ||
     project?.media?.desktop ||
     project?.media?.mobile ||
-    '/project-1/heroimg_desktop.webp'
+    '/projects/duitra-apps/heroimg_desktop.webp'
 
   // Generate tema warna latar & inner effect berdasarkan project
   const colorTheme = useMemo(() => {

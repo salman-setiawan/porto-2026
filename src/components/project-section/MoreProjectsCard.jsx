@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { playMechanicalSound, playCrispClick } from '../../utils/sound'
 
-const MoreProjectsCard = ({ url = 'https://dribbble.com/eisenflux' }) => {
+const MoreProjectsCard = ({ url = '/projects' }) => {
   const isExternal = url.startsWith('http') || url.startsWith('//')
 
   const handleClick = () => {
