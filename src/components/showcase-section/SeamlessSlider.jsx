@@ -113,7 +113,7 @@ const SeamlessSlider = () => {
 
         {/* Bottom Overlay Gradient & CTA Button */}
         <div
-          className="absolute inset-x-0 bottom-0 h-[320px] z-[100] flex items-end justify-center pb-10 pointer-events-none"
+          className="absolute inset-x-0 bottom-0 h-[320px] z-[100] flex items-end sm:justify-center pl-5 sm:pl-0 pb-10 pointer-events-none"
           style={{ background: 'var(--slider-gradient-bottom)' }}
         >
           <div className="pointer-events-auto">

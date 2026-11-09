@@ -95,7 +95,7 @@ const FootnoteCards = ({ email, isLight }) => {
   return (
     <div
       ref={containerRef}
-      className="flex items-center justify-start md:justify-end self-center md:self-auto w-full md:w-auto -mt-36 md:-mt-58 pt-0 sm:pl-12 relative z-20"
+      className="flex items-center w-full"
     >
       <a
         href={`mailto:${email}`}
@@ -115,8 +115,8 @@ const FootnoteCards = ({ email, isLight }) => {
           {/* Card A Element (Base Stacking & Hover Interaction) */}
           <div
             className={`w-full h-full rounded-3xl overflow-hidden transition-all duration-500 ease-out transform -rotate-8 -translate-x-6 -translate-y-2 group-hover:-rotate-[20deg] group-hover:-translate-x-10 group-hover:-translate-y-4 ${isLight
-                ? 'shadow-[0_16px_36px_-10px_rgba(0,0,0,0.18)]'
-                : 'shadow-[0_20px_40px_-15px_rgba(0,0,0,0.85)]'
+              ? 'shadow-[0_16px_36px_-10px_rgba(0,0,0,0.18)]'
+              : 'shadow-[0_20px_40px_-15px_rgba(0,0,0,0.85)]'
               }`}
           >
             <img
@@ -137,8 +137,8 @@ const FootnoteCards = ({ email, isLight }) => {
           {/* Card J Element (Base Stacking & Hover Interaction) */}
           <div
             className={`w-full h-full rounded-3xl overflow-hidden transition-all duration-500 ease-out transform rotate-3 group-hover:scale-105 group-hover:rotate-[12deg] group-hover:-translate-y-2 ${isLight
-                ? 'shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)]'
-                : 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85)]'
+              ? 'shadow-[0_20px_45px_-10px_rgba(0,0,0,0.22)]'
+              : 'shadow-[0_25px_50px_-12px_rgba(0,0,0,0.85)]'
               }`}
           >
             <img

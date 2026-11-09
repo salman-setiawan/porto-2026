@@ -79,94 +79,53 @@ const Footnote = ({
         />
       </div>
 
-      {/* ── Foreground Content Container (overflow-visible agar kartu tembus ke atas) ── */}
       <div className="relative z-10 max-w-[920px] mx-auto px-5 sm:px-8 md:px-12 flex flex-col justify-between py-6">
 
-        {/* ── Main Mid Section ── */}
-        <div className="flex md:items-center">
-
-          {/* Left: Headline & Subtext */}
-          <div className="flex flex-col min-w-[300px] max-w-[580px]">
-            <div className="text-[84px] md:text-[104px] font-crimson italic tracking-tighter text-app-primary select-none drop-shadow-sm -space-y-6 sm:-space-y-8 pl-2">
-              <p className="leading-[1.1]">{headlineTop}</p>
-              <p className="leading-[1.1]">
-                {headlineBottom}
-                <span className="inline-block text-app-accent ml-1 animate-pulse">.</span>
-              </p>
-            </div>
-            <p className="mt-2 mb-5 text-[14px] text-app-secondary leading-relaxed max-w-[400px]">
-              {subtext}
+        <div className="flex flex-col min-w-[300px] max-w-[580px]">
+          <div className="text-[84px] md:text-[104px] font-crimson italic tracking-tighter text-app-primary select-none drop-shadow-sm -space-y-6 sm:-space-y-8 pl-2">
+            <p className="leading-[1.1]">{headlineTop}</p>
+            <p className="leading-[1.1]">
+              {headlineBottom}
+              <span className="inline-block text-app-accent ml-1 animate-pulse">.</span>
             </p>
+          </div>
+          <p className="mt-2 mb-5 text-[14px] text-app-secondary leading-relaxed max-w-[400px]">
+            {subtext}
+          </p>
+        </div>
+
+        <div className="py-4 border-t border-app-subtle flex flex-col sm:flex-row justify-between gap-3">
+          <div className="flex items-center gap-2 group/email">
+            <a
+              href={`mailto:${email}`}
+              onClick={() => playCrispClick(0.5)}
+              className="text-sm text-app-primary hover:text-app-accent transition-colors flex items-center gap-1.5"
+            >
+              <span>Mail Me!</span>
+              <span className="text-[11px] transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5">↗</span>
+            </a>
+          </div>
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 self-start sm:self-auto">
+            {ctaLinks.map((item, idx) => (
+              <a
+                key={item.label}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => playMechanicalSound((idx % 6) + 1, 0.15)}
+                className="text-sm font-medium text-app-secondary hover:text-app-accent transition-colors flex items-center gap-1 group/link"
+              >
+                <span>{item.label}</span>
+                <span className="text-[11px] transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5">↗</span>
+              </a>
+            ))}
           </div>
         </div>
 
-        {/* ── Bottom Section: Direct Email & Socials ── */}
-        <div className="pt-4 border-t border-app-subtle space-y-5">
-
-          {/* Row: Email (Kiri) & CTA Socials (Kanan) */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-2 group/email">
-              <a
-                href={`mailto:${email}`}
-                onClick={() => playCrispClick(0.5)}
-                className="text-app-primary hover:text-app-accent transition-colors flex items-center gap-1.5"
-              >
-                <span>{email}</span>
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="inline-block transition-transform duration-200 group-hover/email:translate-x-1 group-hover/email:-translate-y-1"
-                >
-                  <line x1="7" y1="17" x2="17" y2="7" />
-                  <polyline points="7 7 17 7 17 17" />
-                </svg>
-              </a>
-            </div>
-
-            {/* Social Links */}
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 self-start sm:self-auto">
-              {ctaLinks.map((item, idx) => (
-                <a
-                  key={item.label}
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onMouseEnter={() => playMechanicalSound((idx % 6) + 1, 0.15)}
-                  className="text-sm font-medium text-app-secondary hover:text-app-accent transition-colors flex items-center gap-1 group/link"
-                >
-                  <span>{item.label}</span>
-                  <span className="text-[11px] transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5">↗</span>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Bottom Meta Bar: Copyright & Back to Top */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-4 border-t border-app-subtle text-sm text-app-muted">
-            <div className="flex items-center gap-2">
-              <span>{copyrightText}</span>
-              <span className='font-bold'>·</span>
-              <span>{builtWithText}</span>
-            </div>
-
-            {/* Back to top */}
-            <button
-              type="button"
-              onClick={handleBackToTop}
-              onMouseEnter={() => playMechanicalSound(4, 0.2)}
-              className="flex items-center gap-1.5 text-app-secondary hover:text-app-primary font-medium transition-colors cursor-pointer self-end sm:self-auto group/top"
-            >
-              <span>{backToTopText}</span>
-              <span className="transition-transform duration-200 group-hover/top:-translate-y-1">↑</span>
-            </button>
-          </div>
-
+        <div className="flex justify-between sm:justify-start gap-2 border-t border-app-subtle text-sm text-app-muted pt-4">
+          <span>{copyrightText}</span>
+          <span className='font-bold hidden sm:block'>·</span>
+          <span>{builtWithText}</span>
         </div>
 
       </div>

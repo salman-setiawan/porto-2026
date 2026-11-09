@@ -105,28 +105,12 @@ const Home = () => {
         <Footnote className="z-10" />
 
         {/* Layer FootnoteCards berada di atas Footnote (z-30) dengan posisi container yang persis sama */}
-        <div className="absolute inset-0 pointer-events-none z-30 overflow-visible">
-          <div className="max-w-[920px] mx-auto px-5 sm:px-8 md:px-12 py-8 flex flex-col justify-between">
-            <div className="flex md:items-center justify-between gap-8 md:gap-12">
-              {/* Spacer penyeimbang typography kiri */}
-              <div className="flex flex-col min-w-[300px] max-w-[580px] pointer-events-none opacity-0 select-none" aria-hidden="true">
-                <div className="text-[84px] md:text-[104px] font-crimson italic tracking-tighter pl-2">
-                  <p className="leading-[1.1]">{DataHome?.footnote?.headline?.top || 'Your'}</p>
-                  <p className="leading-[1.1]">{DataHome?.footnote?.headline?.bottom || 'Move'}.</p>
-                </div>
-                <p className="mt-2 mb-8 text-[14px] leading-relaxed max-w-[400px]">
-                  {DataHome?.footnote?.subtext?.en || ''}
-                </p>
-              </div>
-
-              {/* Cards yang interaktif dan berada di atas layer Footnote */}
-              <div className="pointer-events-auto">
-                <FootnoteCards
-                  email={DataHome?.footnote?.email || 'salmansetiawan88@gmail.com'}
-                  isLight={isLight}
-                />
-              </div>
-            </div>
+        <div className="absolute inset-0 pointer-events-none z-30 overflow-visible -top-30 -right-4 max-w-[860px] flex justify-end mx-auto">
+          <div className="pointer-events-auto">
+            <FootnoteCards
+              email={DataHome?.footnote?.email || 'salmansetiawan88@gmail.com'}
+              isLight={isLight}
+            />
           </div>
         </div>
       </div>
