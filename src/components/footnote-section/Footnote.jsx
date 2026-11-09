@@ -122,10 +122,22 @@ const Footnote = ({
           </div>
         </div>
 
-        <div className="flex justify-between sm:justify-start gap-2 border-t border-app-subtle text-sm text-app-muted pt-4">
-          <span>{copyrightText}</span>
-          <span className='font-bold hidden sm:block'>·</span>
-          <span>{builtWithText}</span>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-app-subtle text-sm text-app-muted pt-4">
+          <div className="flex items-center gap-2">
+            <span>{copyrightText}</span>
+            <span className='font-bold hidden sm:block'>·</span>
+            <span>{builtWithText}</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleBackToTop}
+            onMouseEnter={() => playMechanicalSound(4, 0.2)}
+            className="flex items-center gap-1.5 text-app-secondary hover:text-app-primary font-medium transition-colors cursor-pointer self-end sm:self-auto group/top"
+          >
+            <span>{backToTopText}</span>
+            <span className="transition-transform duration-200 group-hover/top:-translate-y-1">↑</span>
+          </button>
         </div>
 
       </div>

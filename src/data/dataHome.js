@@ -59,7 +59,7 @@ export const DataHome = {
       ],
       cta: [
         { en: 'Visit Social Media', id: 'Kunjungi Sosial Media', link: 'https://www.instagram.com/balikpapan.dev/' },
-        { en: 'See My Works', id: 'Lihat Karya Saya', link: 'coming-soon' },
+        { en: 'See My Works', id: 'Lihat Karya Saya', link: '/project/balikpapan-dev' },
       ],
       media: '/project-1/PROMOTION-2.jpg',
     },

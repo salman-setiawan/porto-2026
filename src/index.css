@@ -1,7 +1,16 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Momo Trust Sans", sans-serif;
+  --font-crimson: "Crimson Text", serif;
+}
+
 .font-crimson {
   font-family: "Crimson Text", serif;
+}
+
+body, button, input, select, textarea {
+  font-family: "Momo Trust Sans", sans-serif;
 }
 
 :root {

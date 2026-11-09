@@ -15,15 +15,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <!-- 🟢 Load fonts asynchronously untuk menghindari render blocking -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Sans:wght@200..800&display=swap"
-    media="print" onload="this.media='all'">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
-    media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Sans:wght@200..800&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap">
-  </noscript>
+  <!-- 🟢 Preload image kartu transisi agar instan tanpa lag decode -->
+  <link rel="preload" as="image" href="/J.png" type="image/png">
+
+  <!-- 🟢 Fonts: Momo Trust Sans (Body/Default UI) & Crimson Text (Headings/Display) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Momo+Trust+Sans:wght@200..800&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap">
 </head>
 
 <body>

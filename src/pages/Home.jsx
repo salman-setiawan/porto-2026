@@ -4,8 +4,6 @@ import HeroIntro from '../components/hero-section/Intro'
 import About from '../components/hero-section/About'
 import ProjectsHorizontalScroll from '../components/project-section/ProjectsHorizontalScroll'
 import SeamlessSlider from '../components/showcase-section/SeamlessSlider'
-import MusicPlayer from '../components/MusicPlayer'
-import ThemeToggle from '../components/ThemeToggle'
 import PixelFlare from '../motion/PixelFlare'
 import Footnote from '../components/footnote-section/Footnote'
 import FootnoteCards from '../components/footnote-section/FootnoteCards'
@@ -105,7 +103,7 @@ const Home = () => {
         <Footnote className="z-10" />
 
         {/* Layer FootnoteCards berada di atas Footnote (z-30) dengan posisi container yang persis sama */}
-        <div className="absolute inset-0 pointer-events-none z-30 overflow-visible -top-30 -right-4 max-w-[860px] flex justify-end mx-auto">
+        <div className="absolute inset-0 pointer-events-none z-30 overflow-visible -top-30 -right-12 max-w-[860px] flex justify-end mx-auto">
           <div className="pointer-events-auto">
             <FootnoteCards
               email={DataHome?.footnote?.email || 'salmansetiawan88@gmail.com'}
@@ -114,9 +112,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      <MusicPlayer />
-      <ThemeToggle />
     </div>
   )
 }
