@@ -241,13 +241,15 @@ html.theme-transitioning .theme-icon-filter {
 
   0%,
   100% {
-    transform: scale(0.92);
-    opacity: 0.2;
+    opacity: 0.55;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
   }
 
   50% {
-    transform: scale(1.08);
-    opacity: 0.5;
+    opacity: 0.15;
+    -webkit-mask-size: 70% 70%;
+    mask-size: 70% 70%;
   }
 }
 

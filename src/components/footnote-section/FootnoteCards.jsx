@@ -48,17 +48,19 @@ const FootnoteCards = ({ email, isLight }) => {
       const fallEaseA = Math.pow(progress, 1.1)
       const fallEaseJ = Math.pow(progress, 1.05)
 
-      // Fall physics translation:
+      // Fall & Slide physics translation:
+      // Kartu mulai meluncur dari sisi kanan (positif X) dengan fade in yang lebih lama (smooth opacity over progress)
       // Tepat pada finishScrollY (ujung paling bawah footnote), fallEase = 1 dan sisa offset = 0
-      const aY = -560 * (1 - fallEaseA)
-      const aX = 90 * (1 - fallEaseA)
-      const aRotate = 35 * (1 - fallEaseA)
-      const aOpacity = clamp(progress / 0.2, 0, 1)
+      const aY = -420 * (1 - fallEaseA)
+      const aX = 360 * (1 - fallEaseA)
+      const aRotate = 28 * (1 - fallEaseA)
+      // Fade in diperpanjang lebih lama (misal transisi opacity penuh setelah progress mencapai 60-70%)
+      const aOpacity = clamp(progress / 0.65, 0, 1)
 
-      const jY = -720 * (1 - fallEaseJ)
-      const jX = -80 * (1 - fallEaseJ)
-      const jRotate = -30 * (1 - fallEaseJ)
-      const jOpacity = clamp(progress / 0.2, 0, 1)
+      const jY = -520 * (1 - fallEaseJ)
+      const jX = 460 * (1 - fallEaseJ)
+      const jRotate = -22 * (1 - fallEaseJ)
+      const jOpacity = clamp(progress / 0.65, 0, 1)
 
       if (wrapperARef.current) {
         wrapperARef.current.style.transform = `translate3d(${aX}px, ${aY}px, 0) rotate(${aRotate}deg)`

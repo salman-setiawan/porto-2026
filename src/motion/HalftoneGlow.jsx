@@ -72,7 +72,7 @@ const HalftoneGlow = ({ color, className, animation }) => {
       // Light mode: multiply blend so dots darken the bright background
       mixBlendMode: isLight ? 'multiply' : 'normal',
       // GPU Acceleration
-      willChange: 'opacity',
+      willChange: 'opacity, mask-size, -webkit-mask-size',
       transform: 'translateZ(0)',
       contain: 'strict',
     };
