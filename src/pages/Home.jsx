@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import Lenis from 'lenis'
 import HeroIntro from '../components/hero-section/Intro'
-import About from '../components/hero-section/About'
+import About from '../components/About'
 import ProjectsHorizontalScroll from '../components/project-section/ProjectsHorizontalScroll'
 import SeamlessSlider from '../components/showcase-section/SeamlessSlider'
 import PixelFlare from '../motion/PixelFlare'

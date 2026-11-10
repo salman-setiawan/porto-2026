@@ -2,9 +2,12 @@ import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { playMechanicalSound } from '../../utils/sound'
 import TimelineSlider from '../../components/TimelineSlider'
-import { WEEKS_DATA, TOTAL_TICKS } from '../../data/bpnDev'
+import About from '../../components/About'
+import { DataBppDev } from '../../data/bpnDev'
 
 const BppDev = () => {
+  const { weeksData, totalTicks, about } = DataBppDev
+
   // Nilai desimal kontinu untuk pergerakan slider yang mulus (0.0 s/d 3.0)
   const [sliderPosition, setSliderPosition] = useState(0)
   const [selectedImage, setSelectedImage] = useState(null)
@@ -12,13 +15,13 @@ const BppDev = () => {
   const [isDragging, setIsDragging] = useState(false)
 
   // Indeks minggu diskrit [0, 1, 2, 3] ditentukan berdasarkan pembulatan (threshold 0.5)
-  const totalWeeks = WEEKS_DATA.length
+  const totalWeeks = weeksData.length
   const activeWeekIndex = Math.min(
     Math.max(Math.round(sliderPosition), 0),
     totalWeeks - 1
   )
 
-  const activeWeek = WEEKS_DATA[activeWeekIndex]
+  const activeWeek = weeksData[activeWeekIndex]
 
   // Pastikan item index valid untuk week yang sedang aktif
   const activeItemIndex = selectedItemIndex < activeWeek.items.length ? selectedItemIndex : 0
@@ -53,7 +56,7 @@ const BppDev = () => {
   }, [sliderPosition, totalWeeks])
 
   // Konversi sliderPosition (0..3) ke skala indeks tick (0..36)
-  const currentTickPos = (sliderPosition / (totalWeeks - 1)) * (TOTAL_TICKS - 1)
+  const currentTickPos = (sliderPosition / (totalWeeks - 1)) * (totalTicks - 1)
 
   return (
     <div className="min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 relative selection:bg-orange-500/30 selection:text-orange-400 pb-24">
@@ -67,9 +70,15 @@ const BppDev = () => {
             balikpapan.dev
           </h1>
           <p className="text-[14px] text-app-muted">
-            {WEEKS_DATA.reduce((acc, w) => acc + w.items.length, 0)} Total Assets Designed
+            {weeksData.reduce((acc, w) => acc + w.items.length, 0)} Total Assets Designed
           </p>
         </div>
+
+        {/* ── ABOUT SECTION (Informasi dari balikpapan_dev_graphic_designer.md) ── */}
+        <About
+          data={about}
+          className="space-y-3 pt-2 pb-2"
+        />
 
         {/* ── SHOWCASE SECTION ── */}
         <section className="space-y-4">
@@ -172,7 +181,7 @@ const BppDev = () => {
             handleNextWeek={handleNextWeek}
             handleTimelineClick={handleTimelineClick}
             currentTickPos={currentTickPos}
-            items={WEEKS_DATA}
+            items={weeksData}
           />
         </section>
 
@@ -188,7 +197,7 @@ const BppDev = () => {
           </div>
 
           <div className="space-y-12">
-            {WEEKS_DATA.map((week) => (
+            {weeksData.map((week) => (
               <div key={week.id} className="space-y-4">
                 {/* Header Tiap Minggu */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-app-subtle gap-1">
