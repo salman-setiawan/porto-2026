@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react'
-import Button from '../Button'
 
-// All portfolio shots
+// All portfolio shots default
 const SHOTS = [
   '/shots/estore.webp',
   '/shots/halogbs.webp',
   '/shots/learnx.webp',
   '/shots/musplay.webp',
 ]
-
-// Duplicate shots to ensure we have enough for 3 columns
-const ALL_SHOTS = [...SHOTS, ...SHOTS, ...SHOTS]
 
 // Split into columns (distribute evenly)
 const splitIntoColumns = (items, numCols) => {
@@ -20,10 +16,6 @@ const splitIntoColumns = (items, numCols) => {
   })
   return columns
 }
-
-// Pre-computed columns (hanya dihitung 1x di level modul)
-const COLUMNS_3 = splitIntoColumns(ALL_SHOTS, 3)
-const COLUMNS_2 = splitIntoColumns(ALL_SHOTS, 2)
 
 const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
   const animationName = direction === 'up' ? 'scroll-up' : 'scroll-down'
@@ -69,7 +61,15 @@ const Column = ({ shots, direction = 'up', duration = 20, className = "" }) => {
   )
 }
 
-const SeamlessSlider = () => {
+const SeamlessSlider = ({
+  shots = SHOTS,
+  className = "",
+  showOverlayGradients = true,
+  heightClass = "h-[400px]",
+  topOverlayHeight = "h-[320px]",
+  bottomOverlayHeight = "h-[320px]",
+  speedMultiplier = 1,
+}) => {
   const [isDesktop, setIsDesktop] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(min-width: 768px)').matches : true
   )
@@ -81,49 +81,46 @@ const SeamlessSlider = () => {
     return () => mql.removeEventListener('change', onChange)
   }, [])
 
-  return (
-    <div className="w-full pb-24 bg-app-primary overflow-hidden">
-      <div className="max-w-[920px] mx-auto relative z-[110] top-12 pointer-events-none px-4 md:px-8">
-        <h3 className="text-app-primary text-[80px] font-crimson h-[100px] italic tracking-tighter">Playground</h3>
-        <p className="text-app-secondary text-sm mt-2">A collection of my other design explorations and shots.</p>
-      </div>
+  // Siapkan data shots terduplikasi agar cukup untuk kolom
+  const baseShots = shots && shots.length > 0 ? shots : SHOTS
+  const effectiveShots = [...baseShots, ...baseShots, ...baseShots]
+  const columns3 = splitIntoColumns(effectiveShots, 3)
+  const columns2 = splitIntoColumns(effectiveShots, 2)
 
-      <div className="max-w-[920px] px-0 md:px-8 mx-auto relative flex justify-center h-[400px] -mt-[50px]">
-        {/* Render adaptif: hanya me-render satu varian kolom yang sesuai breakpoint untuk menghindari duplikasi 48 node DOM & animasi tak henti */}
+  return (
+    <div className={`w-full overflow-hidden ${className}`}>
+      <div className={`w-full relative flex justify-center ${heightClass}`}>
+        {/* Render adaptif: hanya me-render satu varian kolom yang sesuai breakpoint */}
         {isDesktop ? (
           /* Desktop: 3 columns */
           <div className="flex gap-2 w-full">
-            <Column shots={COLUMNS_3[0]} direction="up" duration={30} className="h-full" />
-            <Column shots={COLUMNS_3[1]} direction="down" duration={35} className="h-full" />
-            <Column shots={COLUMNS_3[2]} direction="up" duration={30} className="h-full" />
+            <Column shots={columns3[0]} direction="up" duration={30 * speedMultiplier} className="h-full" />
+            <Column shots={columns3[1]} direction="down" duration={35 * speedMultiplier} className="h-full" />
+            <Column shots={columns3[2]} direction="up" duration={30 * speedMultiplier} className="h-full" />
           </div>
         ) : (
           /* Mobile & Tablet: 2 columns */
           <div className="flex gap-2 w-fit mx-auto overflow-visible">
-            <Column shots={COLUMNS_2[0]} direction="up" duration={30} className="h-full w-[440px]" />
-            <Column shots={COLUMNS_2[1]} direction="down" duration={30} className="h-full w-[440px]" />
+            <Column shots={columns2[0]} direction="up" duration={30 * speedMultiplier} className="h-full w-[440px]" />
+            <Column shots={columns2[1]} direction="down" duration={30 * speedMultiplier} className="h-full w-[440px]" />
           </div>
         )}
 
         {/* Top Overlay Gradient */}
-        <div
-          className="absolute inset-x-0 top-0 h-[320px] z-[100] pointer-events-none"
-          style={{ background: 'var(--slider-gradient-top)' }}
-        />
+        {showOverlayGradients && (
+          <div
+            className={`absolute inset-x-0 top-0 ${topOverlayHeight} z-[100] pointer-events-none`}
+            style={{ background: 'var(--slider-gradient-top)' }}
+          />
+        )}
 
-        {/* Bottom Overlay Gradient & CTA Button */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-[320px] z-[100] flex items-end sm:justify-center pl-5 sm:pl-0 pb-10 pointer-events-none"
-          style={{ background: 'var(--slider-gradient-bottom)' }}
-        >
-          <div className="pointer-events-auto">
-            <Button
-              label="Click to See More"
-              type="base"
-              url="https://dribbble.com/eisenflux"
-            />
-          </div>
-        </div>
+        {/* Bottom Overlay Gradient */}
+        {showOverlayGradients && (
+          <div
+            className={`absolute inset-x-0 bottom-0 ${bottomOverlayHeight} z-[100] pointer-events-none`}
+            style={{ background: 'var(--slider-gradient-bottom)' }}
+          />
+        )}
       </div>
     </div>
   )

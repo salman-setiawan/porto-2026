@@ -57,13 +57,23 @@ const ProjectVisualCard = ({
       </div>
     )}
 
-    <img
-      className="top-24 left-32 relative h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out z-10"
-      src={imageSrc}
-      alt={project?.title?.en || project?.title || 'Project screenshot'}
-      loading="lazy"
-      decoding="async"
-    />
+    {project?.imageFit === 'contain' ? (
+      <img
+        className="top-40 left-18 relative w-[135%] max-w-none h-auto object-contain group-hover:scale-105 transition-transform duration-500 ease-out z-10"
+        src={imageSrc}
+        alt={project?.title?.en || project?.title || 'Project screenshot'}
+        loading="lazy"
+        decoding="async"
+      />
+    ) : (
+      <img
+        className="top-24 left-32 relative h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out z-10"
+        src={imageSrc}
+        alt={project?.title?.en || project?.title || 'Project screenshot'}
+        loading="lazy"
+        decoding="async"
+      />
+    )}
   </div>
 )
 

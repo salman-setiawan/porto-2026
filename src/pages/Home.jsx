@@ -4,6 +4,7 @@ import HeroIntro from '../components/hero-section/Intro'
 import About from '../components/About'
 import ProjectsHorizontalScroll from '../components/project-section/ProjectsHorizontalScroll'
 import SeamlessSlider from '../components/showcase-section/SeamlessSlider'
+import Button from '../components/Button'
 import PixelFlare from '../motion/PixelFlare'
 import Footnote from '../components/footnote-section/Footnote'
 import FootnoteCards from '../components/footnote-section/FootnoteCards'
@@ -88,13 +89,39 @@ const Home = () => {
       {/* 1. Hero Intro & About Section */}
       <div className="items-center mx-auto px-4 md:px-8 max-w-[920px] space-y-4">
         <HeroIntro scrollY={scrollY} />
-        <About />
+        <About title='About me . .' />
       </div>
 
       {/* 2. Pinned Horizontal Projects Showcase Scroll with SeamlessSlider inside */}
       <ProjectsHorizontalScroll>
-        <div className="md:mx-auto">
-          <SeamlessSlider />
+        <div className="w-full pb-24 bg-app-primary overflow-hidden md:mx-auto">
+          {/* Header Playground Layer Terpisah */}
+          <div className="max-w-[920px] mx-auto relative z-[110] top-12 pointer-events-none px-4 md:px-8">
+            <h3 className="text-app-primary text-[80px] font-crimson h-[100px] italic tracking-tighter">
+              Playground
+            </h3>
+            <p className="text-app-secondary text-sm mt-2">
+              A collection of my other design explorations and shots.
+            </p>
+          </div>
+
+          {/* Slider polosan dengan layer overlay terpisah */}
+          <div className="max-w-[920px] px-0 md:px-8 mx-auto relative flex justify-center -mt-[50px]">
+            <SeamlessSlider heightClass="h-[400px]" showOverlayGradients={true} />
+
+            {/* CTA Button Layer Terpisah */}
+            <div
+              className="absolute inset-x-0 bottom-0 h-[140px] z-[110] flex items-end sm:justify-center pl-5 sm:pl-0 pb-10 pointer-events-none"
+            >
+              <div className="pointer-events-auto">
+                <Button
+                  label="Click to See More"
+                  type="base"
+                  url="https://dribbble.com/eisenflux"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </ProjectsHorizontalScroll>
 

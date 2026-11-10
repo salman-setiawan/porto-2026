@@ -158,6 +158,31 @@ html.theme-transitioning .theme-icon-filter {
   background-color: var(--bg-surface-elevated);
 }
 
+/* Headings khusus Eduwork & Case Study dengan saturasi tinggi di dark mode & kontras kaya di light mode */
+.heading-accent-amber {
+  color: #f59e0b;
+}
+:root[data-theme="light"] .heading-accent-amber,
+body.light-theme .heading-accent-amber {
+  color: #b45309;
+}
+
+.heading-accent-yellow {
+  color: #eab308;
+}
+:root[data-theme="light"] .heading-accent-yellow,
+body.light-theme .heading-accent-yellow {
+  color: #a16207;
+}
+
+.heading-accent-emerald {
+  color: #10b981;
+}
+:root[data-theme="light"] .heading-accent-emerald,
+body.light-theme .heading-accent-emerald {
+  color: #047857;
+}
+
 .bg-app-surface-glass {
   background-color: var(--bg-surface-glass);
 }

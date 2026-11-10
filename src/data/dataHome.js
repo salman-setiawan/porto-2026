@@ -91,28 +91,26 @@ export const DataHome = {
     {
       id: 3,
       title: {
-        en: "Aevenic",
-        id: "Aevenic",
+        en: "Eduwork Mentor",
+        id: "Eduwork Mentor",
       },
       desc: {
-        en: 'Track every expense, stay under budget, and take control of your finances in minutes. No complexity. No confusion.',
-        id: 'Catat setiap pengeluaran, tetap di bawah anggaran, dan kontrol keuanganmu dalam menit. Tidak kompleks. Tidak bingung.',
+        en: 'Landing page and web platform designed to connect mentors with students, featuring modern visual hierarchy and structured learning workflows.',
+        id: 'Platform web dan halaman arahan yang dirancang untuk menghubungkan mentor dengan siswa, dilengkapi hierarki visual modern dan alur pembelajaran terstruktur.',
       },
       tag: [
-        { en: 'Product Design', id: 'Desain Produk' },
-        { en: 'Web Design', id: 'Rancangan Web' },
-        { en: 'Web Development', id: 'Pengembangan Web' },
+        { en: 'UI/UX Design', id: 'Desain UI/UX' },
+        { en: 'Landing Page', id: 'Halaman Arahan' },
       ],
       stack: [
-        { en: 'Javascript', id: 'Javascript' },
-        { en: 'React', id: 'React' },
-        { en: 'Tailwind CSS', id: 'Tailwind CSS' },
+        { en: 'Figma', id: 'Figma' },
+        { en: 'Miro', id: 'Miro' },
       ],
       cta: [
-        { en: 'View Website', id: 'Kunjungi Website', link: 'https://duitra.id' },
-        { en: 'See on Play Store', id: 'Lihat di Play Store', link: 'https://play.google.com/store/apps/details?id=com.duitra.app' },
+        { en: 'View Case Study', id: 'Lihat Studi Kasus', link: '/project/eduwork' },
       ],
-      media: '/projects/duitra-apps/heroimg_desktop.webp',
+      media: '/projects/eduwork/gallery/screen1.webp',
+      imageFit: 'contain',
     },
   ],
   allProjects: [
@@ -167,27 +165,26 @@ export const DataHome = {
     {
       id: 3,
       title: {
-        en: "Aevenic",
-        id: "Aevenic",
+        en: "Eduwork Mentor",
+        id: "Eduwork Mentor",
       },
       desc: {
-        en: 'Modern digital agency and SaaS platform interface designed for high performance, intuitive navigation, and crisp typography.',
-        id: 'Antarmuka agensi digital dan platform SaaS modern yang dirancang untuk performa tinggi, navigasi intuitif, dan tipografi tajam.',
+        en: 'A collaborative web design project focusing on building an intuitive mentor landing page with Agile workflow and user-centered design.',
+        id: 'Proyek desain web kolaboratif yang berfokus pada pembuatan halaman arahan bagi mentor menggunakan alur kerja Agile dan pendekatan kebutuhan pengguna.',
       },
       tag: [
-        { en: 'Product Design', id: 'Desain Produk' },
-        { en: 'Web Design', id: 'Rancangan Web' },
-        { en: 'Web Development', id: 'Pengembangan Web' },
+        { en: 'UI/UX Design', id: 'Desain UI/UX' },
+        { en: 'Landing Page', id: 'Halaman Arahan' },
       ],
       stack: [
-        { en: 'Javascript', id: 'Javascript' },
-        { en: 'React', id: 'React' },
-        { en: 'Tailwind CSS', id: 'Tailwind CSS' },
+        { en: 'Figma', id: 'Figma' },
+        { en: 'Miro', id: 'Miro' },
       ],
       cta: [
-        { en: 'View Experience', id: 'Lihat Pengalaman', link: 'https://github.com/salman-setiawan' },
+        { en: 'View Case Study', id: 'Lihat Studi Kasus', link: '/project/eduwork' },
       ],
-      media: '/projects/duitra-apps/heroimg_desktop.webp',
+      media: '/projects/eduwork/ui.webp',
+      imageFit: 'contain',
     },
     {
       id: 4,
