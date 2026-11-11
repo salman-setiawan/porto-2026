@@ -1,13 +1,19 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { DataHome } from '../../data/dataHome'
+import { DataProject } from '../../data/dataProject'
 import ProjectCard from './ProjectCard'
 import MoreProjectsCard from './MoreProjectsCard'
 
 // Jarak scroll vertikal tetap (dalam piksel) untuk menggerakkan seluruh kartu project
 const SCROLL_DISTANCE_PX = 1800
 
-const ProjectsHorizontalScroll = ({ children }) => {
-  const projects = DataHome.projects || []
+const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, children }) => {
+  // Support custom projects list, seleksi via highlightIds, atau default 3 project pertama
+  const allProjects = DataProject.projects || []
+  const projects = customProjects && customProjects.length > 0
+    ? customProjects
+    : highlightIds && highlightIds.length > 0
+      ? highlightIds.map((id) => allProjects.find((p) => p.id === id)).filter(Boolean)
+      : allProjects.slice(0, 3)
   const containerRef = useRef(null)
   const trackRef = useRef(null)
   const firstCardRef = useRef(null)

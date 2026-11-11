@@ -1,12 +1,12 @@
 import { useState, useRef, useMemo } from 'react'
-import { DataHome } from '../../data/dataHome'
+import { DataProject } from '../../data/dataProject'
 import Chip from '../Chip'
 import Button from '../Button'
 import HalftoneGlow from '../../motion/HalftoneGlow'
 import ProjectVisualCard from './image/ProjectVisualCard'
 import { HARMONIOUS_PALETTES } from './image/colorPalettes'
 
-const ProjectCard = ({ project = DataHome.projects[0] }) => {
+const ProjectCard = ({ project = DataProject.projects[0] }) => {
   const desktopImageRef = useRef(null)
   const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 })
   const [isHovered, setIsHovered] = useState(false)
@@ -47,8 +47,8 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
 
   return (
     <div className='relative w-full group'>
-      {/* Grid 2 kolom tanpa gap, border dashed saling terhubung */}
-      <div className='flex flex-col md:flex-row'>
+      {/* Grid 2 kolom dengan proporsi simetris 50:50 (w-full md:w-1/2), border dashed saling terhubung */}
+      <div className='flex flex-col md:flex-row items-stretch'>
 
         {/* Kolom 2: Visual / Mockup Gambar Mobile (Tanpa glow kursor & tanpa mouse listener) */}
         <ProjectVisualCard
@@ -59,8 +59,8 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
           className="md:hidden aspect-[4/3]"
         />
 
-        {/* Kolom 1: Informasi Project */}
-        <div className='relative py-4 px-3 border border-dashed border-app-subtle md:border-r-0 bg-app-surface/20 hover:bg-app-surface/40 transition-colors duration-300 flex flex-col justify-between overflow-hidden'>
+        {/* Kolom 1: Informasi Project (w-full md:w-1/2 agar lebarnya persis 50% sama dengan kolom gambar) */}
+        <div className='w-full md:w-1/2 relative py-6 px-5 border border-dashed border-app-subtle md:border-r-0 bg-app-surface/20 hover:bg-app-surface/40 transition-colors duration-300 flex flex-col justify-between overflow-hidden shrink-0'>
           {/* Crosshairs Sudut Kolom Informasi */}
           <span className="absolute -top-[5px] -left-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
           <span className="absolute -top-[5px] -right-[5px] md:hidden text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
@@ -114,7 +114,7 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
           </div>
         </div>
 
-        {/* Kolom 2: Visual / Mockup Gambar Desktop dengan Hover Glow Teroptimasi */}
+        {/* Kolom 2: Visual / Mockup Gambar Desktop dengan Hover Glow Teroptimasi (w-full md:w-1/2) */}
         <ProjectVisualCard
           project={project}
           cardRef={desktopImageRef}
@@ -126,7 +126,7 @@ const ProjectCard = ({ project = DataHome.projects[0] }) => {
           colorTheme={colorTheme}
           cursorPos={cursorPos}
           imageSrc={imageSrc}
-          className="hidden md:block h-[460px] md:h-[480px]"
+          className="hidden md:block w-full md:w-1/2 h-[460px] md:h-[480px] shrink-0"
         />
 
       </div>

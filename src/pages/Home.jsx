@@ -10,6 +10,9 @@ import Footnote from '../components/footnote-section/Footnote'
 import FootnoteCards from '../components/footnote-section/FootnoteCards'
 import { DataHome } from '../data/dataHome'
 
+// Tentukan 3 ID project yang ingin di-highlight secara manual di Home
+const HIGHLIGHTED_PROJECT_IDS = [1, 2, 3]
+
 const Home = () => {
   // Track scroll position khusus zona Hero (0-450px) agar tidak memicu re-render tak berguna saat scroll ke bawah
   const [scrollY, setScrollY] = useState(0)
@@ -93,7 +96,7 @@ const Home = () => {
       </div>
 
       {/* 2. Pinned Horizontal Projects Showcase Scroll with SeamlessSlider inside */}
-      <ProjectsHorizontalScroll>
+      <ProjectsHorizontalScroll highlightIds={HIGHLIGHTED_PROJECT_IDS}>
         <div className="w-full pb-24 bg-app-primary overflow-hidden md:mx-auto">
           {/* Header Playground Layer Terpisah */}
           <div className="max-w-[920px] mx-auto relative z-[110] top-12 pointer-events-none px-4 md:px-8">
