@@ -60,12 +60,31 @@ const RailField = () => {
   }
 
   return (
-    <div className="min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 relative selection:bg-orange-500/30 selection:text-orange-400 pb-24">
-      {/* ── Main Container ── */}
-      <main className="max-w-[880px] mx-auto px-4 sm:px-6 space-y-12">
+    <div className="flex flex-col w-full relative min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 selection:bg-orange-500/30 selection:text-orange-400 pb-24 overflow-x-clip">
+      {/* ── Top Navigation Bar ── */}
+      <header className="sticky top-0 z-40 backdrop-blur-md bg-app-primary/80 border-b border-app-subtle">
+        <div className="max-w-[880px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <Link
+            to="/projects"
+            onClick={() => playCrispClick(0.5)}
+            className="group flex items-center gap-2 text-sm text-app-secondary hover:text-app-primary transition-colors cursor-pointer"
+          >
+            <span className="text-base group-hover:-translate-x-1 transition-transform">←</span>
+            <span>Back to projects</span>
+          </Link>
 
-        {/* ── SECTION 1: HEADER TITLE & METADATA ── */}
-        <section className="pt-8 pb-4 text-center space-y-8">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-app-muted">Case Study</span>
+            <span className="text-xs px-2 py-0.5 rounded-full bg-orange-500/10 text-app-accent border border-orange-500/20 font-mono">
+              05 / 05
+            </span>
+          </div>
+        </div>
+      </header>
+
+      {/* ── SECTION 1: HEADER TITLE & METADATA ── */}
+      <div className="w-full max-w-[880px] mx-auto px-4 sm:px-6 pt-8 pb-4">
+        <section className="text-center space-y-8">
           <h1 className="text-[32px] h-[40px] font-crimson italic tracking-tight text-app-primary">
             {RailfieldData.title}
           </h1>
@@ -104,115 +123,115 @@ const RailField = () => {
             </div>
           </div>
         </section>
+      </div>
 
-        {/* ── SECTION 1B: HORIZONTAL SCROLL IMAGES SHOWCASE (Konsep ProjectsHorizontalScroll) ── */}
-        <section className="relative w-full -mx-4 sm:-mx-6 px-0 overflow-visible">
-          <ImagesHorizontalScroll
-            images={RAILFIELD_GALLERY_IMAGES}
-            title="Field Technician Workflow"
-            subtitle="Panned showcase of 5-step daily site reporting flow"
-            onImageClick={handleOpenImage}
-            scrollDistance={1500}
-            cardWidthClass="w-[260px] sm:w-[300px] md:w-[320px]"
-            cardAspectClass="aspect-[9/19]"
-          />
-        </section>
+      {/* ── SECTION 1B: HORIZONTAL SCROLL IMAGES SHOWCASE (Root Level w-full, sama seperti Home.jsx) ── */}
+      <ImagesHorizontalScroll
+        images={RAILFIELD_GALLERY_IMAGES}
+        title="Field Technician Workflow . ."
+        subtitle="Panned showcase of 5-step daily site reporting flow"
+        onImageClick={handleOpenImage}
+        scrollDistance={1800}
+        maxWidth={880}
+      >
+        {/* Konten dimulai langsung di dalam slot children agar bagian bawah tidak kosong saat scrolling */}
+        <div className="w-full max-w-[880px] mx-auto px-4 sm:px-6 space-y-12">
+          {/* ── SECTION 2: OVERVIEW, PROBLEM ── */}
+          <section className="space-y-8 pt-4">
+            {/* Overview */}
+            <div className="space-y-3">
+              <h2 className="text-[36px] font-crimson italic tracking-tighter heading-accent-amber leading-tight">
+                Overview
+              </h2>
+              <div className="space-y-3 text-[15px] text-app-secondary leading-relaxed font-sans">
+                {RailfieldData.overview.map((para, idx) => (
+                  <p key={idx}>{para.en}</p>
+                ))}
+              </div>
+            </div>
 
-        {/* ── SECTION 2: OVERVIEW, PROBLEM ── */}
-        <section className="space-y-8 pt-4">
-          {/* Overview */}
-          <div className="space-y-3">
-            <h2 className="text-[36px] font-crimson italic tracking-tighter heading-accent-amber leading-tight">
-              Overview
-            </h2>
-            <div className="space-y-3 text-[15px] text-app-secondary leading-relaxed font-sans">
-              {RailfieldData.overview.map((para, idx) => (
-                <p key={idx}>{para.en}</p>
+            {/* Problem */}
+            <div className="space-y-3">
+              <h2 className="text-[36px] font-crimson italic tracking-tighter heading-accent-amber leading-tight">
+                Problem
+              </h2>
+              <p className="text-[15px] text-app-secondary leading-relaxed font-sans">
+                {RailfieldData.problem.en}
+              </p>
+            </div>
+          </section>
+
+          {/* ── SECTION 3: PROCESS & BREAKDOWN ── */}
+          <section className="space-y-5">
+            <div className="space-y-3">
+              <h2 className="text-[36px] font-crimson italic tracking-tighter heading-accent-yellow leading-tight">
+                Process
+              </h2>
+              <p className="text-[15px] text-app-secondary leading-relaxed font-sans">
+                {RailfieldData.process[0]?.overview?.en}
+              </p>
+            </div>
+
+            <div className="space-y-3 text-[15px] leading-relaxed font-sans text-app-secondary">
+              {RailfieldData.process.slice(1).map((step, idx) => (
+                <p key={idx}>
+                  <strong className="heading-accent-yellow font-bold mr-1">
+                    {step.label.en}
+                  </strong>
+                  <span>{step.desc.en}</span>
+                </p>
               ))}
             </div>
-          </div>
+          </section>
 
-          {/* Problem */}
-          <div className="space-y-3">
-            <h2 className="text-[36px] font-crimson italic tracking-tighter heading-accent-amber leading-tight">
-              Problem
-            </h2>
-            <p className="text-[15px] text-app-secondary leading-relaxed font-sans">
-              {RailfieldData.problem.en}
-            </p>
-          </div>
-        </section>
-
-        {/* ── SECTION 3: PROCESS & BREAKDOWN ── */}
-        <section className="space-y-5">
-          <div className="space-y-3">
-            <h2 className="text-[36px] font-crimson italic tracking-tighter heading-accent-yellow leading-tight">
-              Process
-            </h2>
-            <p className="text-[15px] text-app-secondary leading-relaxed font-sans">
-              {RailfieldData.process[0]?.overview?.en}
-            </p>
-          </div>
-
-          <div className="space-y-3 text-[15px] leading-relaxed font-sans text-app-secondary">
-            {RailfieldData.process.slice(1).map((step, idx) => (
-              <p key={idx}>
-                <strong className="heading-accent-yellow font-bold mr-1">
-                  {step.label.en}
-                </strong>
-                <span>{step.desc.en}</span>
+          {/* ── SECTION 4: IMPACT & KEY LEARNINGS ── */}
+          <section className="space-y-8">
+            {/* Impact */}
+            <div className="space-y-3">
+              <h2 className="text-[36px] font-crimson italic tracking-tighter heading-accent-emerald leading-tight">
+                Impact
+              </h2>
+              <p className="text-[15px] text-app-secondary leading-relaxed font-sans">
+                {RailfieldData.impact.en}
               </p>
-            ))}
-          </div>
-        </section>
+            </div>
 
-        {/* ── SECTION 4: IMPACT & KEY LEARNINGS ── */}
-        <section className="space-y-8">
-          {/* Impact */}
-          <div className="space-y-3">
-            <h2 className="text-[36px] font-crimson italic tracking-tighter heading-accent-emerald leading-tight">
-              Impact
-            </h2>
-            <p className="text-[15px] text-app-secondary leading-relaxed font-sans">
-              {RailfieldData.impact.en}
-            </p>
-          </div>
+            {/* Key Learnings */}
+            <div className="space-y-3">
+              <h2 className="text-[36px] font-crimson italic tracking-tighter heading-accent-emerald leading-tight">
+                Key Learnings
+              </h2>
+              <p className="text-[15px] text-app-secondary leading-relaxed font-sans">
+                {RailfieldData.keyLearnings.en}
+              </p>
+            </div>
+          </section>
 
-          {/* Key Learnings */}
-          <div className="space-y-3">
-            <h2 className="text-[36px] font-crimson italic tracking-tighter heading-accent-emerald leading-tight">
-              Key Learnings
-            </h2>
-            <p className="text-[15px] text-app-secondary leading-relaxed font-sans">
-              {RailfieldData.keyLearnings.en}
-            </p>
-          </div>
-        </section>
+          {/* ── Footer Navigation ── */}
+          <section className="pt-12 border-t border-app-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
+            <Link
+              to="/projects"
+              onClick={() => playCrispClick(0.5)}
+              className="text-xs font-mono text-app-muted hover:text-app-primary transition-colors flex items-center gap-1.5"
+            >
+              <span>←</span>
+              <span>Back to All Projects</span>
+            </Link>
 
-        {/* ── Footer Navigation ── */}
-        <section className="pt-12 border-t border-app-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Link
-            to="/projects"
-            onClick={() => playCrispClick(0.5)}
-            className="text-xs font-mono text-app-muted hover:text-app-primary transition-colors flex items-center gap-1.5"
-          >
-            <span>←</span>
-            <span>Back to All Projects</span>
-          </Link>
-
-          <button
-            type="button"
-            onClick={() => {
-              playCrispClick(0.5)
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
-            className="text-xs font-mono text-app-muted hover:text-app-accent transition-colors cursor-pointer flex items-center gap-1.5"
-          >
-            <span>Back to top</span>
-            <span>↑</span>
-          </button>
-        </section>
-      </main>
+            <button
+              type="button"
+              onClick={() => {
+                playCrispClick(0.5)
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+              className="text-xs font-mono text-app-muted hover:text-app-accent transition-colors cursor-pointer flex items-center gap-1.5"
+            >
+              <span>Back to top</span>
+              <span>↑</span>
+            </button>
+          </section>
+        </div>
+      </ImagesHorizontalScroll>
 
       {/* ── LIGHTBOX MODAL PREVIEW ── */}
       {selectedImage && (
