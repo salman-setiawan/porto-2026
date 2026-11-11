@@ -25,7 +25,7 @@ const AnotherIsland = {
     id: 'Untuk mencari tahu permainan apa yang ingin dimainkan oleh para pemain saya melakukan survei kuisioner. Hasilnya menyatakan mayoritas pemain ingin bermain permainan arkade dengan tema bertahan hidup yang dapat menghibur mereka, mudah dimainkan namun menantang dalam waktu bersamaan.'
   },
 
-  processImg: '/anotherisland/ucd.webp',
+  processImg: '/projects/another-island/ucd.webp',
 
   process: [
     {
@@ -77,11 +77,11 @@ const AnotherIsland = {
   gallery: [
     {
       type: 'video',
-      src: '/anotherisland/showcase.webm',
+      src: '/projects/another-island/showcase.webm',
     },
     {
       type: 'image',
-      src: '/anotherisland/desy.webp',
+      src: '/projects/another-island/desy.webp',
     }
   ]
 };

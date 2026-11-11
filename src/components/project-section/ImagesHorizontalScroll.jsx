@@ -192,14 +192,11 @@ const ImagesHorizontalScroll = ({
               {title}
             </h3>
             {subtitle && (
-              <p className="text-xs text-app-muted font-mono mt-0.5">
+              <p className="text-sm text-app-muted">
                 {subtitle}
               </p>
             )}
           </div>
-          <span className="text-[14px] font-mono text-app-secondary">
-            0{activeCardIndex + 1} / 0{images.length}
-          </span>
         </div>
 
         {/* Horizontal Track Container */}
@@ -221,11 +218,10 @@ const ImagesHorizontalScroll = ({
                     playMechanicalSound(index + 1, 0.2)
                     if (onImageClick) onImageClick(src)
                   }}
-                  className={`group relative h-[440px] md:h-[480px] w-[240px] sm:w-[260px] md:w-[280px] shrink-0 cursor-zoom-in rounded-2xl border transition-all duration-300 p-2.5 sm:p-3 overflow-hidden flex flex-col justify-between ${
-                    isCurrent
-                      ? 'border-app-accent bg-app-surface/60 shadow-lg shadow-orange-500/10'
-                      : 'border-app-subtle bg-app-surface/20 hover:border-app-medium hover:bg-app-surface/40'
-                  }`}
+                  className={`group relative h-[440px] md:h-[480px] w-[240px] sm:w-[260px] md:w-[280px] shrink-0 cursor-zoom-in rounded-2xl border transition-all duration-300 p-2.5 sm:p-3 overflow-hidden flex flex-col justify-between ${isCurrent
+                    ? 'border-app-accent bg-app-surface/60 shadow-lg shadow-orange-500/10'
+                    : 'border-app-subtle bg-app-surface/20 hover:border-app-medium hover:bg-app-surface/40'
+                    }`}
                 >
                   {/* Visual Image Screen */}
                   <div className="relative w-full flex-1 min-h-0 rounded-xl overflow-hidden bg-black/20 flex items-center justify-center">
