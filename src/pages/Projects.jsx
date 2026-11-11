@@ -49,14 +49,17 @@ const Projects = () => {
       const stacks = (project.stack || []).map((s) => (typeof s === 'string' ? s : s.en || s.id || '')).join(' ').toLowerCase()
       const combined = `${tags} ${stacks}`
 
-      if (activeTagId === 'uix') {
-        return combined.includes('ui/ux') || combined.includes('product design') || combined.includes('ui') || combined.includes('ux')
+      if (activeTagId === 'product') {
+        return combined.includes('product')
       }
-      if (activeTagId === 'dev') {
-        return combined.includes('development') || combined.includes('web') || combined.includes('react') || combined.includes('javascript') || combined.includes('flutter') || combined.includes('dart')
+      if (activeTagId === 'uix') {
+        return combined.includes('ui/ux') || combined.includes('ui') || combined.includes('ux') || combined.includes('game design')
       }
       if (activeTagId === 'graphic') {
         return combined.includes('graphic') || combined.includes('digital assets')
+      }
+      if (activeTagId === 'dev') {
+        return combined.includes('development') || combined.includes('web') || combined.includes('react') || combined.includes('javascript') || combined.includes('flutter') || combined.includes('dart')
       }
 
       return true

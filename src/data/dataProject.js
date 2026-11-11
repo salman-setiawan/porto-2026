@@ -13,16 +13,20 @@ export const DataProject = {
       name: 'All',
     },
     {
+      id: 'product',
+      name: 'Product Design',
+    },
+    {
       id: 'uix',
       name: 'UI/UX Design',
     },
     {
-      id: 'dev',
-      name: 'Development',
-    },
-    {
       id: 'graphic',
       name: 'Graphic Design',
+    },
+    {
+      id: 'dev',
+      name: 'Web Development',
     },
   ],
   projects: [
@@ -72,7 +76,7 @@ export const DataProject = {
         { en: 'View Website', id: 'Kunjungi Website', link: 'https://duitraapps.netlify.app' },
         { en: 'See My Works', id: 'Lihat Karya Saya', link: '/project/duitra-apps' },
       ],
-      media: '/projects/duitra-apps/heroimg_desktop.webp',
+      media: '/projects/duitra-app/heroimg_desktop.webp',
     },
     {
       id: 3,
@@ -101,6 +105,54 @@ export const DataProject = {
     {
       id: 4,
       title: {
+        en: "Another Day in the Island",
+        id: "Another Day in the Island",
+      },
+      desc: {
+        en: 'An arcade-survival web game crafted using User-Centered Design (UCD) framework, focusing on player comfort, engaging gameplay loops, and responsive controls.',
+        id: 'Game web arcade-survival yang dirancang menggunakan kerangka User-Centered Design (UCD), berfokus pada kenyamanan pemain, gameplay seru, dan kontrol responsif.',
+      },
+      tag: [
+        { en: 'UI/UX Design', id: 'Desain UI/UX' },
+        { en: 'Game Design', id: 'Desain Game' },
+      ],
+      stack: [
+        { en: 'Construct 3', id: 'Construct 3' },
+        { en: 'Figma', id: 'Figma' },
+      ],
+      cta: [
+        { en: 'View Case Study', id: 'Lihat Studi Kasus', link: '/project/another-island' },
+      ],
+      media: '/projects/another-island/gallery/screen1.webp',
+      imageFit: 'contain',
+    },
+    {
+      id: 5,
+      title: {
+        en: "Railfield Monitoring App",
+        id: "Aplikasi Monitoring Railfield",
+      },
+      desc: {
+        en: 'Mobile field project monitoring application designed for EPC and railway construction, replacing fragmented reporting with standardized digital workflows and real-time tracking.',
+        id: 'Aplikasi mobile pemantauan proyek lapangan untuk konstruksi rel dan EPC, menggantikan pelaporan manual dengan alur kerja digital terstandar dan pemantauan real-time.',
+      },
+      tag: [
+        { en: 'UI/UX Design', id: 'Desain UI/UX' },
+        { en: 'Mobile App', id: 'Aplikasi Mobile' },
+      ],
+      stack: [
+        { en: 'Figma', id: 'Figma' },
+        { en: 'Miro', id: 'Miro' },
+      ],
+      cta: [
+        { en: 'View Case Study', id: 'Lihat Studi Kasus', link: '/project/railfield' },
+      ],
+      media: '/projects/railfield-app/gallery/dashboard.png',
+      imageFit: 'contain',
+    },
+    {
+      id: 6,
+      title: {
         en: "EduFams Platform",
         id: "Platform EduFams",
       },
@@ -123,7 +175,7 @@ export const DataProject = {
       media: '/shots/learnx.webp',
     },
     {
-      id: 5,
+      id: 7,
       title: {
         en: "MusPlay Web Audio",
         id: "MusPlay Web Audio",
@@ -147,7 +199,7 @@ export const DataProject = {
       media: '/shots/musplay.webp',
     },
     {
-      id: 6,
+      id: 8,
       title: {
         en: "HaloGBS Telehealth",
         id: "HaloGBS Telehealth",
@@ -171,7 +223,7 @@ export const DataProject = {
       media: '/shots/halogbs.webp',
     },
     {
-      id: 7,
+      id: 9,
       title: {
         en: "E-Store Minimalist",
         id: "E-Store Minimalis",
