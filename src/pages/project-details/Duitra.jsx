@@ -6,11 +6,11 @@ import CaseStudySection from '../../components/project-section/ProjectCaseStudyC
 import ProjectMeta from '../../components/project-section/ProjectMeta'
 
 const DUITRA_GALLERY_IMAGES = [
-  { title: 'Dashboard Screen',                src: '/projects/duitra-app/gallery/dashboard.png' },
-  { title: 'Add Transaction & Voice Input',   src: '/projects/duitra-app/gallery/add-transaction.png' },
-  { title: 'Transaction History & Filters',   src: '/projects/duitra-app/gallery/history.png' },
-  { title: 'Budget & Categories Breakdown',   src: '/projects/duitra-app/gallery/categories.png' },
-  { title: 'Analytics & Monthly Trends',      src: '/projects/duitra-app/gallery/analytics.png' },
+  { title: 'Dashboard Screen', src: '/projects/duitra-app/gallery/dashboard.png' },
+  { title: 'Add Transaction & Voice Input', src: '/projects/duitra-app/gallery/add-transaction.png' },
+  { title: 'Transaction History & Filters', src: '/projects/duitra-app/gallery/history.png' },
+  { title: 'Budget & Categories Breakdown', src: '/projects/duitra-app/gallery/categories.png' },
+  { title: 'Analytics & Monthly Trends', src: '/projects/duitra-app/gallery/analytics.png' },
 ]
 
 const Duitra = () => {
@@ -35,7 +35,7 @@ const Duitra = () => {
         title="Mobile Application Flow . ."
         subtitle="Panned showcase of core screens:"
         onImageClick={handleOpenImage}
-        scrollDistance={1800}
+        scrollDistance={700}
         maxWidth={880}
       >
         <div className="w-full max-w-[880px] mx-auto px-4 sm:px-6 space-y-12">

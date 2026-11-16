@@ -7,10 +7,10 @@ import ProjectMeta from '../../components/project-section/ProjectMeta'
 
 const RAILFIELD_GALLERY_IMAGES = [
   { title: 'Dashboard & Assignment Selection', src: '/projects/railfield-app/gallery/dashboard.png' },
-  { title: 'Daily Report Draft Entry',         src: '/projects/railfield-app/gallery/draft-1.png' },
-  { title: 'Checklist & Obstacle Details',     src: '/projects/railfield-app/gallery/draft-2.png' },
-  { title: 'Report Verification Review',       src: '/projects/railfield-app/gallery/verifikasi-1.png' },
-  { title: 'Submission Status & GPS Proof',    src: '/projects/railfield-app/gallery/verifikasi-2.png' },
+  { title: 'Daily Report Draft Entry', src: '/projects/railfield-app/gallery/draft-1.png' },
+  { title: 'Checklist & Obstacle Details', src: '/projects/railfield-app/gallery/draft-2.png' },
+  { title: 'Report Verification Review', src: '/projects/railfield-app/gallery/verifikasi-1.png' },
+  { title: 'Submission Status & GPS Proof', src: '/projects/railfield-app/gallery/verifikasi-2.png' },
 ]
 
 const RailField = () => {
@@ -35,7 +35,7 @@ const RailField = () => {
         title="Field Technician Workflow . ."
         subtitle="Panned showcase of 5-step daily site reporting flow"
         onImageClick={handleOpenImage}
-        scrollDistance={1800}
+        scrollDistance={700}
         maxWidth={880}
       >
         <div className="w-full max-w-[880px] mx-auto px-4 sm:px-6 space-y-12">

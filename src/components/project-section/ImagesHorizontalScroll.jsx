@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback } from 'react'
 import { playMechanicalSound } from '../../utils/sound'
 
 // Jarak scroll vertikal tetap (dalam piksel) untuk menggerakkan seluruh gambar
-const SCROLL_DISTANCE_PX = 1800
+const SCROLL_DISTANCE_PX = 700
 
 const ImagesHorizontalScroll = ({
   images = [],
@@ -217,20 +217,20 @@ const ImagesHorizontalScroll = ({
                     playMechanicalSound(index + 1, 0.2)
                     if (onImageClick) onImageClick(src)
                   }}
-                  className={`group relative h-[440px] md:h-[480px] w-[240px] sm:w-[260px] md:w-[280px] shrink-0 cursor-zoom-in rounded-2xl border transition-all duration-300 p-2.5 sm:p-3 overflow-hidden flex flex-col justify-between ${isCurrent
+                  className={`group relative h-[420px] md:h-[480px] w-[320px] md:w-[320px] shrink-0 cursor-zoom-in border transition-all duration-300 p-2 overflow-hidden flex flex-col justify-between ${isCurrent
                     ? 'border-app-accent bg-app-surface/60 shadow-lg shadow-orange-500/10'
                     : 'border-app-subtle bg-app-surface/20 hover:border-app-medium hover:bg-app-surface/40'
                     }`}
                 >
                   {/* Visual Image Screen */}
-                  <div className="relative w-full flex-1 min-h-0 rounded-xl overflow-hidden bg-black/20 flex items-center justify-center">
+                  <div className="relative w-full flex items-start min-h-0 overflow-hidden bg-black/20 flex items-center justify-center pt-4 px-3">
                     <img
                       src={src}
                       alt={itemTitle || `Screenshot ${index + 1}`}
                       loading="lazy"
-                      className="w-full h-full object-contain group-hover:scale-[1.03] transition-transform duration-300 ease-out"
+                      className="w-full object-contain group-hover:scale-[1.02] transition-transform duration-300 ease-out"
                     />
-                    <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 pointer-events-none text-white text-xs font-mono">
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5 pointer-events-none text-white text-xs">
                       <span>Click to enlarge</span>
                       <span>↗</span>
                     </div>
@@ -242,7 +242,7 @@ const ImagesHorizontalScroll = ({
                       <span className="text-xs font-medium text-app-primary truncate">
                         {itemTitle}
                       </span>
-                      <span className="text-[10px] font-mono text-app-muted">
+                      <span className="text-xs text-app-muted">
                         #{index + 1}
                       </span>
                     </div>
