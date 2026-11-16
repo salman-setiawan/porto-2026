@@ -79,7 +79,7 @@ const ProjectCard = ({ project = DataProject.projects[0] }) => {
                 {projectTitle}
               </h3>
               {project.desc && (
-                <p className="text-app-secondary text-[14px] leading-relaxed">
+                <p className="text-app-secondary text-[14px] leading-relaxed line-clamp-3">
                   {project.desc?.en || project.desc}
                 </p>
               )}

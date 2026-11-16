@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { playCrispClick, playMechanicalSound } from '../utils/sound'
 import ProjectCard from '../components/project-section/ProjectCard'
+import Tab from '../components/Tab'
 import { DataProject } from '../data/dataProject'
 
 const TAG_FILTERS = DataProject.tag || [
@@ -49,7 +50,7 @@ const Projects = () => {
   return (
     <div className="min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 relative selection:bg-orange-500/30 selection:text-orange-400 pb-24">
       {/* ── Main Content Container ── */}
-      <main className="max-w-[920px] mx-auto px-4 md:px-8 pt-10 space-y-8">
+      <main className="max-w-[960px] mx-auto px-4 pt-10 space-y-8">
         {/* Header Section */}
         <div className="space-y-2">
           <div>
@@ -79,29 +80,38 @@ const Projects = () => {
           </div>
         </div>
 
-        {/* ── Projects Feed ── */}
-        <section className="space-y-3">
-          {filteredProjects.length === 0 ? (
-            <div className="py-20 text-center border border-dashed border-app-subtle rounded-2xl bg-app-surface/20">
-              <p className="text-sm text-app-muted">No projects found for filter &ldquo;{TAG_FILTERS.find((t) => t.id === activeTagId)?.name}&rdquo;.</p>
-              <button
-                type="button"
-                onClick={() => handleTagClick('all')}
-                className="mt-3 px-3 py-1.5 rounded-lg text-xs font-medium bg-app-surface border border-app-subtle text-app-accent hover:border-app-accent transition-colors"
-              >
-                Show all projects
-              </button>
-            </div>
-          ) : (
-            filteredProjects.map((project, index) => (
-              <div
-                key={project.id || index}
-                className="w-full mx-auto transform transition-transform duration-300"
-              >
-                <ProjectCard project={project} />
+        {/* ── Projects Feed with Interactive Vertical Tab Slider ── */}
+        <section className="flex flex-col md:flex-row items-start gap-4">
+          {/* Kolom Kiri: Vertical Interactive Tab (Hanya muncul di md ke atas) */}
+          <aside className="hidden md:block md:w-[20%] shrink-0 sticky top-8 self-start">
+            <Tab projects={filteredProjects} />
+          </aside>
+
+          {/* Kolom Kanan: Daftar Card Project (Full width di bawah md, 70% di md ke atas) */}
+          <div className="space-y-6 w-full md:w-[80%]">
+            {filteredProjects.length === 0 ? (
+              <div className="py-20 text-center border border-dashed border-app-subtle rounded-2xl bg-app-surface/20">
+                <p className="text-sm text-app-muted">No projects found for filter &ldquo;{TAG_FILTERS.find((t) => t.id === activeTagId)?.name}&rdquo;.</p>
+                <button
+                  type="button"
+                  onClick={() => handleTagClick('all')}
+                  className="mt-3 px-3 py-1.5 rounded-lg text-xs font-medium bg-app-surface border border-app-subtle text-app-accent hover:border-app-accent transition-colors"
+                >
+                  Show all projects
+                </button>
               </div>
-            ))
-          )}
+            ) : (
+              filteredProjects.map((project, index) => (
+                <div
+                  key={project.id || index}
+                  id={`project-card-${project.id ?? index}`}
+                  className="w-full mx-auto transform transition-transform duration-300"
+                >
+                  <ProjectCard project={project} />
+                </div>
+              ))
+            )}
+          </div>
         </section>
 
         {/* ── Bottom Section ── */}

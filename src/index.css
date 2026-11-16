@@ -3,6 +3,18 @@
 @theme {
   --font-sans: "Momo Trust Sans", sans-serif;
   --font-crimson: "Crimson Text", serif;
+  --color-app-primary: var(--bg-primary);
+  --color-app-surface: var(--bg-surface);
+  --color-app-surface-elevated: var(--bg-surface-elevated);
+  --color-app-surface-glass: var(--bg-surface-glass);
+  --color-app-text-primary: var(--text-primary);
+  --color-app-text-secondary: var(--text-secondary);
+  --color-app-text-muted: var(--text-muted);
+  --color-app-accent: var(--accent);
+  --color-app-accent-hover: var(--accent-hover);
+  --color-app-accent-light: var(--accent-light);
+  --color-app-subtle: var(--border-subtle);
+  --color-app-medium: var(--border-medium);
 }
 
 .font-crimson {
