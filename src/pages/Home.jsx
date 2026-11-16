@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import Lenis from 'lenis'
+import { useAppTheme } from '../utils/theme'
 import HeroIntro from '../components/hero-section/Intro'
 import About from '../components/About'
 import ProjectsHorizontalScroll from '../components/project-section/ProjectsHorizontalScroll'
@@ -17,53 +17,27 @@ const Home = () => {
   // Track scroll position khusus zona Hero (0-450px) agar tidak memicu re-render tak berguna saat scroll ke bawah
   const [scrollY, setScrollY] = useState(0)
   const lastScrollYRef = useRef(0)
+  const isLight = useAppTheme()
 
-  const [isLight, setIsLight] = useState(
-    () => typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'light'
-  )
-
+  // Track scroll position untuk Hero Parallax (Lenis sudah aktif global di Layout)
   useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setIsLight(document.documentElement.getAttribute('data-theme') === 'light')
-    })
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-    return () => observer.disconnect()
-  }, [])
-
-  // Lenis Smooth Scroll dengan performa teroptimasi (decoupled dari React render tree)
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
-    })
-
-    // Hanya update state jika berada di sekitar range aktif Hero (< 450px)
-    // Mencegah ratusan re-render saat user sedang melihat project, showcase, atau footer
-    const handleLenisScroll = ({ scroll }) => {
-      const prev = lastScrollYRef.current
-      if (scroll <= 450 || prev <= 450) {
-        lastScrollYRef.current = scroll
-        setScrollY(scroll)
-      }
-    }
-
-    lenis.on('scroll', handleLenisScroll)
-
     let rafId
-    function raf(time) {
-      lenis.raf(time)
-      rafId = requestAnimationFrame(raf)
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => {
+        const sy = window.scrollY || window.pageYOffset || 0
+        const prev = lastScrollYRef.current
+        if (sy <= 450 || prev <= 450) {
+          lastScrollYRef.current = sy
+          setScrollY(sy)
+        }
+      })
     }
 
-    rafId = requestAnimationFrame(raf)
-
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => {
       cancelAnimationFrame(rafId)
-      lenis.off('scroll', handleLenisScroll)
-      lenis.destroy()
+      window.removeEventListener('scroll', handleScroll)
     }
   }, [])
 

@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from 'react'
+import { useMemo, memo } from 'react'
 import { DataProject } from '../../data/dataProject'
 import Chip from '../Chip'
 import Button from '../Button'
@@ -7,19 +7,6 @@ import ProjectVisualCard from './image/ProjectVisualCard'
 import { HARMONIOUS_PALETTES } from './image/colorPalettes'
 
 const ProjectCard = ({ project = DataProject.projects[0] }) => {
-  const desktopImageRef = useRef(null)
-  const [cursorPos, setCursorPos] = useState({ x: 50, y: 50 })
-  const [isHovered, setIsHovered] = useState(false)
-
-  const handleMouseMove = (e) => {
-    if (!desktopImageRef.current) return
-    const rect = desktopImageRef.current.getBoundingClientRect()
-    setCursorPos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    })
-  }
-
   const projectTitle = project?.title?.en || project?.title || ''
   const imageSrc =
     (typeof project?.media === 'string' && project?.media) ||
@@ -50,7 +37,7 @@ const ProjectCard = ({ project = DataProject.projects[0] }) => {
       {/* Grid 2 kolom dengan proporsi simetris 50:50 (w-full md:w-1/2), border dashed saling terhubung */}
       <div className='flex flex-col md:flex-row items-stretch'>
 
-        {/* Kolom 2: Visual / Mockup Gambar Mobile (Tanpa glow kursor & tanpa mouse listener) */}
+        {/* Kolom 2: Visual / Mockup Gambar Mobile */}
         <ProjectVisualCard
           project={project}
           showGlow={false}
@@ -59,7 +46,7 @@ const ProjectCard = ({ project = DataProject.projects[0] }) => {
           className="md:hidden aspect-[4/3]"
         />
 
-        {/* Kolom 1: Informasi Project (w-full md:w-1/2 agar lebarnya persis 50% sama dengan kolom gambar) */}
+        {/* Kolom 1: Informasi Project */}
         <div className='w-full md:w-1/2 relative py-6 px-5 border border-dashed border-app-subtle md:border-r-0 bg-app-surface/20 hover:bg-app-surface/40 transition-colors duration-300 flex flex-col justify-between overflow-hidden shrink-0'>
           {/* Crosshairs Sudut Kolom Informasi */}
           <span className="absolute -top-[5px] -left-[5px] text-[10px] leading-none text-app-muted font-mono select-none group-hover:text-app-accent transition-colors z-20">+</span>
@@ -114,17 +101,11 @@ const ProjectCard = ({ project = DataProject.projects[0] }) => {
           </div>
         </div>
 
-        {/* Kolom 2: Visual / Mockup Gambar Desktop dengan Hover Glow Teroptimasi (w-full md:w-1/2) */}
+        {/* Kolom 2: Visual / Mockup Gambar Desktop */}
         <ProjectVisualCard
           project={project}
-          cardRef={desktopImageRef}
           showGlow={true}
-          isHovered={isHovered}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onMouseMove={handleMouseMove}
           colorTheme={colorTheme}
-          cursorPos={cursorPos}
           imageSrc={imageSrc}
           className="hidden md:block w-full md:w-1/2 h-[460px] md:h-[480px] shrink-0"
         />
@@ -134,4 +115,4 @@ const ProjectCard = ({ project = DataProject.projects[0] }) => {
   )
 }
 
-export default ProjectCard
+export default memo(ProjectCard)

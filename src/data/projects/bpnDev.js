@@ -183,11 +183,4 @@ export const DataBppDev = {
   ],
 }
 
-// Named exports untuk backward compatibility
-export const WEEKS_DATA = DataBppDev.weeksData
-export const TOTAL_TICKS = DataBppDev.totalTicks
-export const MAJOR_TICK_INDICES = DataBppDev.majorTickIndices
-export const BPP_DEV_ABOUT = DataBppDev.about
-
-
 

@@ -1,4 +1,5 @@
-import { useMemo, useEffect, useState } from 'react';
+import { useMemo } from 'react';
+import { useAppTheme } from '../utils/theme';
 
 /**
  * HalftoneGlow Component (Theme-Aware)
@@ -10,17 +11,7 @@ import { useMemo, useEffect, useState } from 'react';
  * @param {string} animation - CSS animation style string
  */
 const HalftoneGlow = ({ color, className, animation }) => {
-  const [isLight, setIsLight] = useState(
-    () => document.documentElement.getAttribute('data-theme') === 'light'
-  );
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setIsLight(document.documentElement.getAttribute('data-theme') === 'light');
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => observer.disconnect();
-  }, []);
+  const isLight = useAppTheme();
 
   const svgBackground = useMemo(() => {
     // Parse the color to extract RGB values

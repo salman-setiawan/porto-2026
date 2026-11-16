@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import Lenis from 'lenis'
+import { useState } from 'react'
 import { playCrispClick, playMechanicalSound } from '../../utils/sound'
 import DuitraData from '../../data/projects/duitra'
 import ImagesHorizontalScroll from '../../components/project-section/ImagesHorizontalScroll'
@@ -16,20 +15,6 @@ const DUITRA_GALLERY_IMAGES = [
 
 const Duitra = () => {
   const [selectedImage, setSelectedImage] = useState(null)
-
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
-    })
-    let rafId
-    function raf(time) { lenis.raf(time); rafId = requestAnimationFrame(raf) }
-    rafId = requestAnimationFrame(raf)
-    return () => { cancelAnimationFrame(rafId); lenis.destroy() }
-  }, [])
 
   const handleOpenImage = (src) => { playMechanicalSound(2, 0.2); setSelectedImage(src) }
 

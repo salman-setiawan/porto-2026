@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
+import Lenis from 'lenis'
 import { playWhoosh } from '../utils/sound'
 import { PageTransitionContext } from '../utils/pageTransition'
 import MusicPlayer from './MusicPlayer'
@@ -8,6 +9,37 @@ import ThemeToggle from './ThemeToggle'
 export default function PageTransitionLayout() {
   const navigate = useNavigate()
   const location = useLocation()
+
+  // Global Singleton Lenis smooth scroll untuk seluruh halaman
+  const lenisRef = useRef(null)
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+    })
+    lenisRef.current = lenis
+
+    let rafId
+    function raf(time) {
+      lenis.raf(time)
+      rafId = requestAnimationFrame(raf)
+    }
+    rafId = requestAnimationFrame(raf)
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      lenis.destroy()
+    }
+  }, [])
+
+  // Selalu reset scroll position ke atas saat rute berganti
+  useEffect(() => {
+    lenisRef.current?.scrollTo(0, { immediate: true })
+  }, [location.pathname])
 
   // Transition state: 'idle' | 'sweeping' | 'revealing'
   const [status, setStatus] = useState('idle')
@@ -77,6 +109,7 @@ export default function PageTransitionLayout() {
           // Pindah rute di bawah tirai solid bg-app-primary
           navigate(targetPathRef.current)
           window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+          lenisRef.current?.scrollTo(0, { immediate: true })
 
           // ── PHASE 2: REVEAL WITH FADE IN ──
           setStatus('revealing')

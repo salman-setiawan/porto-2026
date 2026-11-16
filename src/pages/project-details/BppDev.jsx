@@ -1,6 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import Lenis from 'lenis'
+import { useState, useMemo } from 'react'
 import { playMechanicalSound } from '../../utils/sound'
 import TimelineSlider from '../../components/TimelineSlider'
 import About from '../../components/About'
@@ -8,29 +6,6 @@ import { DataBppDev } from '../../data/projects/bpnDev'
 
 const BppDev = () => {
   const { weeksData, totalTicks, about } = DataBppDev
-
-  // Lenis smooth scroll
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
-    })
-
-    let rafId
-    function raf(time) {
-      lenis.raf(time)
-      rafId = requestAnimationFrame(raf)
-    }
-    rafId = requestAnimationFrame(raf)
-
-    return () => {
-      cancelAnimationFrame(rafId)
-      lenis.destroy()
-    }
-  }, [])
 
   // Nilai desimal kontinu untuk pergerakan slider yang mulus (0.0 s/d 3.0)
   const [sliderPosition, setSliderPosition] = useState(0)

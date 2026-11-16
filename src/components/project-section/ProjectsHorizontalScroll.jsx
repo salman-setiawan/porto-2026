@@ -130,16 +130,14 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
   useEffect(() => {
     if (isMobile) return
 
-    const handleResize = () => {
-      requestAnimationFrame(updateScroll)
+    let rafId
+    const onScrollOrResize = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(updateScroll)
     }
 
-    const handleScroll = () => {
-      requestAnimationFrame(updateScroll)
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleResize)
+    window.addEventListener('scroll', onScrollOrResize, { passive: true })
+    window.addEventListener('resize', onScrollOrResize, { passive: true })
 
     // Initial trigger check via animation frame
     const initRaf = requestAnimationFrame(updateScroll)
@@ -147,8 +145,9 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
 
     return () => {
       cancelAnimationFrame(initRaf)
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleResize)
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('scroll', onScrollOrResize)
+      window.removeEventListener('resize', onScrollOrResize)
       clearTimeout(timer)
     }
   }, [updateScroll, isMobile])

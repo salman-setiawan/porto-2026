@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useAppTheme } from '../../utils/theme'
 import PixelFlare from '../../motion/PixelFlare'
 import { playMechanicalSound, playCrispClick } from '../../utils/sound'
 import { DataHome } from '../../data/dataHome'
@@ -22,17 +22,7 @@ const Footnote = ({
   const backToTopText = footnoteData.backToTop?.[lang] || footnoteData.backToTop?.en || "Back to top"
 
   // Track light/dark mode untuk adaptasi vignette & background
-  const [isLight, setIsLight] = useState(
-    () => typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'light'
-  )
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setIsLight(document.documentElement.getAttribute('data-theme') === 'light')
-    })
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
-    return () => observer.disconnect()
-  }, [])
+  const isLight = useAppTheme()
 
   // Ambil link sosial dari dataHome jika ada, dengan fallback
   const ctaLinks = DataHome?.heroSection?.cta || [
