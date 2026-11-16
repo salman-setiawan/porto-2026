@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { playMechanicalSound, playCrispClick } from '../../utils/sound'
 
-const MoreProjectsCard = ({ url = '/projects' }) => {
+const MoreProjectsCard = ({ url = '/projects', className = '' }) => {
   const isExternal = url.startsWith('http') || url.startsWith('//')
 
   const handleClick = () => {
@@ -13,7 +13,7 @@ const MoreProjectsCard = ({ url = '/projects' }) => {
   }
 
   const cardContent = (
-    <div className="relative py-4 px-3 border border-dashed border-app-subtle group-hover:border-app-accent group-hover:shadow-[inset_0_0_40px_rgba(249,115,22,0.18)] bg-app-surface/20 group-hover:bg-app-surface/50 group-hover:scale-[1.015] active:scale-[0.99] transition-all duration-300 ease-out flex items-end h-[609px] md:h-[480px] w-[320px] md:w-[420px] shrink-0 bg-app-primary overflow-hidden">
+    <div className={`relative py-4 px-3 border border-dashed border-app-subtle group-hover:border-app-accent group-hover:shadow-[inset_0_0_40px_rgba(249,115,22,0.18)] bg-app-surface/20 group-hover:bg-app-surface/50 group-hover:scale-[1.015] active:scale-[0.99] transition-all duration-300 ease-out flex items-end h-[609px] md:h-[480px] w-[320px] md:w-[420px] shrink-0 bg-app-primary overflow-hidden ${className}`}>
       {/* Inner ambient glow di dalam kartu saat hover */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-app-accent/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 

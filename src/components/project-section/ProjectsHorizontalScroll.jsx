@@ -3,7 +3,7 @@ import { DataProject } from '../../data/dataProject'
 import ProjectCard from './ProjectCard'
 import MoreProjectsCard from './MoreProjectsCard'
 
-// Jarak scroll vertikal tetap (dalam piksel) untuk menggerakkan seluruh kartu project
+// Jarak scroll vertikal tetap (dalam piksel) untuk menggerakkan seluruh kartu project di desktop
 const SCROLL_DISTANCE_PX = 1800
 
 const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, children }) => {
@@ -14,6 +14,19 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
     : highlightIds && highlightIds.length > 0
       ? highlightIds.map((id) => allProjects.find((p) => p.id === id)).filter(Boolean)
       : allProjects.slice(0, 3)
+
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth < 768
+  )
+
+  useEffect(() => {
+    const handleCheckMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    window.addEventListener('resize', handleCheckMobile)
+    return () => window.removeEventListener('resize', handleCheckMobile)
+  }, [])
+
   const containerRef = useRef(null)
   const trackRef = useRef(null)
   const firstCardRef = useRef(null)
@@ -26,7 +39,7 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
 
   // Ukur tinggi riil dari showcase wrapper agar container fit dengan card & header
   useEffect(() => {
-    if (!showcaseRef.current) return
+    if (isMobile || !showcaseRef.current) return
 
     const updateHeight = () => {
       if (showcaseRef.current) {
@@ -45,9 +58,11 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
     resizeObserver.observe(showcaseRef.current)
 
     return () => resizeObserver.disconnect()
-  }, [])
+  }, [isMobile])
 
   const updateScroll = useCallback(() => {
+    if (isMobile) return
+
     const container = containerRef.current
     if (!container) return
 
@@ -96,9 +111,6 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
     const moreCardWidth = windowWidth >= 768 ? 420 : 320
 
     // Ending point sejajar persis dengan sisi kanan grid header (teks "01 / 03")
-    // Pada saat progress = 1:
-    // startX + projects.length * (cardWidth + gap) + moreCardWidth - totalTravel = gridRight
-    // => totalTravel = startX + projects.length * (cardWidth + gap) + moreCardWidth - gridRight
     const totalContentWidth = projects.length * (cardWidth + gap) + moreCardWidth
     const endingOffset = windowWidth >= 768 ? 50 : 0
     const totalTravel = Math.max(0, startX + totalContentWidth - gridRight - endingOffset)
@@ -113,9 +125,11 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
       Math.max(0, Math.floor(progress * projects.length))
     )
     setActiveCardIndex(computedIndex)
-  }, [projects.length])
+  }, [projects.length, isMobile])
 
   useEffect(() => {
+    if (isMobile) return
+
     const handleResize = () => {
       requestAnimationFrame(updateScroll)
     }
@@ -137,9 +151,9 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
       window.removeEventListener('resize', handleResize)
       clearTimeout(timer)
     }
-  }, [updateScroll])
+  }, [updateScroll, isMobile])
 
-  // Style posisi container pinned berdasarkan status piksel
+  // Style posisi container pinned berdasarkan status piksel di Desktop
   const getPinStyle = () => {
     if (pinMode === 'pinned') {
       return {
@@ -169,6 +183,48 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
     }
   }
 
+  // Tampilan khusus Mobile: Scroll vertikal normal (tidak pinned / tidak horizontal)
+  if (isMobile) {
+    return (
+      <section id="projects-scroll-container" className="w-full py-8 space-y-6">
+        {/* Header Section */}
+        <div className="w-full max-w-[920px] mx-auto px-4 flex items-center justify-between">
+          <h3 className="text-app-primary text-[32px] font-crimson italic tracking-tighter">
+            Projects . .
+          </h3>
+          <span className="text-[14px] text-app-muted font-mono">
+            0{projects.length} / 0{projects.length}
+          </span>
+        </div>
+
+        {/* Vertical Feed Cards */}
+        <div className="w-full max-w-[920px] mx-auto px-4 space-y-6">
+          {projects.map((project, index) => (
+            <div key={project.id || index} className="w-full">
+              <ProjectCard project={project} />
+            </div>
+          ))}
+
+          {/* More Projects Card */}
+          <div className="w-full pt-2">
+            <MoreProjectsCard
+              url="/projects"
+              className="w-full !w-full h-auto min-h-[220px]"
+            />
+          </div>
+        </div>
+
+        {/* Playground / Children Section */}
+        {children && (
+          <div className="w-full mt-6">
+            {children}
+          </div>
+        )}
+      </section>
+    )
+  }
+
+  // Tampilan Desktop (md ke atas): Tetap Pinned Horizontal Scroll
   return (
     <div
       ref={containerRef}

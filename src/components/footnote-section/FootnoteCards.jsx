@@ -11,25 +11,37 @@ const FootnoteCards = ({ email, isLight }) => {
     const clamp = (val, min, max) => Math.min(Math.max(val, min), max)
 
     const updateCardPhysics = () => {
-      const projectContainer = document.getElementById('projects-scroll-container')
       const footnoteEl = document.querySelector('footer')
-      if (!projectContainer || !footnoteEl || !containerRef.current) return
+      if (!footnoteEl || !containerRef.current) return
 
       const scrollY = window.scrollY || window.pageYOffset || 0
       const windowHeight = window.innerHeight
+      const isMobile = window.innerWidth < 768
 
-      // 1. Titik Start: saat ProjectsHorizontalScroll selesai pin scroll (SCROLL_DISTANCE_PX = 1800)
-      const projectRect = projectContainer.getBoundingClientRect()
-      const projectDocTop = projectRect.top + scrollY
-      const startScrollY = projectDocTop + 1800
-
-      // 2. Titik Finish: saat tepi bawah footnote tepat menyentuh tepi bawah viewport (ujung bawah scroll)
-      // Koordinat dokumen dasar footnote:
       const footnoteRect = footnoteEl.getBoundingClientRect()
+      const footnoteDocTop = footnoteRect.top + scrollY
       const footnoteDocBottom = footnoteRect.bottom + scrollY
+
+      let startScrollY
+      if (isMobile) {
+        // Pada mobile, mulai animasi saat footnote mendekati viewport (misal 500px sebelum footnote)
+        startScrollY = Math.max(0, footnoteDocTop - windowHeight - 150)
+      } else {
+        // Pada desktop, titik start setelah ProjectsHorizontalScroll selesai scroll horizontal
+        const projectContainer = document.getElementById('projects-scroll-container')
+        if (projectContainer) {
+          const projectRect = projectContainer.getBoundingClientRect()
+          const projectDocTop = projectRect.top + scrollY
+          startScrollY = projectDocTop + 1800
+        } else {
+          startScrollY = Math.max(0, footnoteDocTop - windowHeight - 200)
+        }
+      }
+
+      // Titik Finish: saat tepi bawah footnote tepat menyentuh tepi bawah viewport (ujung bawah scroll)
       const finishScrollY = Math.max(
         footnoteDocBottom - windowHeight,
-        startScrollY + 200
+        startScrollY + 150
       )
 
       // Hitung progress linear [0 -> 1]
@@ -44,23 +56,25 @@ const FootnoteCards = ({ email, isLight }) => {
       progress = clamp(progress, 0, 1)
 
       // Kurva linear ke kuadratik lembut agar kartu benar-benar terus bergerak sampai persis di finish
-      // Menggunakan progress linear untuk posisi Y memastikan animasi tidak selesai prematur sebelum mentok
       const fallEaseA = Math.pow(progress, 1.1)
       const fallEaseJ = Math.pow(progress, 1.05)
 
       // Fall & Slide physics translation:
-      // Kartu mulai meluncur dari sisi kanan (positif X) dengan fade in yang lebih lama (smooth opacity over progress)
-      // Tepat pada finishScrollY (ujung paling bawah footnote), fallEase = 1 dan sisa offset = 0
-      const aY = -420 * (1 - fallEaseA)
-      const aX = 360 * (1 - fallEaseA)
-      const aRotate = 28 * (1 - fallEaseA)
-      // Fade in diperpanjang lebih lama (misal transisi opacity penuh setelah progress mencapai 60-70%)
-      const aOpacity = clamp(progress / 0.65, 0, 1)
+      // Di mobile kita gunakan jarak luncur yang sedikit lebih compact agar tetap proporsional dengan layar
+      const distAY = isMobile ? -280 : -420
+      const distAX = isMobile ? 220 : 360
+      const distJY = isMobile ? -360 : -520
+      const distJX = isMobile ? 280 : 460
 
-      const jY = -520 * (1 - fallEaseJ)
-      const jX = 460 * (1 - fallEaseJ)
+      const aY = distAY * (1 - fallEaseA)
+      const aX = distAX * (1 - fallEaseA)
+      const aRotate = 28 * (1 - fallEaseA)
+      const aOpacity = clamp(progress / 0.55, 0, 1)
+
+      const jY = distJY * (1 - fallEaseJ)
+      const jX = distJX * (1 - fallEaseJ)
       const jRotate = -22 * (1 - fallEaseJ)
-      const jOpacity = clamp(progress / 0.65, 0, 1)
+      const jOpacity = clamp(progress / 0.55, 0, 1)
 
       if (wrapperARef.current) {
         wrapperARef.current.style.transform = `translate3d(${aX}px, ${aY}px, 0) rotate(${aRotate}deg)`

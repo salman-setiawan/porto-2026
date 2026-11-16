@@ -73,51 +73,22 @@ const Projects = () => {
 
   return (
     <div className="min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 relative selection:bg-orange-500/30 selection:text-orange-400 pb-24">
-      {/* ── Top Navigation Bar ── */}
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-app-primary/80 border-b border-app-subtle">
-        <div className="max-w-[920px] mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
-          <Link
-            to="/"
-            onClick={() => playCrispClick(0.5)}
-            className="group flex items-center gap-2 text-sm text-app-secondary hover:text-app-primary transition-colors cursor-pointer"
-          >
-            <span className="text-base group-hover:-translate-x-1 transition-transform">←</span>
-            <span>Back to portfolio</span>
-          </Link>
-
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-mono text-app-muted hidden sm:inline-block">
-              {filteredProjects.length} of {ALL_PROJECTS.length} Works
-            </span>
-            <a
-              href="https://github.com/salman-setiawan"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-3 py-1 rounded-full text-xs font-medium border border-app-subtle text-app-secondary hover:text-app-primary hover:border-app-accent transition-colors flex items-center gap-1.5"
-            >
-              <span>GitHub</span>
-              <span className="text-[10px]">↗</span>
-            </a>
-          </div>
-        </div>
-      </header>
-
       {/* ── Main Content Container ── */}
       <main className="max-w-[920px] mx-auto px-4 md:px-8 pt-10 space-y-12">
         {/* Header Section */}
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-3">
-            <div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-crimson italic tracking-tight text-app-primary">
+          <div className="space-y-3">
+            <div className='flex justify-between'>
+              <h1 className="text-[52px] font-crimson italic tracking-tight text-app-primary">
                 {DataProject.title?.en || 'All Featured Projects'}
               </h1>
-              <p className="text-sm text-app-secondary mt-1 max-w-2xl leading-relaxed">
-                {DataProject.desc?.en || 'A complete archive of web applications, mobile products, design systems, and digital assets crafted with focus on aesthetics and user impact.'}
-              </p>
+              <div className="text-xs px-2.5 py-1 rounded bg-app-surface border border-app-subtle text-app-accent self-start sm:self-auto">
+                {ALL_PROJECTS.length} Total Projects
+              </div>
             </div>
-            <span className="text-xs font-mono px-2.5 py-1 rounded-full bg-app-surface border border-app-subtle text-app-accent self-start sm:self-auto">
-              {ALL_PROJECTS.length} Total Projects
-            </span>
+            <p className="text-sm text-app-secondary mt-1 max-w-2xl leading-relaxed">
+              {DataProject.desc?.en || 'A complete archive of web applications, mobile products, design systems, and digital assets crafted with focus on aesthetics and user impact.'}
+            </p>
           </div>
 
           {/* Category Filter Pills dari DataProject.tag */}
@@ -127,11 +98,10 @@ const Projects = () => {
                 key={tag.id}
                 type="button"
                 onClick={() => handleTagClick(tag.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer ${
-                  activeTagId === tag.id
-                    ? 'bg-app-primary text-app-primary border-app-accent shadow-sm'
-                    : 'bg-app-surface/40 text-app-muted border-app-subtle hover:text-app-secondary hover:border-app-medium'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer ${activeTagId === tag.id
+                  ? 'bg-app-primary text-app-primary border-app-accent shadow-sm'
+                  : 'bg-app-surface/40 text-app-muted border-app-subtle hover:text-app-secondary hover:border-app-medium'
+                  }`}
               >
                 <span>{tag.name}</span>
               </button>

@@ -133,7 +133,7 @@ const Home = () => {
         <Footnote className="z-10" />
 
         {/* Layer FootnoteCards berada di atas Footnote (z-30) dengan posisi container yang persis sama */}
-        <div className="absolute inset-0 pointer-events-none z-30 overflow-visible -top-30 -right-12 max-w-[860px] flex justify-end mx-auto">
+        <div className="absolute inset-0 pointer-events-none z-100 overflow-visible -top-30 -right-12 max-w-[860px] flex justify-end mx-auto pr-4 sm:pr-0">
           <div className="pointer-events-auto">
             <FootnoteCards
               email={DataHome?.footnote?.email || 'salmansetiawan88@gmail.com'}
