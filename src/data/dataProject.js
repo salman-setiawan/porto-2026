@@ -13,10 +13,6 @@ export const DataProject = {
       name: 'All',
     },
     {
-      id: 'product',
-      name: 'Product Design',
-    },
-    {
       id: 'uix',
       name: 'UI/UX Design',
     },
@@ -26,7 +22,11 @@ export const DataProject = {
     },
     {
       id: 'dev',
-      name: 'Web Development',
+      name: 'Web/App Development',
+    },
+    {
+      id: 'game',
+      name: 'Game Development',
     },
   ],
   projects: [
@@ -64,7 +64,7 @@ export const DataProject = {
         id: 'Catat setiap pengeluaran, tetap di bawah anggaran, dan kontrol keuanganmu dalam menit. Tidak kompleks. Tidak bingung.',
       },
       tag: [
-        { en: 'Product Design', id: 'Desain Produk' },
+        { en: 'UI/UX Design', id: 'Desain UI/UX' },
         { en: 'Mobile App', id: 'Aplikasi Mobile' },
       ],
       stack: [
@@ -80,6 +80,53 @@ export const DataProject = {
     },
     {
       id: 3,
+      title: {
+        en: "Railfield Monitoring App",
+        id: "Aplikasi Monitoring Railfield",
+      },
+      desc: {
+        en: 'Mobile field project monitoring application designed for EPC and railway construction, replacing fragmented reporting with standardized digital workflows and real-time tracking.',
+        id: 'Aplikasi mobile pemantauan proyek lapangan untuk konstruksi rel dan EPC, menggantikan pelaporan manual dengan alur kerja digital terstandar dan pemantauan real-time.',
+      },
+      tag: [
+        { en: 'UI/UX Design', id: 'Desain UI/UX' },
+        { en: 'Mobile App', id: 'Aplikasi Mobile' },
+      ],
+      stack: [
+        { en: 'Figma', id: 'Figma' },
+        { en: 'Miro', id: 'Miro' },
+      ],
+      cta: [
+        { en: 'View Case Study', id: 'Lihat Studi Kasus', link: '/project/railfield' },
+      ],
+      media: '/projects/railfield-app/main.png',
+    },
+    {
+      id: 4,
+      title: {
+        en: "Aevenic Agency",
+        id: "Aevenic Agency",
+      },
+      desc: {
+        en: "a small project that i have for help build a fast and clear website that attracts customers and grow the business.",
+        id: 'sebuah proyek kecil yang saya lakukan untuk membantu membuat situs web yang cepat dan jelas yang menarik pelanggan dan meningkatkan bisnis.'
+      },
+      tag: [
+        { en: 'UI/UX Design', id: 'Desain UI/UX' },
+        { en: 'Web Development', id: 'Pengembangan Web' },
+      ],
+      stack: [
+        { en: 'React', id: 'React' },
+        { en: 'Tailwind CSS', id: 'Tailwind CSS' },
+      ],
+      cta: [
+        { en: 'See Website', id: 'Lihat Situs Web', link: 'https://aevenic.netlify.app' },
+      ],
+      media: '/projects/aevenic/aevenic.png',
+      imageFit: 'contain',
+    },
+    {
+      id: 5,
       title: {
         en: "Eduwork Mentor",
         id: "Eduwork Mentor",
@@ -103,7 +150,7 @@ export const DataProject = {
       imageFit: 'contain',
     },
     {
-      id: 4,
+      id: 6,
       title: {
         en: "Another Day in the Island",
         id: "Another Day in the Island",
@@ -124,30 +171,6 @@ export const DataProject = {
         { en: 'View Case Study', id: 'Lihat Studi Kasus', link: '/project/another-island' },
       ],
       media: '/projects/another-island/gallery/screen1.webp',
-      imageFit: 'contain',
-    },
-    {
-      id: 5,
-      title: {
-        en: "Railfield Monitoring App",
-        id: "Aplikasi Monitoring Railfield",
-      },
-      desc: {
-        en: 'Mobile field project monitoring application designed for EPC and railway construction, replacing fragmented reporting with standardized digital workflows and real-time tracking.',
-        id: 'Aplikasi mobile pemantauan proyek lapangan untuk konstruksi rel dan EPC, menggantikan pelaporan manual dengan alur kerja digital terstandar dan pemantauan real-time.',
-      },
-      tag: [
-        { en: 'UI/UX Design', id: 'Desain UI/UX' },
-        { en: 'Mobile App', id: 'Aplikasi Mobile' },
-      ],
-      stack: [
-        { en: 'Figma', id: 'Figma' },
-        { en: 'Miro', id: 'Miro' },
-      ],
-      cta: [
-        { en: 'View Case Study', id: 'Lihat Studi Kasus', link: '/project/railfield' },
-      ],
-      media: '/projects/railfield-app/gallery/dashboard.png',
       imageFit: 'contain',
     },
   ],

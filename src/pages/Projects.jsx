@@ -24,17 +24,17 @@ const Projects = () => {
       const stacks = (project.stack || []).map((s) => (typeof s === 'string' ? s : s.en || s.id || '')).join(' ').toLowerCase()
       const combined = `${tags} ${stacks}`
 
-      if (activeTagId === 'product') {
-        return combined.includes('product')
-      }
       if (activeTagId === 'uix') {
-        return combined.includes('ui/ux') || combined.includes('ui') || combined.includes('ux') || combined.includes('game design')
+        return combined.includes('ui/ux') || combined.includes('ui') || combined.includes('ux')
       }
       if (activeTagId === 'graphic') {
         return combined.includes('graphic') || combined.includes('digital assets')
       }
       if (activeTagId === 'dev') {
         return combined.includes('development') || combined.includes('web') || combined.includes('react') || combined.includes('javascript') || combined.includes('flutter') || combined.includes('dart')
+      }
+      if (activeTagId === 'game') {
+        return combined.includes('construct')
       }
 
       return true
@@ -49,18 +49,13 @@ const Projects = () => {
   return (
     <div className="min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 relative selection:bg-orange-500/30 selection:text-orange-400 pb-24">
       {/* ── Main Content Container ── */}
-      <main className="max-w-[920px] mx-auto px-4 md:px-8 pt-10 space-y-12">
+      <main className="max-w-[920px] mx-auto px-4 md:px-8 pt-10 space-y-8">
         {/* Header Section */}
-        <div className="space-y-4">
-          <div className="space-y-3">
-            <div className='flex justify-between'>
-              <h1 className="text-[52px] font-crimson italic tracking-tight text-app-primary">
-                {DataProject.title?.en || 'All Featured Projects'}
-              </h1>
-              <div className="text-xs px-2.5 py-1 rounded bg-app-surface border border-app-subtle text-app-accent self-start sm:self-auto">
-                {ALL_PROJECTS.length} Total Projects
-              </div>
-            </div>
+        <div className="space-y-2">
+          <div>
+            <h1 className="text-[52px] font-crimson italic tracking-tight text-app-primary">
+              {DataProject.title?.en || 'All Featured Projects'}
+            </h1>
             <p className="text-sm text-app-secondary mt-1 max-w-2xl leading-relaxed">
               {DataProject.desc?.en || 'A complete archive of web applications, mobile products, design systems, and digital assets crafted with focus on aesthetics and user impact.'}
             </p>
@@ -85,7 +80,7 @@ const Projects = () => {
         </div>
 
         {/* ── Projects Feed ── */}
-        <section className="space-y-8">
+        <section className="space-y-3">
           {filteredProjects.length === 0 ? (
             <div className="py-20 text-center border border-dashed border-app-subtle rounded-2xl bg-app-surface/20">
               <p className="text-sm text-app-muted">No projects found for filter &ldquo;{TAG_FILTERS.find((t) => t.id === activeTagId)?.name}&rdquo;.</p>
