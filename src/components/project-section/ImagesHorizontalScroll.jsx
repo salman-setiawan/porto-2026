@@ -23,7 +23,7 @@ const ImagesHorizontalScroll = ({
   const [activeCardIndex, setActiveCardIndex] = useState(0)
   const [contentHeight, setContentHeight] = useState(560)
 
-  // Ukur tinggi riil dari showcase wrapper agar container fit dengan card & header
+  // Ukur tinggi riil dari showcase wrapper agar container fit dengan card, header, dan children
   useEffect(() => {
     if (!showcaseRef.current) return
 
@@ -95,9 +95,6 @@ const ImagesHorizontalScroll = ({
     const totalContentWidth = images.length * cardWidth + (images.length - 1) * gap
 
     // Ending point sejajar persis dengan sisi kanan grid header
-    // Pada saat progress = 1:
-    // startX - progress * totalTravel + totalContentWidth = gridRight
-    // => totalTravel = startX + totalContentWidth - gridRight
     const totalTravel = Math.max(0, startX + totalContentWidth - gridRight)
     const currentTranslateX = startX - progress * totalTravel
 
@@ -171,15 +168,16 @@ const ImagesHorizontalScroll = ({
       id="images-scroll-container"
       className="relative w-full"
       style={{
-        // Total tinggi dalam piksel = tinggi konten riil + jarak scroll horizontal
+        // Total tinggi dalam piksel = tinggi konten riil (slider + case study) + jarak scroll horizontal
         height: `${contentHeight + scrollDistance}px`,
       }}
     >
       {/* Container Showcase */}
+      {/* PENTING: Jangan berikan overflow-hidden pada showcaseRef agar position: sticky pada Tab di dalam children berfungsi */}
       <div
         ref={showcaseRef}
         style={getPinStyle()}
-        className="overflow-hidden flex flex-col py-6 pointer-events-auto bg-app-primary"
+        className="flex flex-col py-6 pointer-events-auto bg-app-primary w-full"
       >
         {/* Header Section: Title & Indikator Slide */}
         <div
@@ -198,8 +196,8 @@ const ImagesHorizontalScroll = ({
           </div>
         </div>
 
-        {/* Horizontal Track Container */}
-        <div className="w-full overflow-visible">
+        {/* Horizontal Track Container - Khusus slider yang overflow-hidden agar gambar tidak meluap */}
+        <div className="w-full overflow-hidden">
           <div
             ref={trackRef}
             className="flex items-center gap-4 md:gap-6 will-change-transform"
@@ -217,10 +215,11 @@ const ImagesHorizontalScroll = ({
                     playMechanicalSound(index + 1, 0.2)
                     if (onImageClick) onImageClick(src)
                   }}
-                  className={`group relative h-[420px] md:h-[480px] w-[320px] md:w-[320px] shrink-0 cursor-zoom-in border transition-all duration-300 p-2 overflow-hidden flex flex-col justify-between ${isCurrent
-                    ? 'border-app-accent bg-app-surface/60 shadow-lg shadow-orange-500/10'
-                    : 'border-app-subtle bg-app-surface/20 hover:border-app-medium hover:bg-app-surface/40'
-                    }`}
+                  className={`group relative h-[420px] md:h-[480px] w-[320px] md:w-[320px] shrink-0 cursor-zoom-in border transition-all duration-300 p-2 overflow-hidden flex flex-col justify-between ${
+                    isCurrent
+                      ? 'border-app-accent bg-app-surface/60 shadow-lg shadow-orange-500/10'
+                      : 'border-app-subtle bg-app-surface/20 hover:border-app-medium hover:bg-app-surface/40'
+                  }`}
                 >
                   {/* Visual Image Screen */}
                   <div className="relative w-full flex items-start min-h-0 overflow-hidden bg-black/20 flex items-center justify-center pt-4 px-3">
@@ -253,9 +252,9 @@ const ImagesHorizontalScroll = ({
           </div>
         </div>
 
-        {/* Section Bawah jika ada slot children */}
+        {/* Section Bawah (Case Study Content): Langsung nampak di bawah slider tanpa jeda kosong */}
         {children && (
-          <div className="w-full mt-4">
+          <div className="w-full mt-6 relative z-10">
             {children}
           </div>
         )}

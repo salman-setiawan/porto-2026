@@ -2,42 +2,76 @@ import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import { playMechanicalSound, playCrispClick } from '../utils/sound'
 
 /**
- * Tab - Vertical Interactive Project Timeline / Milestone Navigation
+ * Tab - Vertical Interactive Timeline / Section Navigation
  *
  * Mengadopsi konsep dan fisika dari TimelineSlider.jsx dalam orientasi vertikal:
  * - Ruler track vertikal dengan tick presisi (major & minor ticks) sejajar persis dengan item teks
  * - Proximity zoom animation: tick di sekitar indikator memanjang dan bertambah terang
  * - Jarum vertikal oranye (accent indicator) dengan glow khas tema sejajar presisi dengan tick putih
- * - Responsif terhadap filter: tidak ada tick berceceran atau melorot saat jumlah project berubah
- * - Scroll-spy otomatis mendeteksi card proyek yang sedang aktif di viewport
- * - Klik otomatis scroll ke ProjectCard yang bersangkutan
+ * - Responsif terhadap filter & section dynamic
+ * - Scroll-spy otomatis mendeteksi card proyek / section case study yang sedang aktif di viewport
+ * - Klik otomatis scroll ke target yang bersangkutan
  */
 export default function Tab({
-  projects = [],
+  projects,
+  items,
+  headerLabel,
   onProjectChange,
+  onItemChange,
   ticksPerInterval = 8,
   className = '',
 }) {
   const rulerRef = useRef(null)
   const isDraggingRef = useRef(false)
+  const isScrollingToRef = useRef(false)
+  const scrollLockTimerRef = useRef(null)
   const [isDragging, setIsDragging] = useState(false)
   const [sliderPosition, setSliderPosition] = useState(0)
-  const [prevProjects, setPrevProjects] = useState(projects)
+
+  const rawList = useMemo(() => items || projects || [], [items, projects])
+  const [prevList, setPrevList] = useState(rawList)
   const activeIndexRef = useRef(0)
 
-  // Array ref untuk mengukur posisi tengah (Y) dari setiap tombol teks project
+  // Array ref untuk mengukur posisi tengah (Y) dari setiap tombol teks
   const itemRefs = useRef([])
   const [itemCenterPositions, setItemCenterPositions] = useState([])
 
-  const totalCount = projects.length
+  const totalCount = rawList.length
 
-  // Pola resmi React: Sesuaikan state saat prop berubah saat render
-  if (projects !== prevProjects) {
-    setPrevProjects(projects)
+  // Pola resmi React: Sesuaikan state saat prop list berubah saat render
+  if (rawList !== prevList) {
+    setPrevList(rawList)
     setSliderPosition(0)
   }
 
-  // Ukur posisi tengah Y dari tiap tombol project relatif terhadap kontainer ruler
+  // Header teks
+  const titleHeader =
+    headerLabel !== undefined
+      ? headerLabel
+      : items
+        ? 'Case Study'
+        : 'My Projects'
+
+  // Helper untuk mencari elemen DOM target (mendukung Card Project maupun Case Study Section)
+  const getTargetElement = useCallback((item, idx) => {
+    if (!item) return null
+    if (item.targetId) {
+      const el = document.getElementById(item.targetId)
+      if (el) return el
+    }
+    const cleanId = String(item.id || item.title || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+
+    return (
+      document.getElementById(item.id) ||
+      document.getElementById(`section-${cleanId}`) ||
+      document.getElementById(`project-card-${item?.id ?? idx}`) ||
+      document.getElementById(cleanId)
+    )
+  }, [])
+
+  // Ukur posisi tengah Y dari tiap tombol item relatif terhadap kontainer ruler
   const measurePositions = useCallback(() => {
     if (!rulerRef.current || totalCount === 0) return
     const rulerRect = rulerRef.current.getBoundingClientRect()
@@ -49,7 +83,6 @@ export default function Tab({
         const rect = el.getBoundingClientRect()
         centers.push(rect.top + rect.height / 2 - rulerRect.top)
       } else {
-        // Estimasi pixel fallback (padding top ~4px, height ~32px, gap ~8px)
         centers.push(4 + i * 40 + 16)
       }
     }
@@ -69,7 +102,6 @@ export default function Tab({
       resizeObserver.observe(rulerRef.current)
     }
 
-    // Measure pertama setelah repaint
     const timer = setTimeout(update, 50)
     window.addEventListener('resize', update)
 
@@ -79,9 +111,9 @@ export default function Tab({
       window.removeEventListener('resize', update)
       clearTimeout(timer)
     }
-  }, [measurePositions, projects])
+  }, [measurePositions, rawList])
 
-  // Hitung fallback center positions agar selalu siap bahkan sebelum pengukuran pertama
+  // Fallback center positions agar selalu siap bahkan sebelum pengukuran pertama
   const resolvedCenters = useMemo(() => {
     if (itemCenterPositions.length === totalCount && totalCount > 0) {
       return itemCenterPositions
@@ -89,7 +121,7 @@ export default function Tab({
     return Array.from({ length: totalCount }, (_, i) => 4 + i * 40 + 16)
   }, [itemCenterPositions, totalCount])
 
-  // Hitung total ticks dan posisi major ticks untuk setiap project
+  // Hitung total ticks dan posisi major ticks untuk setiap item
   const calculatedTotalTicks = useMemo(() => {
     if (totalCount <= 1) return 1
     return (totalCount - 1) * ticksPerInterval + 1
@@ -99,7 +131,7 @@ export default function Tab({
     return Array.from({ length: totalCount }, (_, i) => i * ticksPerInterval)
   }, [totalCount, ticksPerInterval])
 
-  // Hitung koordinat Y (selalu dalam pixel) untuk setiap tick
+  // Hitung koordinat Y (dalam pixel) untuk setiap tick
   const tickYPositions = useMemo(() => {
     if (totalCount === 0) return []
     if (totalCount === 1) {
@@ -121,7 +153,7 @@ export default function Tab({
     return positions
   }, [calculatedTotalTicks, resolvedCenters, ticksPerInterval, totalCount])
 
-  // Posisi Y jarum oranye: interpolasi continuous dari sliderPosition dalam pixel
+  // Posisi Y jarum oranye dalam pixel
   const needleTopPx = useMemo(() => {
     if (totalCount === 0) return 0
     if (totalCount === 1) {
@@ -148,21 +180,23 @@ export default function Tab({
     Math.max(0, totalCount - 1)
   )
 
-  // Fungsi scroll halaman ke card proyek terkait
-  const scrollToCard = useCallback((project, idx) => {
-    const cardId = `project-card-${project?.id ?? idx}`
-    const targetElement = document.getElementById(cardId)
-    if (targetElement) {
-      const navOffset = 90 // Offset atas agar pas di bawah navigation
-      const elementPosition = targetElement.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.pageYOffset - navOffset
+  // Fungsi scroll halaman ke elemen terkait
+  const scrollToTarget = useCallback(
+    (item, idx) => {
+      const targetElement = getTargetElement(item, idx)
+      if (targetElement) {
+        const navOffset = 90
+        const elementPosition = targetElement.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - navOffset
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      })
-    }
-  }, [])
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        })
+      }
+    },
+    [getTargetElement]
+  )
 
   // Update slider position berdasarkan koordinat pointer Y
   const updateSlideFromClientY = useCallback(
@@ -174,10 +208,10 @@ export default function Tab({
       const relativeY = clientY - rect.top
 
       const firstY = resolvedCenters[0] ?? 0
-      const lastY = resolvedCenters[totalCount - 1] ?? firstY + (totalCount - 1) * 40
+      const lastY =
+        resolvedCenters[totalCount - 1] ?? firstY + (totalCount - 1) * 40
       const clampedY = Math.min(Math.max(relativeY, firstY), lastY)
 
-      // Cari segmen
       let segment = 0
       for (let i = 0; i < totalCount - 1; i++) {
         const nextY = resolvedCenters[i + 1] ?? lastY
@@ -198,13 +232,12 @@ export default function Tab({
         activeIndexRef.current = roundedIndex
         playMechanicalSound(roundedIndex + 1, 0.12)
 
-        const selectedProj = projects[roundedIndex]
-        if (onProjectChange && selectedProj) {
-          onProjectChange(selectedProj, roundedIndex)
-        }
+        const selectedItem = rawList[roundedIndex]
+        if (onItemChange) onItemChange(selectedItem, roundedIndex)
+        if (onProjectChange) onProjectChange(selectedItem, roundedIndex)
       }
     },
-    [totalCount, resolvedCenters, projects, onProjectChange]
+    [totalCount, resolvedCenters, rawList, onItemChange, onProjectChange]
   )
 
   const handlePointerDown = (e) => {
@@ -233,40 +266,47 @@ export default function Tab({
       setSliderPosition(snappedIndex)
       activeIndexRef.current = snappedIndex
 
-      const targetProj = projects[snappedIndex]
-      if (targetProj) {
-        scrollToCard(targetProj, snappedIndex)
+      const targetItem = rawList[snappedIndex]
+      if (targetItem) {
+        scrollToTarget(targetItem, snappedIndex)
       }
     }
   }
 
-  const handleItemClick = (project, idx) => {
+  const handleItemClick = (item, idx) => {
     playCrispClick(0.5)
     setSliderPosition(idx)
     activeIndexRef.current = idx
 
-    if (onProjectChange) {
-      onProjectChange(project, idx)
-    }
-    scrollToCard(project, idx)
+    if (onItemChange) onItemChange(item, idx)
+    if (onProjectChange) onProjectChange(item, idx)
+
+    // Kunci scroll-spy selama scroll programatik berlangsung
+    // agar needle tidak ikut bergerak mengikuti posisi scroll perantara
+    isScrollingToRef.current = true
+    clearTimeout(scrollLockTimerRef.current)
+    scrollLockTimerRef.current = setTimeout(() => {
+      isScrollingToRef.current = false
+    }, 1100)
+
+    scrollToTarget(item, idx)
   }
 
-  // Scroll Spy: Pantau posisi scrolling halaman dan sinkronkan posisi slider ke card yang sedang terlihat
+  // Scroll Spy: Pantau posisi scrolling halaman dan sinkronkan posisi slider ke target aktif
   useEffect(() => {
     if (totalCount === 0) return
 
     let rafId
     const handleScrollSpy = () => {
-      if (isDraggingRef.current) return
+      if (isDraggingRef.current || isScrollingToRef.current) return
 
       const scrollTriggerLine = window.innerHeight * 0.35
 
       let closestIndex = 0
       let closestDistance = Infinity
 
-      projects.forEach((proj, idx) => {
-        const cardId = `project-card-${proj.id ?? idx}`
-        const el = document.getElementById(cardId)
+      rawList.forEach((item, idx) => {
+        const el = getTargetElement(item, idx)
         if (!el) return
 
         const rect = el.getBoundingClientRect()
@@ -296,20 +336,23 @@ export default function Tab({
       cancelAnimationFrame(rafId)
       window.removeEventListener('scroll', onScroll)
       clearTimeout(timer)
+      clearTimeout(scrollLockTimerRef.current)
     }
-  }, [projects, totalCount])
+  }, [rawList, totalCount, getTargetElement])
 
   if (totalCount === 0) return null
 
   return (
     <nav
-      aria-label="Project Navigation Tabs"
+      aria-label="Section Navigation Tabs"
       className={`relative select-none ${className}`}
     >
       {/* ── Label Header ── */}
-      <div className="mb-2">
-        <p className="text-white text-[14px] font-medium">My Projects</p>
-      </div>
+      {titleHeader && (
+        <div className="mb-2">
+          <p className="text-white text-[14px] font-medium">{titleHeader}</p>
+        </div>
+      )}
 
       {/* ── Main Vertical Ruler & Items Container ── */}
       <div className="relative flex items-stretch gap-2">
@@ -323,7 +366,7 @@ export default function Tab({
           className={`relative w-5 shrink-0 touch-none group/ruler ${totalCount > 1 ? 'cursor-ns-resize' : 'cursor-default'
             }`}
         >
-          {/* Visual Ruler Baseline: Ticks Presisi dengan Proximity Zoom Animation */}
+          {/* Visual Ruler Baseline */}
           <div className="relative w-full h-full">
             {Array.from({ length: calculatedTotalTicks }).map((_, i) => {
               const isMajor = calculatedMajorIndices.includes(i)
@@ -374,29 +417,29 @@ export default function Tab({
               top: `${needleTopPx}px`,
             }}
           >
-            {/* Jarum horizontal oranye dengan glow — sejajar tepat pada garis tick putih */}
             <div className="h-[2px] w-6 bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow)] rounded-full" />
             <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] -ml-0.5 shadow-[0_0_8px_var(--accent-glow)]" />
           </div>
         </div>
 
-        {/* ── Project Labels List (Tersusun rapi dengan gap tetap) ── */}
+        {/* ── Items List ── */}
         <div className="flex-1 flex flex-col py-1 space-y-2">
-          {projects.map((project, idx) => {
+          {rawList.map((item, idx) => {
             const isActive = currentIndex === idx
-            const title = project.title?.en || project.title || `Project ${idx + 1}`
+            const title =
+              item.title?.en || item.title || item.name || item.label || `Item ${idx + 1}`
 
             return (
               <button
-                key={project.id ?? idx}
+                key={item.id ?? idx}
                 ref={(el) => {
                   itemRefs.current[idx] = el
                 }}
                 type="button"
-                onClick={() => handleItemClick(project, idx)}
+                onClick={() => handleItemClick(item, idx)}
                 className={`w-full text-left py-1.5 px-2.5 rounded-lg transition-all duration-200 cursor-pointer ${isActive
-                    ? 'translate-x-1 text-app-primary font-semibold hover:bg-app-surface/60'
-                    : 'bg-transparent text-app-secondary hover:text-app-primary hover:bg-app-surface/60'
+                    ? 'shadow-sm translate-x-1 text-app-primary font-semibold bg-app-surface/60'
+                    : 'bg-transparent text-app-secondary hover:text-app-primary hover:bg-app-surface/40'
                   }`}
               >
                 <div className="text-[13px] leading-snug">

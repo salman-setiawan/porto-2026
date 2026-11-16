@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { playCrispClick, playMechanicalSound } from '../../utils/sound'
 import RailfieldData from '../../data/projects/railfield'
 import ImagesHorizontalScroll from '../../components/project-section/ImagesHorizontalScroll'
-import CaseStudySection from '../../components/project-section/ProjectCaseStudyContent'
-import ProjectMeta from '../../components/project-section/ProjectMeta'
+import CaseStudySection, { CaseStudyLayout } from '../../components/project-section/ProjectCaseStudyContent'
+import Chip from '../../components/Chip'
 
 const RAILFIELD_GALLERY_IMAGES = [
   { title: 'Dashboard & Assignment Selection', src: '/projects/railfield-app/gallery/dashboard.png' },
@@ -13,20 +13,41 @@ const RAILFIELD_GALLERY_IMAGES = [
   { title: 'Submission Status & GPS Proof', src: '/projects/railfield-app/gallery/verifikasi-2.png' },
 ]
 
+const CASE_STUDY_SECTIONS = [
+  { id: 'section-overview', title: 'Overview' },
+  { id: 'section-problem', title: 'Problem' },
+  { id: 'section-process', title: 'Process' },
+  { id: 'section-impact', title: 'Impact' },
+  { id: 'section-key-learnings', title: 'Key Learnings' },
+]
+
 const RailField = () => {
   const [selectedImage, setSelectedImage] = useState(null)
 
   const handleOpenImage = (src) => { playMechanicalSound(2, 0.2); setSelectedImage(src) }
 
   return (
-    <div className="flex flex-col w-full relative min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 selection:bg-orange-500/30 selection:text-orange-400 pb-24 overflow-x-clip">
+    <div className="flex flex-col w-full relative min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 selection:bg-orange-500/30 selection:text-orange-400 pb-24">
 
-      {/* ── SECTION 1: HEADER TITLE & METADATA ── */}
-      <section className="pt-8 pb-4 max-w-[820px] px-4 sm:px-0 space-y-8 mx-auto w-full">
+      {/* ── SECTION 1: HEADER TITLE & CHIPS ── */}
+      <section className="pt-8 pb-4 max-w-[1040px] px-4 sm:px-6 space-y-4 mx-auto w-full">
         <h1 className="text-[40px] h-[45px] font-crimson italic tracking-tight text-app-primary">
           {RailfieldData.title}
         </h1>
-        <ProjectMeta data={RailfieldData} />
+
+        {/* Tags & Tech Stacks (Sama seperti ProjectCard.jsx) */}
+        <div className="space-y-2">
+          <div className="flex flex-wrap gap-2">
+            {RailfieldData.tag?.map((tag, index) => (
+              <Chip key={index} label={tag.en || tag} />
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {RailfieldData.stack?.map((stack, index) => (
+              <Chip key={index} label={stack.en || stack} autoIcon={true} />
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ── SECTION 1B: HORIZONTAL SCROLL IMAGES SHOWCASE ── */}
@@ -36,49 +57,51 @@ const RailField = () => {
         subtitle="Panned showcase of 5-step daily site reporting flow"
         onImageClick={handleOpenImage}
         scrollDistance={700}
-        maxWidth={880}
+        maxWidth={1040}
       >
-        <div className="w-full max-w-[880px] mx-auto px-4 sm:px-6 space-y-12">
+        <div className="w-full max-w-[1040px] mx-auto px-4 sm:px-6 space-y-12">
+          {/* ── CASE STUDY CONTENT WITH VERTICAL TAB SLIDER ── */}
+          <CaseStudyLayout sections={CASE_STUDY_SECTIONS} headerLabel="Case Study">
+            {/* Overview + Problem */}
+            <div className="space-y-8 pt-4">
+              <CaseStudySection title="Overview" accent="amber">
+                <div className="space-y-3">
+                  {RailfieldData.overview.map((para, idx) => <p key={idx}>{para.en}</p>)}
+                </div>
+              </CaseStudySection>
 
-          {/* Overview + Problem */}
-          <section className="space-y-8 pt-4">
-            <CaseStudySection title="Overview" accent="amber">
-              <div className="space-y-3">
-                {RailfieldData.overview.map((para, idx) => <p key={idx}>{para.en}</p>)}
-              </div>
-            </CaseStudySection>
-
-            <CaseStudySection title="Problem" accent="amber">
-              <p>{RailfieldData.problem.en}</p>
-            </CaseStudySection>
-          </section>
-
-          {/* Process */}
-          <section className="space-y-5">
-            <CaseStudySection title="Process" accent="yellow">
-              <p>{RailfieldData.process[0]?.overview?.en}</p>
-            </CaseStudySection>
-
-            <div className="space-y-3 leading-relaxed font-sans text-app-secondary">
-              {RailfieldData.process.slice(1).map((step, idx) => (
-                <p key={idx}>
-                  <strong className="heading-accent-yellow font-bold mr-1">{step.label.en}</strong>
-                  <span>{step.desc.en}</span>
-                </p>
-              ))}
+              <CaseStudySection title="Problem" accent="amber">
+                <p>{RailfieldData.problem.en}</p>
+              </CaseStudySection>
             </div>
-          </section>
 
-          {/* Impact + Key Learnings */}
-          <section className="space-y-8">
-            <CaseStudySection title="Impact" accent="emerald">
-              <p>{RailfieldData.impact.en}</p>
-            </CaseStudySection>
+            {/* Process */}
+            <div className="space-y-5">
+              <CaseStudySection title="Process" accent="yellow">
+                <p>{RailfieldData.process[0]?.overview?.en}</p>
+              </CaseStudySection>
 
-            <CaseStudySection title="Key Learnings" accent="emerald">
-              <p>{RailfieldData.keyLearnings.en}</p>
-            </CaseStudySection>
-          </section>
+              <div className="space-y-3 leading-relaxed font-sans text-app-secondary">
+                {RailfieldData.process.slice(1).map((step, idx) => (
+                  <p key={idx}>
+                    <strong className="heading-accent-yellow font-bold mr-1">{step.label.en}</strong>
+                    <span>{step.desc.en}</span>
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            {/* Impact + Key Learnings */}
+            <div className="space-y-8">
+              <CaseStudySection title="Impact" accent="emerald">
+                <p>{RailfieldData.impact.en}</p>
+              </CaseStudySection>
+
+              <CaseStudySection title="Key Learnings" accent="emerald">
+                <p>{RailfieldData.keyLearnings.en}</p>
+              </CaseStudySection>
+            </div>
+          </CaseStudyLayout>
 
           {/* Footer */}
           <section className="pt-8 border-t border-app-subtle w-full flex justify-center">

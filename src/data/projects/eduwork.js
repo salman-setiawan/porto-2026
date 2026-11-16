@@ -5,6 +5,14 @@ const Eduwork = {
   duration: { en: "3 Months", id: "3 Bulan" },
   tools: ["Figma", "Miro", "Microsoft Planner"],
   type: { en: "Collaborative Internship Project", id: "Proyek Magang Kolaboratif" },
+  tag: [
+    { en: 'UI/UX Design', id: 'Desain UI/UX' },
+    { en: 'Landing Page', id: 'Halaman Arahan' },
+  ],
+  stack: [
+    { en: 'Figma', id: 'Figma' },
+    { en: 'Miro', id: 'Miro' },
+  ],
   overview: [
     {
       en: "The Eduwork website for mentors is a collaborative web design project we worked on during our internship, focusing on creating a landing page for mentors.",

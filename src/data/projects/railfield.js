@@ -14,6 +14,14 @@ const Railfield = {
     en: "Mobile Application Design Case Study",
     id: "Studi Kasus Desain Aplikasi Mobile"
   },
+  tag: [
+    { en: 'UI/UX Design', id: 'Desain UI/UX' },
+    { en: 'Mobile App', id: 'Aplikasi Mobile' },
+  ],
+  stack: [
+    { en: 'Figma', id: 'Figma' },
+    { en: 'Miro', id: 'Miro' },
+  ],
   overview: [
     {
       en: "Railfield is a mobile field project monitoring application designed to help field technicians submit structured work progress reports directly from project locations. It enables project managers to monitor site conditions, work progress, and reported obstacles through a centralized system.",

@@ -8,6 +8,14 @@ const AnotherIsland = {
     en: 'Game UX Design (Academic Research)',
     id: 'Desain UX Permainan (Riset Akademik)'
   },
+  tag: [
+    { en: 'UI/UX Design', id: 'Desain UI/UX' },
+    { en: 'Game Design', id: 'Desain Game' },
+  ],
+  stack: [
+    { en: 'Construct 3', id: 'Construct 3' },
+    { en: 'Figma', id: 'Figma' },
+  ],
 
   overview: [
     {

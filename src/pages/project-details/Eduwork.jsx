@@ -2,21 +2,73 @@ import { useState } from 'react'
 import { playCrispClick, playMechanicalSound } from '../../utils/sound'
 import EduworkData from '../../data/projects/eduwork'
 import SeamlessSlider from '../../components/showcase-section/SeamlessSlider'
-import CaseStudySection from '../../components/project-section/ProjectCaseStudyContent'
-import ProjectMeta from '../../components/project-section/ProjectMeta'
+import CaseStudySection, { CaseStudyLayout } from '../../components/project-section/ProjectCaseStudyContent'
+import Chip from '../../components/Chip'
 
 const EDUWORK_GALLERY_SHOTS = [
-  '/projects/eduwork/gallery/screen1.webp',
-  '/projects/eduwork/gallery/screen2.webp',
-  '/projects/eduwork/gallery/screen3.webp',
-  '/projects/eduwork/gallery/screen4.webp',
-  '/projects/eduwork/gallery/screen5.webp',
-  '/projects/eduwork/gallery/screen6.webp',
-  '/projects/eduwork/gallery/screen7.webp',
-  '/projects/eduwork/gallery/screen8.webp',
-  '/projects/eduwork/gallery/screen9.webp',
-  '/projects/eduwork/gallery/screen10.webp',
-  '/projects/eduwork/gallery/screen11.webp',
+  {
+    src: '/projects/eduwork/gallery/screen1.webp',
+    title: 'Hero & Value Proposition',
+    desc: 'Header pembuka landing page dengan ajakan bergabung bagi praktisi mengajar, statistik metrik, dan tombol pendaftaran.',
+  },
+  {
+    src: '/projects/eduwork/gallery/screen2.webp',
+    title: 'Pilihan Industri & Keahlian',
+    desc: 'Kategori keilmuan mentoring interaktif dari Data Science, Engineering, UI/UX Design, hingga Marketing.',
+  },
+  {
+    src: '/projects/eduwork/gallery/screen3.webp',
+    title: 'Jangkauan Komunitas Nasional',
+    desc: 'Visualisasi peta persebaran jejaring mentor dan peserta yang telah terhubung di lebih dari 40 kota se-Indonesia.',
+  },
+  {
+    src: '/projects/eduwork/gallery/screen4.webp',
+    title: 'Top Mentor Leaderboard',
+    desc: 'Daftar mentor teratas dengan transparansi estimasi penghasilan dan rating performa untuk memotivasi calon mentor baru.',
+  },
+  {
+    src: '/projects/eduwork/gallery/screen5.webp',
+    title: 'Keuntungan Menjadi Mentor',
+    desc: 'Pemaparan nilai tambah berupa pengasahan leadership skills, penghasilan sampingan, dan peningkatan kredibilitas profesional.',
+  },
+  {
+    src: '/projects/eduwork/gallery/screen6.webp',
+    title: 'LMS Monitoring Dashboard',
+    desc: 'Pratinjau antarmuka sistem manajemen pembelajaran (LMS) berbasis desktop untuk memonitor perkembangan mentee.',
+  },
+  {
+    src: '/projects/eduwork/gallery/screen7.webp',
+    title: 'Fitur Manajemen Pembelajaran',
+    desc: 'Fasilitas asesmen tugas siswa, media belajar interaktif, jadwal kalender kegiatan, dan laporan rutin otomatis.',
+  },
+  {
+    src: '/projects/eduwork/gallery/screen8.webp',
+    title: 'Halaman Profil Komunitas Mentor',
+    desc: 'Ruang personal branding mentor untuk menampilkan rekam jejak, portofolio karya, agenda event, dan kelas aktif.',
+  },
+  {
+    src: '/projects/eduwork/gallery/screen9.webp',
+    title: 'Modul Interaksi Komunitas',
+    desc: 'Eksplorasi feeds komunitas terpadu, e-class, webinar terjadwal, dan sertifikasi kredensial mentor.',
+  },
+  {
+    src: '/projects/eduwork/gallery/screen10.webp',
+    title: 'Alur Pendaftaran Mentor',
+    desc: 'Enam tahapan registrasi bertahap mulai dari verifikasi akun, konsultasi 1-on-1, hingga peluncuran kelas mentoring perdana.',
+  },
+  {
+    src: '/projects/eduwork/gallery/screen11.webp',
+    title: 'Call to Action & Footer',
+    desc: 'Bagian penutup dengan tombol konsultasi via WhatsApp bersama tautan legalitas dan navigasi resmi platform.',
+  },
+]
+
+const CASE_STUDY_SECTIONS = [
+  { id: 'section-overview', title: 'Overview' },
+  { id: 'section-problem', title: 'Problem' },
+  { id: 'section-process', title: 'Process' },
+  { id: 'section-impact', title: 'Impact' },
+  { id: 'section-key-learnings', title: 'Key Learnings' },
 ]
 
 const Eduwork = () => {
@@ -26,14 +78,27 @@ const Eduwork = () => {
 
   return (
     <div className="min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 relative selection:bg-orange-500/30 selection:text-orange-400 pb-24">
-      <main className="max-w-[880px] mx-auto px-4 sm:px-6 space-y-12">
+      <main className="max-w-[1040px] mx-auto px-4 sm:px-6 space-y-12">
 
-        {/* ── SECTION 1: HEADER TITLE & METADATA ── */}
-        <section className="pt-8 pb-4 space-y-8">
+        {/* ── SECTION 1: HEADER TITLE & CHIPS ── */}
+        <section className="pt-8 pb-4 space-y-4">
           <h1 className="text-[40px] font-crimson italic tracking-tight text-app-primary">
             {EduworkData.title}
           </h1>
-          <ProjectMeta data={EduworkData} />
+
+          {/* Tags & Tech Stacks (Sama seperti ProjectCard.jsx) */}
+          <div className="space-y-2">
+            <div className="flex flex-wrap gap-2">
+              {EduworkData.tag?.map((tag, index) => (
+                <Chip key={index} label={tag.en || tag} />
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {EduworkData.stack?.map((stack, index) => (
+                <Chip key={index} label={stack.en || stack} autoIcon={true} />
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* ── SECTION 1B: SEAMLESS SLIDER ── */}
@@ -53,66 +118,70 @@ const Eduwork = () => {
               showOverlayGradients={false}
               className="w-full"
               speedMultiplier={2}
+              enableEnlarge={true}
             />
           </div>
         </section>
 
-        {/* ── SECTION 2: OVERVIEW + PROBLEM ── */}
-        <section className="space-y-8">
-          <CaseStudySection title="Overview" accent="amber">
-            <div className="space-y-3">
-              {EduworkData.overview.map((para, idx) => <p key={idx}>{para.en}</p>)}
+        {/* ── CASE STUDY CONTENT WITH VERTICAL TAB SLIDER ── */}
+        <CaseStudyLayout sections={CASE_STUDY_SECTIONS} headerLabel="Case Study">
+          {/* SECTION 2: OVERVIEW + PROBLEM */}
+          <div className="space-y-8">
+            <CaseStudySection title="Overview" accent="amber">
+              <div className="space-y-3">
+                {EduworkData.overview.map((para, idx) => <p key={idx}>{para.en}</p>)}
+              </div>
+            </CaseStudySection>
+
+            <CaseStudySection title="Problem" accent="amber">
+              <p>{EduworkData.problem.en}</p>
+            </CaseStudySection>
+          </div>
+
+          {/* SECTION 3: PROCESS */}
+          <div className="space-y-5">
+            {/* Process flow diagram */}
+            <div
+              onClick={() => handleOpenImage(EduworkData.processImg)}
+              className="group relative border border-app-subtle bg-app-surface/60 p-4 sm:p-6 overflow-hidden cursor-zoom-in flex items-center justify-center transition-all hover:border-app-accent shadow-sm"
+            >
+              <img
+                src={EduworkData.processImg}
+                alt="Eduwork Design Process Diagram"
+                loading="lazy"
+                className="w-full max-w-[760px] h-auto object-contain rounded-lg group-hover:scale-[1.01] transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none text-white text-xs font-mono">
+                <span>Click to enlarge diagram</span>
+                <span>↗</span>
+              </div>
             </div>
-          </CaseStudySection>
 
-          <CaseStudySection title="Problem" accent="amber">
-            <p>{EduworkData.problem.en}</p>
-          </CaseStudySection>
-        </section>
+            <CaseStudySection title="Process" accent="yellow">
+              <p>{EduworkData.process[0]?.overview?.en}</p>
+            </CaseStudySection>
 
-        {/* ── SECTION 3: PROCESS ── */}
-        <section className="space-y-5">
-          {/* Process flow diagram */}
-          <div
-            onClick={() => handleOpenImage(EduworkData.processImg)}
-            className="group relative border border-app-subtle bg-app-surface/60 p-4 sm:p-6 overflow-hidden cursor-zoom-in flex items-center justify-center transition-all hover:border-app-accent shadow-sm"
-          >
-            <img
-              src={EduworkData.processImg}
-              alt="Eduwork Design Process Diagram"
-              loading="lazy"
-              className="w-full max-w-[760px] h-auto object-contain rounded-lg group-hover:scale-[1.01] transition-transform duration-300"
-            />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none text-white text-xs font-mono">
-              <span>Click to enlarge diagram</span>
-              <span>↗</span>
+            <div className="space-y-3 leading-relaxed font-sans text-app-secondary">
+              {EduworkData.process.slice(1).map((step, idx) => (
+                <p key={idx}>
+                  <strong className="heading-accent-yellow font-bold mr-1">{step.label.en}</strong>
+                  <span>{step.desc.en}</span>
+                </p>
+              ))}
             </div>
           </div>
 
-          <CaseStudySection title="Process" accent="yellow">
-            <p>{EduworkData.process[0]?.overview?.en}</p>
-          </CaseStudySection>
+          {/* SECTION 4: IMPACT + KEY LEARNINGS */}
+          <div className="space-y-8">
+            <CaseStudySection title="Impact" accent="emerald">
+              <p>{EduworkData.impact.en}</p>
+            </CaseStudySection>
 
-          <div className="space-y-3 leading-relaxed font-sans text-app-secondary">
-            {EduworkData.process.slice(1).map((step, idx) => (
-              <p key={idx}>
-                <strong className="heading-accent-yellow font-bold mr-1">{step.label.en}</strong>
-                <span>{step.desc.en}</span>
-              </p>
-            ))}
+            <CaseStudySection title="Key Learnings" accent="emerald">
+              <p>{EduworkData.keyLearnings.en}</p>
+            </CaseStudySection>
           </div>
-        </section>
-
-        {/* ── SECTION 4: IMPACT + KEY LEARNINGS ── */}
-        <section className="space-y-8">
-          <CaseStudySection title="Impact" accent="emerald">
-            <p>{EduworkData.impact.en}</p>
-          </CaseStudySection>
-
-          <CaseStudySection title="Key Learnings" accent="emerald">
-            <p>{EduworkData.keyLearnings.en}</p>
-          </CaseStudySection>
-        </section>
+        </CaseStudyLayout>
 
         {/* ── Footer ── */}
         <section className="pt-8 border-t border-app-subtle w-full flex justify-center">

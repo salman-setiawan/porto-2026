@@ -14,6 +14,15 @@ const Duitra = {
     en: "Mobile Application UI/UX Design",
     id: "Desain UI/UX Aplikasi Mobile"
   },
+  tag: [
+    { en: 'UI/UX Design', id: 'Desain UI/UX' },
+    { en: 'Mobile App', id: 'Aplikasi Mobile' },
+  ],
+  stack: [
+    { en: 'Flutter', id: 'Flutter' },
+    { en: 'Dart', id: 'Dart' },
+    { en: 'Firebase', id: 'Firebase' },
+  ],
   overview: [
     {
       en: "Duitra is a personal finance tracking application designed to help users record and monitor their daily income and expenses. The interface brings essential financial information into one place, including account balance, transaction summaries, remaining balances, expense budgets, and spending by category.",

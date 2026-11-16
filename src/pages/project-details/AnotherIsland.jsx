@@ -2,20 +2,69 @@ import { useState } from 'react'
 import { playCrispClick, playMechanicalSound } from '../../utils/sound'
 import AnotherIslandData from '../../data/projects/anotherIsland'
 import SeamlessSlider from '../../components/showcase-section/SeamlessSlider'
-import CaseStudySection from '../../components/project-section/ProjectCaseStudyContent'
-import ProjectMeta from '../../components/project-section/ProjectMeta'
+import CaseStudySection, { CaseStudyLayout } from '../../components/project-section/ProjectCaseStudyContent'
+import Chip from '../../components/Chip'
 
 const ANOTHER_ISLAND_GALLERY_SHOTS = [
-  '/projects/another-island/gallery/screen1.webp',
-  '/projects/another-island/gallery/screen2.webp',
-  '/projects/another-island/gallery/screen3.webp',
-  '/projects/another-island/gallery/screen4.webp',
-  '/projects/another-island/gallery/screen5.webp',
-  '/projects/another-island/gallery/screen6.webp',
-  '/projects/another-island/gallery/screen7.webp',
-  '/projects/another-island/gallery/screen8.webp',
-  '/projects/another-island/gallery/screen9.webp',
-  '/projects/another-island/gallery/screen10.webp',
+  {
+    src: '/projects/another-island/gallery/screen1.webp',
+    title: 'Photosensitivity Warning',
+    desc: 'Layar peringatan fotosensitivitas dan keselamatan visual sebelum memasuki sesi permainan.',
+  },
+  {
+    src: '/projects/another-island/gallery/screen2.webp',
+    title: 'Grand Opening & Survey Popup',
+    desc: 'Modal riset User-Centered Design (UCD) berhadiah untuk mengumpulkan umpan balik langsung dari pemain.',
+  },
+  {
+    src: '/projects/another-island/gallery/screen3.webp',
+    title: 'Main Menu Interface',
+    desc: 'Antarmuka menu utama dengan tombol aksi cepat Start Game, Options, dan rekaman Highest Score pemain.',
+  },
+  {
+    src: '/projects/another-island/gallery/screen4.webp',
+    title: 'Developer & Thesis Note',
+    desc: 'Pesan pengembang yang menguraikan konteks riset skripsi dan apresiasi partisipasi pengguna.',
+  },
+  {
+    src: '/projects/another-island/gallery/screen5.webp',
+    title: 'Audio & UI Scale Settings',
+    desc: 'Panel penyesuaian kenyamanan pemain meliputi sakelar audio (SFX, BGM) serta ukuran skala antarmuka.',
+  },
+  {
+    src: '/projects/another-island/gallery/screen6.webp',
+    title: 'Difficulty Mode Selection',
+    desc: 'Pilihan tingkat kesulitan yang dirancang berjenjang: Tutorial, Casual, hingga Hell Mode.',
+  },
+  {
+    src: '/projects/another-island/gallery/screen7.webp',
+    title: 'Gameplay Tutorial & Controls',
+    desc: 'Panduan kontrol keyboard WASD, bidikan mouse tembakan, skill bertahan hidup, serta objektif permainan.',
+  },
+  {
+    src: '/projects/another-island/gallery/screen8.webp',
+    title: 'Boss Battle & Survival Arena',
+    desc: 'Sesi pertarungan intens di arena survival dengan mekanisme penghindaran proyektil dan penghitung skor real-time.',
+  },
+  {
+    src: '/projects/another-island/gallery/screen9.webp',
+    title: 'Game Pause Menu',
+    desc: 'Menu jeda permainan di tengah aksi yang memungkinkan pemain melanjutkan, mengubah opsi, atau menyimpan progres.',
+  },
+  {
+    src: '/projects/another-island/gallery/screen10.webp',
+    title: 'Game Over & Score Results',
+    desc: 'Layar akhir permainan yang menampilkan skor evaluasi bertahan hidup disertai opsi Play Again dan Exit.',
+  },
+]
+
+const CASE_STUDY_SECTIONS = [
+  { id: 'section-overview', title: 'Overview' },
+  { id: 'section-problem', title: 'Problem' },
+  { id: 'section-process', title: 'Process' },
+  { id: 'section-impact', title: 'Impact' },
+  { id: 'section-key-learnings', title: 'Key Learnings' },
+  { id: 'section-design-system-asset-sheet', title: 'Design System' },
 ]
 
 const AnotherIsland = () => {
@@ -25,14 +74,27 @@ const AnotherIsland = () => {
 
   return (
     <div className="min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 relative selection:bg-orange-500/30 selection:text-orange-400 pb-24">
-      <main className="max-w-[880px] mx-auto px-4 sm:px-6 space-y-12">
+      <main className="max-w-[1040px] mx-auto px-4 sm:px-6 space-y-12">
 
-        {/* ── SECTION 1: HEADER TITLE & METADATA ── */}
-        <section className="pt-8 pb-4 space-y-8">
+        {/* ── SECTION 1: HEADER TITLE & CHIPS ── */}
+        <section className="pt-8 pb-4 space-y-4">
           <h1 className="text-[40px] font-crimson italic tracking-tight text-app-primary">
             {AnotherIslandData.title}
           </h1>
-          <ProjectMeta data={AnotherIslandData} />
+
+          {/* Tags & Tech Stacks (Sama seperti ProjectCard.jsx) */}
+          <div className="space-y-2">
+            <div className="flex flex-wrap gap-2">
+              {AnotherIslandData.tag?.map((tag, index) => (
+                <Chip key={index} label={tag.en || tag} />
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {AnotherIslandData.stack?.map((stack, index) => (
+                <Chip key={index} label={stack.en || stack} autoIcon={true} />
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* ── SECTION 1B: SEAMLESS SLIDER ── */}
@@ -52,91 +114,95 @@ const AnotherIsland = () => {
               showOverlayGradients={false}
               className="w-full"
               speedMultiplier={2}
+              enableEnlarge={true}
             />
           </div>
         </section>
 
-        {/* ── SECTION 2: OVERVIEW + PROBLEM + UCD DIAGRAM ── */}
-        <section className="space-y-8">
-          <CaseStudySection title="Overview" accent="amber">
-            <div className="space-y-3">
-              {AnotherIslandData.overview.map((para, idx) => <p key={idx}>{para.en}</p>)}
-            </div>
-          </CaseStudySection>
+        {/* ── CASE STUDY CONTENT WITH VERTICAL TAB SLIDER ── */}
+        <CaseStudyLayout sections={CASE_STUDY_SECTIONS} headerLabel="Case Study">
+          {/* SECTION 2: OVERVIEW + PROBLEM + UCD DIAGRAM */}
+          <div className="space-y-8">
+            <CaseStudySection title="Overview" accent="amber">
+              <div className="space-y-3">
+                {AnotherIslandData.overview.map((para, idx) => <p key={idx}>{para.en}</p>)}
+              </div>
+            </CaseStudySection>
 
-          <CaseStudySection title="Problem" accent="amber">
-            <p>{AnotherIslandData.problem.en}</p>
-          </CaseStudySection>
+            <CaseStudySection title="Problem" accent="amber">
+              <p>{AnotherIslandData.problem.en}</p>
+            </CaseStudySection>
 
-          {/* UCD Diagram */}
-          <div
-            onClick={() => handleOpenImage(AnotherIslandData.processImg)}
-            className="group relative rounded-xl border border-app-subtle bg-app-surface/60 p-4 sm:p-6 overflow-hidden cursor-zoom-in flex items-center justify-center transition-all hover:border-app-accent shadow-sm"
-          >
-            <img
-              src={AnotherIslandData.processImg}
-              alt="User-Centered Design Framework"
-              loading="lazy"
-              className="w-full max-w-[760px] h-auto object-contain rounded-lg group-hover:scale-[1.01] transition-transform duration-300"
-            />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none text-white text-xs font-mono">
-              <span>Click to enlarge diagram</span>
-              <span>↗</span>
+            {/* UCD Diagram */}
+            <div
+              onClick={() => handleOpenImage(AnotherIslandData.processImg)}
+              className="group relative rounded-xl border border-app-subtle bg-app-surface/60 p-4 sm:p-6 overflow-hidden cursor-zoom-in flex items-center justify-center transition-all hover:border-app-accent shadow-sm"
+            >
+              <img
+                src={AnotherIslandData.processImg}
+                alt="User-Centered Design Framework"
+                loading="lazy"
+                className="w-full max-w-[760px] h-auto object-contain rounded-lg group-hover:scale-[1.01] transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none text-white text-xs font-mono">
+                <span>Click to enlarge diagram</span>
+                <span>↗</span>
+              </div>
             </div>
           </div>
-        </section>
 
-        {/* ── SECTION 3: PROCESS ── */}
-        <section className="space-y-5">
-          <CaseStudySection title="Process" accent="yellow">
-            <p>{AnotherIslandData.process[0]?.overview?.en}</p>
-          </CaseStudySection>
+          {/* SECTION 3: PROCESS */}
+          <div className="space-y-5">
+            <CaseStudySection title="Process" accent="yellow">
+              <p>{AnotherIslandData.process[0]?.overview?.en}</p>
+            </CaseStudySection>
 
-          <div className="space-y-3 leading-relaxed font-sans text-app-secondary">
-            {AnotherIslandData.process.slice(1).map((step, idx) => (
-              <p key={idx}>
-                <strong className="heading-accent-yellow font-bold mr-1">{step.label.en}</strong>
-                <span>{step.desc.en}</span>
+            <div className="space-y-3 leading-relaxed font-sans text-app-secondary">
+              {AnotherIslandData.process.slice(1).map((step, idx) => (
+                <p key={idx}>
+                  <strong className="heading-accent-yellow font-bold mr-1">{step.label.en}</strong>
+                  <span>{step.desc.en}</span>
+                </p>
+              ))}
+            </div>
+          </div>
+
+          {/* SECTION 4: IMPACT + KEY LEARNINGS */}
+          <div className="space-y-8">
+            <CaseStudySection title="Impact" accent="emerald">
+              <p>{AnotherIslandData.impact.en}</p>
+            </CaseStudySection>
+
+            <CaseStudySection title="Key Learnings" accent="emerald">
+              <p>{AnotherIslandData.keyLearnings.en}</p>
+            </CaseStudySection>
+          </div>
+
+          {/* SECTION 5: DESIGN SYSTEM */}
+          <div className="space-y-6 pt-6 border-t border-app-subtle">
+            <CaseStudySection title="Design System &amp; Asset Sheet" accent="neutral">
+              <p className="text-xs text-app-muted font-mono">
+                Visual components, typography, color tokens, and sprite design system
               </p>
-            ))}
-          </div>
-        </section>
+            </CaseStudySection>
 
-        {/* ── SECTION 4: IMPACT + KEY LEARNINGS ── */}
-        <section className="space-y-8">
-          <CaseStudySection title="Impact" accent="emerald">
-            <p>{AnotherIslandData.impact.en}</p>
-          </CaseStudySection>
-
-          <CaseStudySection title="Key Learnings" accent="emerald">
-            <p>{AnotherIslandData.keyLearnings.en}</p>
-          </CaseStudySection>
-        </section>
-
-        {/* ── SECTION 5: DESIGN SYSTEM ── */}
-        <section className="space-y-6 pt-6 border-t border-app-subtle">
-          <CaseStudySection title="Design System &amp; Asset Sheet" accent="neutral">
-            <p className="text-xs text-app-muted font-mono">
-              Visual components, typography, color tokens, and sprite design system
-            </p>
-          </CaseStudySection>
-
-          <div
-            onClick={() => handleOpenImage('/projects/another-island/desy.webp')}
-            className="group relative rounded-xl border border-app-subtle bg-app-surface/60 p-2 sm:p-4 overflow-hidden cursor-zoom-in hover:border-app-accent transition-colors shadow-sm"
-          >
-            <img
-              src="/projects/another-island/desy.webp"
-              alt="Another Island Design System"
-              loading="lazy"
-              className="w-full h-auto object-contain rounded-lg group-hover:scale-[1.005] transition-transform duration-300"
-            />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none text-white text-xs font-mono">
-              <span>Click to view full design system</span>
-              <span>↗</span>
+            <div
+              onClick={() => handleOpenImage('/projects/another-island/desy.webp')}
+              className="group relative rounded-xl border border-app-subtle bg-app-surface/60 p-2 sm:p-4 overflow-hidden cursor-zoom-in hover:border-app-accent transition-colors shadow-sm"
+            >
+              <img
+                src="/projects/another-island/desy.webp"
+                alt="Another Island Design System"
+                loading="lazy"
+                className="w-full h-auto object-contain rounded-lg group-hover:scale-[1.005] transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 pointer-events-none text-white text-xs font-mono">
+                <span>Click to view full design system</span>
+                <span>↗</span>
+              </div>
             </div>
           </div>
-        </section>
+        </CaseStudyLayout>
 
         {/* ── Footer ── */}
         <section className="pt-8 border-t border-app-subtle w-full flex justify-center">
