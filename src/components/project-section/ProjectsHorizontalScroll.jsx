@@ -36,6 +36,7 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
   const [pinMode, setPinMode] = useState('before')
   const [activeCardIndex, setActiveCardIndex] = useState(0)
   const [contentHeight, setContentHeight] = useState(560)
+  const [scrollProgress, setScrollProgress] = useState(0)
 
   // Ukur tinggi riil dari showcase wrapper agar container fit dengan card & header
   useEffect(() => {
@@ -91,6 +92,7 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
     }
 
     setPinMode(nextPinMode)
+    setScrollProgress(progress)
 
     // Perhitungan pergeseran horizontal dalam piksel
     const windowWidth = window.innerWidth
@@ -267,7 +269,7 @@ const ProjectsHorizontalScroll = ({ projects: customProjects, highlightIds, chil
             ))}
 
             {/* Ending Slide: Box "Show More Project" */}
-            <MoreProjectsCard url="/projects" />
+            <MoreProjectsCard url="/projects" scrollProgress={scrollProgress} />
           </div>
         </div>
 
