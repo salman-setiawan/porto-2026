@@ -75,7 +75,7 @@ const ProjectCard = ({ project = DataProject.projects[0] }) => {
 
           <div className="space-y-5 pt-8 z-10">
             <div className='space-y-3'>
-              <h3 className='text-app-primary text-[38px] md:text-[40px] font-crimson h-[48px] italic tracking-tighter'>
+              <h3 className='text-app-primary text-[38px] font-crimson italic tracking-tighter pr-2 leading-12'>
                 {projectTitle}
               </h3>
               {project.desc && (

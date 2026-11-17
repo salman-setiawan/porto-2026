@@ -177,7 +177,7 @@ const ImagesHorizontalScroll = ({
       <div
         ref={showcaseRef}
         style={getPinStyle()}
-        className="flex flex-col py-6 pointer-events-auto bg-app-primary w-full"
+        className="flex flex-col py-6 pointer-events-auto w-full"
       >
         {/* Header Section: Title & Indikator Slide */}
         <div
@@ -215,11 +215,10 @@ const ImagesHorizontalScroll = ({
                     playMechanicalSound(index + 1, 0.2)
                     if (onImageClick) onImageClick(src)
                   }}
-                  className={`group relative h-[420px] md:h-[480px] w-[320px] md:w-[320px] shrink-0 cursor-zoom-in border transition-all duration-300 p-2 overflow-hidden flex flex-col justify-between ${
-                    isCurrent
+                  className={`group relative h-[420px] md:h-[480px] w-[320px] md:w-[320px] shrink-0 cursor-zoom-in border transition-all duration-300 p-2 overflow-hidden flex flex-col justify-between ${isCurrent
                       ? 'border-app-accent bg-app-surface/60 shadow-lg shadow-orange-500/10'
                       : 'border-app-subtle bg-app-surface/20 hover:border-app-medium hover:bg-app-surface/40'
-                  }`}
+                    }`}
                 >
                   {/* Visual Image Screen */}
                   <div className="relative w-full flex items-start min-h-0 overflow-hidden bg-black/20 flex items-center justify-center pt-4 px-3">

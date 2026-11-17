@@ -3,9 +3,12 @@ import { playMechanicalSound } from '../../utils/sound'
 import TimelineSlider from '../../components/TimelineSlider'
 import About from '../../components/About'
 import { DataBppDev } from '../../data/projects/bpnDev'
+import PixelFlare from '../../motion/PixelFlare'
+import { useFlareScroll } from '../../hooks/useFlareScroll'
 
 const BppDev = () => {
   const { weeksData, totalTicks, about } = DataBppDev
+  const { flareOpacity, isFlareVisible } = useFlareScroll()
 
   // Nilai desimal kontinu untuk pergerakan slider yang mulus (0.0 s/d 3.0)
   const [sliderPosition, setSliderPosition] = useState(0)
@@ -60,12 +63,27 @@ const BppDev = () => {
   return (
     <div className="min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 relative selection:bg-orange-500/30 selection:text-orange-400 pb-24">
 
+      {/* ── PIXEL FLARE (memudar saat scroll ke bawah) ── */}
+      <div
+        className="fixed inset-x-0 top-0 h-[320px] md:h-[640px] pointer-events-none z-0 transition-opacity duration-75"
+        style={{
+          opacity: flareOpacity,
+          display: isFlareVisible ? 'block' : 'none',
+        }}
+      >
+        <PixelFlare speed={1.0} intensity="vibrant" />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'var(--flare-mask)' }}
+        />
+      </div>
+
       {/* ── Main Content Container ── */}
-      <main className="max-w-[1120px] mx-auto px-4 sm:px-6 pt-8 space-y-8">
+      <main className="max-w-[1120px] mx-auto px-4 sm:px-6 pt-8 space-y-8 relative z-[1]">
 
         {/* Header Title Section */}
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between items-center gap-2">
-          <h1 className="text-[32px] h-[40px] font-crimson italic tracking-tight text-app-primary">
+          <h1 className="text-[32px] font-crimson italic tracking-tight text-app-primary leading-12">
             balikpapan.dev
           </h1>
           <p className="text-[14px] text-app-muted">

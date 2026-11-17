@@ -4,6 +4,8 @@ import RailfieldData from '../../data/projects/railfield'
 import ImagesHorizontalScroll from '../../components/project-section/ImagesHorizontalScroll'
 import CaseStudySection, { CaseStudyLayout } from '../../components/project-section/ProjectCaseStudyContent'
 import Chip from '../../components/Chip'
+import PixelFlare from '../../motion/PixelFlare'
+import { useFlareScroll } from '../../hooks/useFlareScroll'
 
 const RAILFIELD_GALLERY_IMAGES = [
   { title: 'Dashboard & Assignment Selection', src: '/projects/railfield-app/gallery/dashboard.png' },
@@ -23,15 +25,31 @@ const CASE_STUDY_SECTIONS = [
 
 const RailField = () => {
   const [selectedImage, setSelectedImage] = useState(null)
+  const { flareOpacity, isFlareVisible } = useFlareScroll()
 
   const handleOpenImage = (src) => { playMechanicalSound(2, 0.2); setSelectedImage(src) }
 
   return (
     <div className="flex flex-col w-full relative min-h-screen bg-app-primary text-app-primary font-sans transition-colors duration-300 selection:bg-orange-500/30 selection:text-orange-400 pb-24">
 
+      {/* ── PIXEL FLARE (memudar saat scroll ke bawah) ── */}
+      <div
+        className="fixed inset-x-0 top-0 h-[320px] md:h-[640px] pointer-events-none z-0 transition-opacity duration-75"
+        style={{
+          opacity: flareOpacity,
+          display: isFlareVisible ? 'block' : 'none',
+        }}
+      >
+        <PixelFlare speed={1.0} intensity="vibrant" />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'var(--flare-mask)' }}
+        />
+      </div>
+
       {/* ── SECTION 1: HEADER TITLE & CHIPS ── */}
-      <section className="pt-8 pb-4 max-w-[1040px] px-4 sm:px-6 space-y-4 mx-auto w-full">
-        <h1 className="text-[40px] h-[45px] font-crimson italic tracking-tight text-app-primary">
+      <section className="pt-8 pb-4 max-w-[1040px] px-4 sm:px-6 space-y-4 mx-auto w-full relative z-[1]">
+        <h1 className="text-[40px] font-crimson italic tracking-tight text-app-primary leading-12">
           {RailfieldData.title}
         </h1>
 
